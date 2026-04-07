@@ -1,0 +1,142 @@
+'use client';
+
+import { useState } from 'react';
+import { X, Phone, BarChart3, CreditCard, LogOut, Eye, EyeOff, MessageCircle } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useAuth } from '@/contexts/AuthContext';
+import { maskPhone } from '@/lib/validators';
+import { SITE_CONFIG } from '@/lib/constants';
+import { getWhatsAppUrl } from '@/lib/utils';
+import Button from './Button';
+
+interface ProfilePopupProps {
+  open: boolean;
+  onClose: () => void;
+}
+
+export default function ProfilePopup({ open, onClose }: ProfilePopupProps) {
+  const { session, logout } = useAuth();
+  const [showPhone, setShowPhone] = useState(false);
+
+  if (!session) return null;
+
+  const handleLogout = () => {
+    logout();
+    onClose();
+  };
+
+  return (
+    <AnimatePresence>
+      {open && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="absolute inset-0 bg-black/70 backdrop-blur-sm"
+            onClick={onClose}
+          />
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95, y: 10 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: 10 }}
+            transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+            className="relative w-full max-w-sm rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6 shadow-2xl"
+          >
+            {/* Header */}
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="font-[family-name:var(--font-clash-display)] text-lg font-semibold text-[var(--color-text)]">
+                Profilim
+              </h2>
+              <button
+                onClick={onClose}
+                className="flex h-8 w-8 items-center justify-center rounded-lg text-[var(--color-text-muted)] transition-colors hover:bg-[var(--color-surface-light)] hover:text-[var(--color-text)]"
+                aria-label="Kapat"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+
+            {/* Phone */}
+            <div className="mb-4 rounded-xl bg-[var(--color-surface-card)] p-4">
+              <div className="flex items-center gap-3">
+                <Phone className="h-4 w-4 text-[var(--color-text-muted)]" />
+                <div className="flex-1">
+                  <p className="text-xs text-[var(--color-text-muted)]">Telefon</p>
+                  <p className="text-sm font-medium text-[var(--color-text)]">
+                    {showPhone ? session.phoneRaw : maskPhone(session.phoneRaw)}
+                  </p>
+                </div>
+                <button
+                  onClick={() => setShowPhone(!showPhone)}
+                  className="text-xs text-[var(--color-accent)] hover:underline flex items-center gap-1"
+                >
+                  {showPhone ? <EyeOff className="h-3 w-3" /> : <Eye className="h-3 w-3" />}
+                  {showPhone ? 'Gizle' : 'Göster'}
+                </button>
+              </div>
+            </div>
+
+            {/* Analysis Status */}
+            <div className="mb-4 rounded-xl bg-[var(--color-surface-card)] p-4">
+              <div className="flex items-center gap-3">
+                <BarChart3 className="h-4 w-4 text-[var(--color-text-muted)]" />
+                <div className="flex-1">
+                  <p className="text-xs text-[var(--color-text-muted)]">Analiz Durumu</p>
+                  {session.analysisStatus === 'pending' && (
+                    <p className="text-sm font-medium text-[var(--color-warning)]">
+                      Rapor Hazırlanıyor...
+                    </p>
+                  )}
+                  {session.analysisStatus === 'completed' && (
+                    <p className="text-sm font-medium text-[var(--color-success)]">
+                      Rapor Hazır
+                    </p>
+                  )}
+                  {session.analysisStatus === 'none' && (
+                    <p className="text-sm font-medium text-[var(--color-text-secondary)]">
+                      Henüz analiz yok
+                    </p>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Credits */}
+            <div className="mb-6 rounded-xl bg-[var(--color-surface-card)] p-4">
+              <div className="flex items-center gap-3">
+                <CreditCard className="h-4 w-4 text-[var(--color-text-muted)]" />
+                <div className="flex-1">
+                  <p className="text-xs text-[var(--color-text-muted)]">Kalan Kredi</p>
+                  <p className="text-sm font-medium text-[var(--color-text)]">
+                    {session.credits}
+                  </p>
+                </div>
+              </div>
+              <a
+                href={getWhatsAppUrl(SITE_CONFIG.whatsapp, 'Merhaba, ek kredi hakkında bilgi almak istiyorum.')}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-2 flex items-center gap-1.5 text-xs text-[var(--color-accent-secondary)] hover:underline"
+              >
+                <MessageCircle className="h-3 w-3" />
+                Fazladan kredi için WhatsApp danışmanımıza yazınız
+              </a>
+            </div>
+
+            {/* Logout */}
+            <Button
+              variant="ghost"
+              size="md"
+              onClick={handleLogout}
+              className="w-full text-[var(--color-error)] hover:bg-[var(--color-error)]/10"
+            >
+              <LogOut className="h-4 w-4" />
+              Çıkış Yap
+            </Button>
+          </motion.div>
+        </div>
+      )}
+    </AnimatePresence>
+  );
+}
