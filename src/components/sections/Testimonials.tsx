@@ -1,8 +1,8 @@
 'use client';
 
 import { Star } from 'lucide-react';
-import { motion } from 'framer-motion';
-import { TESTIMONIALS } from '@/lib/constants';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const containerVariants = {
   hidden: {},
@@ -15,6 +15,7 @@ const itemVariants = {
 };
 
 export default function Testimonials() {
+  const { t } = useLanguage();
   return (
     <section className="relative py-24 lg:py-32">
       <div className="absolute inset-0 bg-dot-grid opacity-20" />
@@ -29,10 +30,10 @@ export default function Testimonials() {
           className="mb-14 text-center"
         >
           <p className="mb-3 text-sm font-medium uppercase tracking-widest text-[var(--color-accent)]">
-            Referanslar
+            {t.testimonials.label}
           </p>
           <h2 className="font-[family-name:var(--font-heading)] text-3xl font-extrabold text-[var(--color-text)] sm:text-4xl lg:text-5xl">
-            Müşterilerimiz Ne Diyor?
+            {t.testimonials.title}
           </h2>
         </motion.div>
 
@@ -43,12 +44,12 @@ export default function Testimonials() {
           viewport={{ once: true, amount: 0.1 }}
           className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3"
         >
-          {TESTIMONIALS.map((testimonial) => (
+          {t.testimonials.items.map((testimonial) => (
             <motion.div
               key={testimonial.name}
               variants={itemVariants}
               whileHover={{ y: -6, transition: { duration: 0.3 } }}
-              className="gradient-border glass-card flex flex-col rounded-2xl p-7"
+              className="gradient-border glass-card animate-shimmer flex flex-col rounded-2xl p-7"
             >
               {/* Stars */}
               <div className="flex gap-1">

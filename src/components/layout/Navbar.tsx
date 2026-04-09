@@ -1,17 +1,25 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Menu } from 'lucide-react';
+import { Menu, UserRound, ChevronDown } from 'lucide-react';
 import { NAV_ITEMS } from '@/lib/constants';
 import { cn } from '@/lib/utils';
 import HamburgerMenu from './HamburgerMenu';
-import Button from '@/components/ui/Button';
+import { Button } from '@/components/ui/Button';
+import ProfilePopup from '@/components/ui/ProfilePopup';
+import { useAuth } from '@/contexts/AuthContext';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
+  const [langOpen, setLangOpen] = useState(false);
+  const langRef = useRef<HTMLDivElement>(null);
+  const { isAuthenticated, isHydrated } = useAuth();
+  const { t, language, setLanguage, languages } = useLanguage();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 30);
@@ -19,11 +27,24 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Close lang dropdown on outside click
+  useEffect(() => {
+    const handleClick = (e: MouseEvent) => {
+      if (langRef.current && !langRef.current.contains(e.target as Node)) {
+        setLangOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, []);
+
+  const currentLang = languages.find(l => l.code === language) ?? languages[0];
+
   return (
     <>
-      <nav
+        <nav
         className={cn(
-          'fixed top-0 left-0 right-0 z-50 transition-all duration-500',
+          'fixed top-0 left-0 w-full z-[80] transition-all duration-500',
           scrolled
             ? 'bg-[var(--color-surface)]/80 backdrop-blur-2xl border-b border-[var(--color-border)]'
             : 'bg-transparent'
@@ -36,33 +57,81 @@ export default function Navbar() {
               <Image
                 src="/images/logo-white.png"
                 alt="Webtier"
-                width={120}
-                height={36}
-                className="h-8 w-auto object-contain"
+                width={140}
+                height={40}
+                className="h-9 sm:h-10 w-auto object-contain"
                 priority
               />
             </Link>
 
             {/* Desktop Nav */}
             <div className="hidden items-center gap-8 md:flex">
-              {NAV_ITEMS.map((item) => (
                 <Link
-                  key={item.href}
-                  href={item.href}
+                  href="/#hero"
                   className="text-sm font-medium text-[var(--color-text-secondary)] transition-colors duration-200 hover:text-[var(--color-text)]"
                 >
-                  {item.label}
+                  {t.nav.cro}
                 </Link>
-              ))}
+                <Link
+                  href="/e-ticaret"
+                  className="text-sm font-medium text-[var(--color-text-secondary)] transition-colors duration-200 hover:text-[var(--color-text)]"
+                >
+                  {t.nav.ecommerce}
+                </Link>
             </div>
 
             {/* Right side */}
             <div className="flex items-center gap-3">
-              <Link href="/#hero" className="hidden sm:block">
-                <Button size="sm" className="animate-pulse-glow">
-                  Ücretsiz Analiz
+              {/* Language Selector */}
+              <div ref={langRef} className="relative hidden sm:block">
+                <button
+                  onClick={() => setLangOpen(v => !v)}
+                  className="flex h-9 items-center gap-1.5 rounded-lg border border-[var(--color-border)] px-2.5 text-xs font-medium text-[var(--color-text-secondary)] transition-all hover:border-[var(--color-border-light)] hover:bg-[var(--color-surface-light)] hover:text-[var(--color-text)]"
+                  aria-label="Dil seç"
+                >
+                  <span>{currentLang.flag}</span>
+                  <span className="hidden lg:inline">{currentLang.code.toUpperCase()}</span>
+                  <ChevronDown className={cn('h-3 w-3 transition-transform', langOpen && 'rotate-180')} />
+                </button>
+
+                {langOpen && (
+                  <div className="absolute right-0 top-full mt-2 w-40 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-xl overflow-hidden z-[90]">
+                    {languages.map((lang) => (
+                      <button
+                        key={lang.code}
+                        onClick={() => { setLanguage(lang.code); setLangOpen(false); }}
+                        className={cn(
+                          'flex w-full items-center gap-2.5 px-3 py-2.5 text-sm transition-colors hover:bg-[var(--color-surface-light)]',
+                          language === lang.code
+                            ? 'text-[var(--color-accent)] font-semibold'
+                            : 'text-[var(--color-text-secondary)]'
+                        )}
+                      >
+                        <span>{lang.flag}</span>
+                        <span>{lang.label}</span>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {isHydrated && isAuthenticated ? (
+                <Button
+                  size="sm"
+                  variant="secondary"
+                  onClick={() => setProfileOpen(true)}
+                  className="rounded-xl border border-[var(--color-border-light)] bg-[var(--color-surface-card)]/80 px-3 text-[var(--color-text)] sm:px-4"
+                >
+                  <UserRound className="h-4 w-4" />
+                  <span className="hidden sm:inline">Profilim</span>
                 </Button>
-              </Link>
+              ) : (
+                <Link href="/#hero" className="hidden sm:block">
+                  <Button size="sm" className="animate-pulse-glow rounded-xl">
+                    {t.nav.freeAnalysis}
+                  </Button>
+                </Link>
+              )}
 
               <button
                 onClick={() => setMenuOpen(true)}
@@ -77,6 +146,7 @@ export default function Navbar() {
       </nav>
 
       <HamburgerMenu open={menuOpen} onClose={() => setMenuOpen(false)} />
+      <ProfilePopup open={profileOpen} onClose={() => setProfileOpen(false)} />
     </>
   );
 }

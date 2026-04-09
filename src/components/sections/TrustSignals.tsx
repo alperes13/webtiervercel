@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
-import { STATS } from '@/lib/constants';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 function CountUp({ target, suffix }: { target: number; suffix: string }) {
   const [count, setCount] = useState(0);
@@ -42,15 +42,17 @@ function CountUp({ target, suffix }: { target: number; suffix: string }) {
 }
 
 export default function TrustSignals() {
+  const { t } = useLanguage();
+
   return (
-    <section className="relative py-16 lg:py-20">
+    <section className="relative py-12 lg:py-16">
       {/* Subtle divider line */}
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[var(--color-border-light)] to-transparent" />
       <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-[var(--color-border-light)] to-transparent" />
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-2 gap-8 lg:grid-cols-4">
-          {STATS.map((stat, index) => (
+        <div className="grid grid-cols-2 gap-y-12 sm:grid-cols-4 sm:gap-x-12 sm:gap-y-0 text-center">
+          {t.trustSignals.stats.map((stat: any, index: number) => (
             <motion.div
               key={stat.label}
               initial={{ opacity: 0, y: 20 }}

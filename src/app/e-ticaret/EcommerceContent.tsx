@@ -1,115 +1,61 @@
 'use client';
 
 import Link from 'next/link';
-import { ArrowRight, MessageCircle, CheckCircle2, ShoppingCart, TrendingUp, Smartphone, Search, Package, CreditCard, BarChart3 } from 'lucide-react';
+import { ArrowUpRight, MessageCircle, CheckCircle2, ShoppingCart, TrendingUp, Smartphone, Search, Package, CreditCard, BarChart3 } from 'lucide-react';
 import { motion } from 'framer-motion';
-import Button from '@/components/ui/Button';
+import { Button } from '@/components/ui/Button';
 import Card from '@/components/ui/Card';
 import Accordion from '@/components/ui/Accordion';
 import { SITE_CONFIG } from '@/lib/constants';
 import { getWhatsAppUrl } from '@/lib/utils';
 
-const problems = [
-  'Ziyaretçiler siteyi geziyor ama satın almıyor',
-  'Sepet terk oranı çok yüksek',
-  'Mobilde dönüşüm oranı çok düşük',
-  'Ürün sayfaları yeterince ikna edici değil',
-];
-
-const packages = [
-  {
-    name: 'E-Ticaret Kurulum',
-    description: 'Sıfırdan anahtar teslim e-ticaret sitesi',
-    features: [
-      'Dönüşüm odaklı ana sayfa tasarımı',
-      'Ürün sayfası optimizasyonu',
-      'Sepet ve ödeme akışı',
-      'Mobil responsive tasarım',
-      'SEO altyapısı',
-      'CRO best practice uygulaması',
-    ],
-    ctaText: 'Teklif Al',
-    highlighted: false,
-  },
-  {
-    name: 'CRO Optimize Paketi',
-    description: 'Mevcut sitenizin dönüşüm optimizasyonu',
-    features: [
-      'Detaylı CRO analizi',
-      'A/B test stratejisi',
-      'Kullanıcı akış optimizasyonu',
-      'CTA ve form optimizasyonu',
-      'Sayfa hızı iyileştirmesi',
-      'Güven sinyali entegrasyonu',
-    ],
-    ctaText: 'Teklif Al',
-    highlighted: true,
-  },
-  {
-    name: 'CRO Retainer',
-    description: 'Aylık sürekli iyileştirme ve optimizasyon',
-    features: [
-      'Aylık A/B testleri',
-      'Kullanıcı davranış analizi',
-      'Landing page optimizasyonu',
-      'Performans raporları',
-      'Öncelikli destek',
-      'Sürekli dönüşüm artışı',
-    ],
-    ctaText: 'Detay Al',
-    highlighted: false,
-  },
-];
-
-const faqItems = [
-  { question: 'E-ticaret sitemde dönüşüm oranım neden düşük?', answer: 'Düşük dönüşüm oranının birçok sebebi olabilir: karmaşık satın alma akışı, yetersiz güven sinyalleri, yavaş sayfa hızı, mobil uyumsuzluk veya zayıf CTA\'lar. CRO analizi ile tam olarak nerelerde kayıp yaşadığınızı tespit ederiz.' },
-  { question: 'Shopify/WooCommerce ile çalışıyor musunuz?', answer: 'Evet, tüm popüler e-ticaret platformları ile çalışıyoruz. Shopify, WooCommerce, Trendyol entegrasyonlu siteler ve özel altyapılar dahil.' },
-  { question: 'Mevcut sitemin optimizasyonu ne kadar sürer?', answer: 'CRO Optimize paketi genellikle 2-4 hafta sürer. İlk iyileştirmeler 1-2 hafta içinde uygulanmaya başlar.' },
-  { question: 'Sıfırdan e-ticaret sitesi kurulumu ne kadar sürer?', answer: 'Projenin kapsamına göre 4-8 hafta arasında değişir. Anahtar teslim, dönüşüm odaklı bir e-ticaret sitesi kuruyoruz.' },
-  { question: 'Aylık retainer\'ı iptal edebilir miyim?', answer: 'Evet, aylık retainer paketimiz esnek bir yapıdadır. İstediğiniz zaman iptal edebilirsiniz, herhangi bir taahhüt yoktur.' },
-];
-
-const serviceDetails = [
-  { icon: <ShoppingCart className="h-5 w-5" />, title: 'Ana Sayfa Yapısı', desc: 'Dönüşüm odaklı, güven veren ana sayfa tasarımı' },
-  { icon: <Package className="h-5 w-5" />, title: 'Ürün Sayfası', desc: 'İkna edici ürün sunumu, galeri ve açıklama optimizasyonu' },
-  { icon: <CreditCard className="h-5 w-5" />, title: 'Sepet & Ödeme', desc: 'Minimum adımda, güvenli ve hızlı satın alma akışı' },
-  { icon: <Smartphone className="h-5 w-5" />, title: 'Mobil UX', desc: 'Mobil öncelikli tasarım, touch-friendly arayüz' },
-  { icon: <Search className="h-5 w-5" />, title: 'SEO', desc: 'Organik trafiğinizi artıracak teknik SEO altyapısı' },
-  { icon: <BarChart3 className="h-5 w-5" />, title: 'CRO', desc: 'Sürekli test ve optimizasyon ile artan dönüşüm oranı' },
-];
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function EcommerceContent() {
+  const { t } = useLanguage();
+
+  const serviceDetails = [
+    { icon: <ShoppingCart className="h-5 w-5" />, ...t.ecommerce.details[0] },
+    { icon: <Package className="h-5 w-5" />, ...t.ecommerce.details[1] },
+    { icon: <CreditCard className="h-5 w-5" />, ...t.ecommerce.details[2] },
+    { icon: <Smartphone className="h-5 w-5" />, ...t.ecommerce.details[3] },
+    { icon: <Search className="h-5 w-5" />, ...t.ecommerce.details[4] },
+    { icon: <BarChart3 className="h-5 w-5" />, ...t.ecommerce.details[5] },
+  ];
+
   return (
-    <div className="pt-16 lg:pt-20">
+    <div className="pt-24 lg:pt-32">
       {/* Hero */}
-      <section className="relative py-20 lg:py-28">
+      <section className="relative py-16 lg:py-24 overflow-hidden">
         <div className="absolute inset-0">
-          <div className="absolute top-1/3 left-1/4 h-96 w-96 rounded-full bg-[var(--color-accent)]/5 blur-3xl" />
+          <div className="absolute top-1/4 left-1/4 h-[500px] w-[500px] rounded-full bg-[var(--color-accent)]/10 blur-[130px]" />
         </div>
-        <div className="relative mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+        <div className="relative mx-auto max-w-5xl px-4 text-center sm:px-6 lg:px-8">
+          <motion.div initial={false} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
             <span className="inline-block rounded-full bg-[var(--color-accent)]/10 px-4 py-1.5 text-xs font-semibold text-[var(--color-accent)]">
-              E-Ticaret Çözümleri
+              {t.ecommerce.tag}
             </span>
             <h1 className="mt-6 font-[family-name:var(--font-clash-display)] text-4xl font-bold text-[var(--color-text)] sm:text-5xl">
-              E-Ticaret Siteniz{' '}
+              {t.ecommerce.title}{' '}
               <span className="bg-gradient-to-r from-[var(--color-accent)] to-[var(--color-accent-secondary)] bg-clip-text text-transparent">
-                Satış Makinesi
-              </span>{' '}
-              Olsun
+                {t.ecommerce.titleHighlight}
+              </span>
+              {t.ecommerce.titleSuffix && (
+                <span> {t.ecommerce.titleSuffix}</span>
+              )}
             </h1>
             <p className="mt-4 text-lg text-[var(--color-text-secondary)]">
-              Dönüşüm odaklı e-ticaret altyapısı ile daha fazla satış, daha yüksek ortalama sipariş değeri.
+              {t.ecommerce.subtitle}
             </p>
-            <div className="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-              <Link href="/#hero">
-                <Button size="lg">
-                  Ücretsiz Analiz Al <ArrowRight className="h-4 w-4" />
+            <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+              <Link href="/#hero" className="w-full sm:w-auto">
+                <Button size="lg" className="w-full sm:w-auto">
+                  {t.ecommerce.ctaAnalysis} <ArrowUpRight className="ml-2 h-4 w-4" />
                 </Button>
               </Link>
-              <a href={getWhatsAppUrl(SITE_CONFIG.whatsapp, 'Merhaba, e-ticaret çözümleri hakkında bilgi almak istiyorum.')} target="_blank" rel="noopener noreferrer">
-                <Button variant="accent" size="lg">
-                  <MessageCircle className="h-4 w-4" /> WhatsApp İletişim
+              <a href={getWhatsAppUrl(SITE_CONFIG.whatsapp, 'Merhaba, e-ticaret çözümleri hakkında bilgi almak istiyorum.')} target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto">
+                <Button variant="outline" size="lg" className="w-full sm:w-auto">
+                  <MessageCircle className="mr-2 h-4 w-4" /> {t.ecommerce.ctaWhatsApp}
                 </Button>
               </a>
             </div>
@@ -118,17 +64,19 @@ export default function EcommerceContent() {
       </section>
 
       {/* Problem Section */}
-      <section className="py-16 bg-[var(--color-surface-card)]/30">
+      <section className="py-12 bg-white/5 border-y border-white/5">
         <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
             <h2 className="font-[family-name:var(--font-clash-display)] text-2xl font-bold text-[var(--color-text)] sm:text-3xl text-center">
-              Siteniz Neden Satış Kaybediyor?
+              {t.ecommerce.problemsTitle}
             </h2>
             <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
-              {problems.map((problem) => (
-                <div key={problem} className="flex items-start gap-3 rounded-xl border border-[var(--color-error)]/20 bg-[var(--color-error)]/5 p-4">
-                  <TrendingUp className="mt-0.5 h-4 w-4 shrink-0 text-[var(--color-error)]" />
-                  <span className="text-sm text-[var(--color-text-secondary)]">{problem}</span>
+              {t.ecommerce.problems.map((problem) => (
+                <div key={problem} className="flex items-center gap-4 rounded-xl border border-[var(--color-error)]/20 bg-[var(--color-error)]/5 p-5">
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[var(--color-error)]/10">
+                    <TrendingUp className="h-4 w-4 text-[var(--color-error)]" />
+                  </div>
+                  <span className="text-base text-[var(--color-text-secondary)]">{problem}</span>
                 </div>
               ))}
             </div>
@@ -137,20 +85,23 @@ export default function EcommerceContent() {
       </section>
 
       {/* Service Details */}
-      <section className="py-20">
+      <section className="py-16 lg:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <h2 className="font-[family-name:var(--font-clash-display)] text-2xl font-bold text-[var(--color-text)] sm:text-3xl text-center">
-            Neleri Kapsıyor?
-          </h2>
-          <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="text-center max-w-3xl mx-auto mb-12">
+            <h2 className="font-[family-name:var(--font-clash-display)] text-2xl font-bold text-[var(--color-text)] sm:text-4xl text-gradient-amber">
+              {t.ecommerce.detailsTitle}
+            </h2>
+            <p className="mt-3 text-[var(--color-text-secondary)]">{t.ecommerce.detailsSubtitle}</p>
+          </div>
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {serviceDetails.map((detail, i) => (
-              <motion.div key={detail.title} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08 }}>
-                <Card>
-                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[var(--color-accent)]/10 text-[var(--color-accent)]">
+              <motion.div key={detail.title} initial={{ opacity: 0, y: 15 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ delay: i * 0.05 }}>
+                <Card className="p-7 flex flex-col items-start border-white/5 hover:border-[var(--color-accent)]/30 transition-all duration-300 hover:shadow-2xl hover:shadow-[var(--color-accent)]/5">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--color-accent)]/10 text-[var(--color-accent)] ring-1 ring-[var(--color-accent)]/20 mb-5">
                     {detail.icon}
                   </div>
-                  <h3 className="mt-3 font-semibold text-[var(--color-text)]">{detail.title}</h3>
-                  <p className="mt-1 text-sm text-[var(--color-text-secondary)]">{detail.desc}</p>
+                  <h3 className="text-xl font-bold text-[var(--color-text)] mb-2">{detail.title}</h3>
+                  <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">{detail.desc}</p>
                 </Card>
               </motion.div>
             ))}
@@ -159,33 +110,40 @@ export default function EcommerceContent() {
       </section>
 
       {/* Packages */}
-      <section className="py-20 bg-[var(--color-surface-card)]/30">
+      <section id="paketler" className="py-16 bg-white/5 border-y border-white/5">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <h2 className="font-[family-name:var(--font-clash-display)] text-2xl font-bold text-[var(--color-text)] sm:text-3xl text-center">
-            Paketlerimiz
-          </h2>
-          <div className="mt-12 grid grid-cols-1 gap-6 lg:grid-cols-3">
-            {packages.map((pkg, i) => (
-              <motion.div key={pkg.name} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}>
-                <Card className={`flex h-full flex-col ${pkg.highlighted ? 'border-[var(--color-accent)] ring-1 ring-[var(--color-accent)]/20' : ''}`}>
-                  {pkg.highlighted && (
-                    <span className="mb-3 inline-block w-fit rounded-full bg-[var(--color-accent)]/10 px-3 py-1 text-xs font-semibold text-[var(--color-accent)]">
-                      Popüler
-                    </span>
+          <div className="text-center mb-12">
+            <h2 className="font-[family-name:var(--font-clash-display)] text-3xl font-bold text-[var(--color-text)] sm:text-4xl">
+              {t.ecommerce.packagesTitle}
+            </h2>
+            <p className="mt-3 text-[var(--color-text-secondary)]">{t.ecommerce.packagesSubtitle}</p>
+          </div>
+          <div className="mt-10 grid grid-cols-1 gap-8 md:grid-cols-3">
+            {t.ecommerce.packages.map((pkg, i) => (
+              <motion.div key={pkg.name} initial={{ opacity: 0, y: 15 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ delay: i * 0.08 }}>
+                <Card className={`relative flex flex-col p-7 transition-all duration-300 ${pkg.highlighted ? 'border-[var(--color-accent)]/50 ring-1 ring-[var(--color-accent)]/20 bg-white/5 shadow-2xl shadow-[var(--color-accent)]/10' : 'border-white/5'}`}>
+                  {pkg.highlighted && pkg.popularBadge && (
+                    <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 z-10">
+                      <span className="rounded-full bg-[var(--color-accent)] px-4 py-1.5 text-[10px] font-bold text-white shadow-lg tracking-wider uppercase">
+                        {pkg.popularBadge}
+                      </span>
+                    </div>
                   )}
-                  <h3 className="font-[family-name:var(--font-clash-display)] text-xl font-bold text-[var(--color-text)]">{pkg.name}</h3>
-                  <p className="mt-1 text-sm text-[var(--color-text-secondary)]">{pkg.description}</p>
-                  <ul className="mt-4 flex-1 space-y-2">
+                  <div className="mb-5">
+                    <h3 className="font-[family-name:var(--font-clash-display)] text-2xl font-bold text-[var(--color-text)]">{pkg.name}</h3>
+                    <p className="mt-1.5 text-sm text-[var(--color-text-secondary)]">{pkg.description}</p>
+                  </div>
+                  <ul className="mt-2 space-y-2.5">
                     {pkg.features.map((f) => (
-                      <li key={f} className="flex items-center gap-2 text-sm text-[var(--color-text-secondary)]">
-                        <CheckCircle2 className="h-4 w-4 shrink-0 text-[var(--color-accent-secondary)]" />
-                        {f}
+                      <li key={f} className="flex items-start gap-3 text-sm text-[var(--color-text-secondary)] group">
+                        <CheckCircle2 className="h-5 w-5 shrink-0 text-[var(--color-accent)] group-hover:scale-110 transition-all duration-300" />
+                        <span className="pt-0.5">{f}</span>
                       </li>
                     ))}
                   </ul>
-                  <a href={getWhatsAppUrl(SITE_CONFIG.whatsapp, `Merhaba, ${pkg.name} hakkında bilgi almak istiyorum.`)} target="_blank" rel="noopener noreferrer" className="mt-6">
-                    <Button variant={pkg.highlighted ? 'primary' : 'secondary'} className="w-full">
-                      {pkg.ctaText} <ArrowRight className="h-4 w-4" />
+                  <a href={getWhatsAppUrl(SITE_CONFIG.whatsapp, `Merhaba, ${pkg.name} hakkında bilgi almak istiyorum.`)} target="_blank" rel="noopener noreferrer" className="mt-8">
+                    <Button variant={pkg.highlighted ? 'default' : 'outline'} className="w-full h-11 text-sm font-semibold">
+                      {pkg.ctaText} <ArrowUpRight className="ml-2 h-4 w-4" />
                     </Button>
                   </a>
                 </Card>
@@ -196,29 +154,30 @@ export default function EcommerceContent() {
       </section>
 
       {/* FAQ */}
-      <section className="py-20">
+      <section className="py-16">
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-          <h2 className="font-[family-name:var(--font-clash-display)] text-2xl font-bold text-[var(--color-text)] sm:text-3xl text-center">
-            Sıkça Sorulan Sorular
-          </h2>
-          <div className="mt-8">
-            <Accordion items={faqItems} />
+          <div className="text-center mb-10">
+            <h2 className="font-[family-name:var(--font-clash-display)] text-2xl font-bold text-[var(--color-text)] sm:text-3xl">
+              {t.ecommerce.faqTitle}
+            </h2>
           </div>
+          <Accordion items={[...t.ecommerce.faqItems]} />
         </div>
       </section>
 
       {/* CTA */}
-      <section className="py-20 bg-[var(--color-surface-card)]/30">
+      <section className="py-16 bg-gradient-to-b from-white/5 to-transparent border-t border-white/5">
         <div className="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
-          <h2 className="font-[family-name:var(--font-clash-display)] text-3xl font-bold text-[var(--color-text)]">
-            E-Ticaret Sitenizi Dönüştürmeye Hazır mısınız?
+          <h2 className="font-[family-name:var(--font-clash-display)] text-3xl font-bold text-[var(--color-text)] sm:text-5xl leading-tight">
+            {t.ecommerce.ctaTitle} <br className="hidden sm:block" />
+            <span className="text-[var(--color-accent)]">{t.ecommerce.ctaTitleHighlight}</span>
           </h2>
-          <div className="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-            <Link href="/#hero">
-              <Button size="lg">Ücretsiz Analiz Al <ArrowRight className="h-4 w-4" /></Button>
+          <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+            <Link href="/#hero" className="w-full sm:w-auto">
+              <Button size="lg" className="w-full sm:w-auto px-10">{t.ecommerce.ctaAnalysis} <ArrowUpRight className="ml-2 h-4 w-4" /></Button>
             </Link>
-            <a href={getWhatsAppUrl(SITE_CONFIG.whatsapp, SITE_CONFIG.whatsappMessage)} target="_blank" rel="noopener noreferrer">
-              <Button variant="accent" size="lg"><MessageCircle className="h-4 w-4" /> WhatsApp</Button>
+            <a href={getWhatsAppUrl(SITE_CONFIG.whatsapp, SITE_CONFIG.whatsappMessage)} target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto">
+              <Button variant="outline" size="lg" className="w-full sm:w-auto px-10"><MessageCircle className="mr-2 h-4 w-4" /> {t.ecommerce.ctaWhatsApp}</Button>
             </a>
           </div>
         </div>

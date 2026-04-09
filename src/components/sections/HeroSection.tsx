@@ -1,39 +1,38 @@
 'use client';
 
-import { useState } from 'react';
-import { ArrowRight, CheckCircle2, ChevronDown, Phone, Mail } from 'lucide-react';
-import { motion } from 'framer-motion';
-import Button from '@/components/ui/Button';
+import { useState, useEffect, useMemo } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ArrowUpRight, CheckCircle2, ChevronDown } from 'lucide-react';
+import { Button } from '@/components/ui/Button';
 import Modal from '@/components/ui/Modal';
 import PhoneInput from '@/components/ui/PhoneInput';
 import OTPInput from '@/components/ui/OTPInput';
-import { isValidUrl, isValidPhone, isValidEmail, normalizeUrl } from '@/lib/validators';
+import ShaderCanvas from '@/components/ui/animated-shader-hero';
+import { isValidUrl, isValidPhone, normalizeUrl } from '@/lib/validators';
 import { useOTP } from '@/hooks/useOTP';
 import { useAuth } from '@/contexts/AuthContext';
-import { cn } from '@/lib/utils';
+import { useLanguage } from '@/contexts/LanguageContext';
 import type { UserSession } from '@/types';
-
-type ContactType = 'phone' | 'email';
 
 export default function HeroSection() {
   const [siteUrl, setSiteUrl] = useState('');
   const [urlError, setUrlError] = useState('');
-  const [contactType, setContactType] = useState<ContactType>('phone');
   const [phone, setPhone] = useState('');
-  const [email, setEmail] = useState('');
   const [contactError, setContactError] = useState('');
 
+  const [isFocused, setIsFocused] = useState(false);
   const { step, setStep, loading, error, attemptsLeft, isTimedOut, timeoutRemaining, sendOTP, verifyOTP, reset } = useOTP();
   const { login } = useAuth();
+  const { t } = useLanguage();
 
   const handleAnalyze = () => {
     const trimmed = siteUrl.trim();
     if (!trimmed) {
-      setUrlError('Lütfen web sitenizin URL\'sini girin.');
+      setUrlError(t.hero.errors.emptyUrl);
       return;
     }
     if (!isValidUrl(trimmed)) {
-      setUrlError('Geçerli bir URL girin. Örn: websiteniz.com');
+      setUrlError(t.hero.errors.invalidUrl);
       return;
     }
     setUrlError('');
@@ -41,32 +40,23 @@ export default function HeroSection() {
   };
 
   const handleSendOTP = async () => {
-    if (contactType === 'phone') {
-      if (!isValidPhone(phone)) {
-        setContactError('Geçerli bir Türkiye telefon numarası girin. (5XX XXX XX XX)');
-        return;
-      }
-      setContactError('');
-      await sendOTP(phone, normalizeUrl(siteUrl), 'phone');
-    } else {
-      if (!isValidEmail(email)) {
-        setContactError('Geçerli bir iş e-posta adresi girin.');
-        return;
-      }
-      setContactError('');
-      await sendOTP(email, normalizeUrl(siteUrl), 'email');
+    if (!isValidPhone(phone)) {
+      setContactError(t.hero.errors.invalidPhone);
+      return;
     }
+
+    setContactError('');
+    await sendOTP(phone, normalizeUrl(siteUrl), 'phone');
   };
 
   const handleVerifyOTP = async (code: string) => {
     const result = await verifyOTP(code);
     if (result) {
-      const contactValue = contactType === 'phone' ? phone.replace(/\D/g, '') : email;
+      const normalizedPhone = phone.replace(/\D/g, '');
       const session: UserSession = {
         token: 'placeholder-token',
-        phone: contactType === 'phone' ? contactValue : '',
-        phoneRaw: contactType === 'phone' ? contactValue : '',
-        email: contactType === 'email' ? contactValue : undefined,
+        phone: normalizedPhone,
+        phoneRaw: normalizedPhone,
         createdAt: Date.now(),
         expiresAt: Date.now() + 24 * 60 * 60 * 1000,
         analysisStatus: 'pending',
@@ -79,7 +69,6 @@ export default function HeroSection() {
   const handleCloseModal = () => {
     reset();
     setPhone('');
-    setEmail('');
     setContactError('');
   };
 
@@ -93,24 +82,37 @@ export default function HeroSection() {
     visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: 'easeOut' as const } },
   };
 
+  const rotatingWords = useMemo(() => [...t.hero.words], [t]);
+  const [wordIndex, setWordIndex] = useState(0);
+
+  useEffect(() => {
+    setWordIndex(0);
+  }, [t]);
+
+  useEffect(() => {
+    const id = setTimeout(() => setWordIndex(i => (i + 1) % rotatingWords.length), 2500);
+    return () => clearTimeout(id);
+  }, [wordIndex, rotatingWords]);
+
   return (
-    <section id="hero" className="relative min-h-screen flex items-center overflow-hidden pt-16 lg:pt-20">
+    <section id="hero" className="relative min-h-[85vh] flex items-center overflow-hidden pt-20">
+      {/* Animated Shader Background */}
+      <div className="absolute inset-0 z-0">
+        <ShaderCanvas />
+      </div>
+      {/* Dark overlay for readability */}
+      <div className="absolute inset-0 z-0 bg-[linear-gradient(180deg,rgba(4,1,2,0.72)_0%,rgba(6,2,3,0.52)_40%,rgba(4,1,2,0.72)_100%)]" />
       {/* Dot grid */}
-      <div className="absolute inset-0 bg-dot-grid opacity-40" />
+      <div className="absolute inset-0 bg-dot-grid opacity-10 z-0" />
 
-      {/* Gradient orbs */}
-      <div className="absolute top-1/4 -left-32 h-[600px] w-[600px] rounded-full glow-amber opacity-60 blur-3xl" />
-      <div className="absolute bottom-1/4 -right-32 h-[500px] w-[500px] rounded-full glow-blue opacity-50 blur-3xl" />
-      <div className="absolute top-3/4 left-1/3 h-[300px] w-[300px] rounded-full glow-green opacity-30 blur-3xl" />
+      {/* Top/bottom vignette */}
+      <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-[var(--color-surface)] to-transparent z-0" />
+      <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[var(--color-surface)] to-transparent z-0" />
 
-      {/* Subtle top vignette */}
-      <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-[var(--color-surface)] to-transparent" />
-      <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[var(--color-surface)] to-transparent" />
-
-      <div className="relative z-10 mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
+      <div className="relative z-10 mx-auto w-full max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
         <motion.div
           variants={containerVariants}
-          initial="hidden"
+          initial={false}
           animate="visible"
           className="mx-auto max-w-4xl text-center"
         >
@@ -118,34 +120,67 @@ export default function HeroSection() {
           <motion.div variants={itemVariants} className="mb-6 flex justify-center">
             <span className="gradient-border inline-flex items-center gap-2 rounded-full bg-[var(--color-surface-card)] px-4 py-2 text-xs font-medium text-[var(--color-text-secondary)]">
               <span className="h-1.5 w-1.5 rounded-full bg-[var(--color-accent)] animate-pulse" />
-              Türkiye&apos;nin CRO odaklı web ajansı
+              {t.hero.badge}
             </span>
           </motion.div>
 
-          {/* H1 */}
+            {/* H1 with rotating words */}
           <motion.h1
             variants={itemVariants}
-            className="font-[family-name:var(--font-heading)] text-5xl font-extrabold leading-[1.05] tracking-tight text-[var(--color-text)] sm:text-6xl lg:text-7xl"
+            className="font-[family-name:var(--font-heading)] text-[27px] font-extrabold leading-[1.2] tracking-tight text-[var(--color-text)] uppercase"
           >
-            Web Siteniz{' '}
-            <span className="text-gradient-amber">Satış Yapıyor</span>{' '}
-            mu, Yoksa{' '}
-            <span className="text-gradient-blue">Sadece Var</span> mı?
+            <span className="block">{t.hero.titleLine1}</span>
+            <span className="mt-2 block h-[1.1em] overflow-hidden">
+              <AnimatePresence mode="wait">
+                <motion.span
+                  key={`${wordIndex}-${t.hero.words[wordIndex]}`}
+                  className="text-gradient-amber block"
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -30 }}
+                  transition={{ 
+                    duration: 0.5, 
+                    ease: [0.23, 1, 0.32, 1] 
+                  }}
+                >
+                  {t.hero.words[wordIndex]}
+                </motion.span>
+              </AnimatePresence>
+            </span>
+            <span className="mt-1 block">{t.hero.titleLine3}</span>
           </motion.h1>
 
           {/* Subtitle */}
           <motion.p
             variants={itemVariants}
-            className="mt-6 text-lg leading-relaxed text-[var(--color-text-secondary)] sm:text-xl lg:max-w-3xl lg:mx-auto"
+            className="mt-6 text-[16px] leading-relaxed text-[var(--color-text-secondary)] lg:max-w-3xl lg:mx-auto"
           >
-            Ücretsiz CRO analiziyle sitenizin dönüşüm açıklarını keşfedin.
-            Rakiplerinizden önce hareket edin.
+            {t.hero.subtitle}
           </motion.p>
 
           {/* URL Input */}
-          <motion.div variants={itemVariants} className="mt-10">
-            <div className="mx-auto flex max-w-2xl flex-col gap-3 sm:flex-row">
-              <div className="relative flex-1">
+          <motion.div variants={itemVariants} className="mt-10 flex justify-center w-full px-4">
+            <div className="flex flex-col sm:flex-row items-center gap-4 w-full max-w-2xl sm:bg-[#1C0E0E]/20 sm:backdrop-blur-3xl sm:border sm:border-white/5 sm:rounded-full sm:p-2 sm:pl-8 transition-all hover:bg-[#1C0E0E]/30">
+              <div className="relative flex-1 w-full flex items-center justify-center h-14 sm:h-auto bg-[#1C0E0E]/20 backdrop-blur-3xl border border-white/5 rounded-full sm:bg-transparent sm:backdrop-blur-none sm:border-none">
+                {!siteUrl && (
+                  <div
+                    className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center overflow-hidden text-sm sm:text-base px-6"
+                    aria-hidden="true"
+                  >
+                    <AnimatePresence mode="wait">
+                      <motion.span
+                        key={isFocused ? 'focused' : 'not-focused'}
+                        initial={{ opacity: 0, y: 5 }}
+                        animate={{ opacity: 0.8, y: 0 }}
+                        exit={{ opacity: 0, y: -5 }}
+                        transition={{ duration: 0.2 }}
+                        className="hero-metallic-placeholder whitespace-nowrap text-center"
+                      >
+                        {isFocused ? t.hero.placeholderFocused : t.hero.placeholder}
+                      </motion.span>
+                    </AnimatePresence>
+                  </div>
+                )}
                 <input
                   type="url"
                   value={siteUrl}
@@ -153,130 +188,84 @@ export default function HeroSection() {
                     setSiteUrl(e.target.value);
                     if (urlError) setUrlError('');
                   }}
-                  placeholder="https://websitenizi-girin.com"
+                  onFocus={() => setIsFocused(true)}
+                  onBlur={() => setIsFocused(false)}
+                  placeholder=""
                   onKeyDown={(e) => e.key === 'Enter' && handleAnalyze()}
-                  className="w-full rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface-card)]/80 px-5 py-4 text-sm text-[var(--color-text)] placeholder:text-[var(--color-text-muted)] backdrop-blur-sm transition-all focus:border-[var(--color-accent)]/60 focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/20 focus:shadow-[0_0_30px_rgba(245,158,11,0.15)]"
+                  className="w-full bg-transparent border-none py-4 text-sm sm:text-base text-[var(--color-text)] text-center focus:ring-0 focus:outline-none placeholder:text-transparent"
                 />
               </div>
               <Button
-                size="lg"
                 onClick={handleAnalyze}
-                className="shrink-0 rounded-2xl px-8 text-base font-semibold animate-pulse-glow"
+                className="w-full sm:w-auto shrink-0 h-14 rounded-full px-12 text-base font-bold bg-gradient-to-r from-[var(--color-accent)] to-[#f43f5e] hover:brightness-110 active:scale-[0.98] transition-all animate-pulse-glow shadow-[0_0_40px_rgba(225,29,72,0.2)] border-none ring-0 focus:ring-0 focus:outline-none"
               >
-                Analiz Et
-                <ArrowRight className="h-4 w-4" />
+                {t.hero.cta} <ArrowUpRight className="ml-2 h-5 w-5" />
               </Button>
             </div>
-            {urlError && (
-              <p className="mt-2 text-center text-sm text-[var(--color-error)]">{urlError}</p>
-            )}
-
-            {/* Trust badges */}
-            <div className="mt-6 flex flex-wrap items-center justify-center gap-5 sm:gap-8">
-              {['100% Ücretsiz', '2 Dakikada Sonuç', 'Uzman Analizi'].map((badge) => (
-                <span key={badge} className="flex items-center gap-2 text-sm text-[var(--color-text-muted)]">
-                  <CheckCircle2 className="h-4 w-4 text-[var(--color-accent-secondary)]" />
-                  {badge}
-                </span>
-              ))}
-            </div>
           </motion.div>
+          {urlError && (
+            <p className="mt-4 text-center text-sm text-[var(--color-error)]">{urlError}</p>
+          )}
 
-          {/* Scroll indicator */}
-          <motion.div
-            variants={itemVariants}
-            className="mt-16 flex flex-col items-center gap-2"
-          >
-            <span className="text-xs text-[var(--color-text-muted)] tracking-widest uppercase">Keşfet</span>
-            <ChevronDown className="h-5 w-5 text-[var(--color-text-muted)] animate-scroll-down" />
+          {/* Trust badges */}
+          <motion.div variants={itemVariants} className="mt-6 flex flex-wrap items-center justify-center gap-5 sm:gap-8">
+            {t.hero.badges.map((badge) => (
+              <span key={badge} className="flex items-center gap-2 text-sm font-semibold text-[var(--color-text)] bg-white/10 backdrop-blur-sm px-3 py-1.5 rounded-full border border-white/20">
+                <CheckCircle2 className="h-4 w-4 text-[var(--color-accent)]" />
+                {badge}
+              </span>
+            ))}
           </motion.div>
+        </motion.div>
+
+        {/* Scroll indicator */}
+        <motion.div
+          variants={itemVariants}
+          initial={false}
+          animate="visible"
+          className="mt-12 flex flex-col items-center gap-2"
+        >
+          <span className="text-[10px] text-[var(--color-text-muted)] tracking-[0.2em] uppercase font-bold">{t.hero.scroll}</span>
+          <ChevronDown className="h-4 w-4 text-[var(--color-text-muted)] animate-scroll-down" />
         </motion.div>
       </div>
 
-      {/* ── Contact Modal (Phone or Email tabs) ── */}
       <Modal
         open={step === 'phone'}
         onClose={handleCloseModal}
-        title="İletişim Bilgileriniz"
+        title={t.hero.modal.phoneTitle}
       >
-        <p className="mb-5 text-sm text-[var(--color-text-secondary)]">
-          Analiz sonuçlarınızı size iletebilmemiz için bilgilerinizi girin.
+        <p className="mb-5 text-sm leading-relaxed text-[var(--color-text-secondary)]">
+          {t.hero.modal.phoneDesc}
         </p>
 
-        {/* Tab selector */}
-        <div className="mb-5 flex rounded-xl border border-[var(--color-border)] p-1 gap-1 bg-[var(--color-surface-card)]">
-          <button
-            onClick={() => { setContactType('phone'); setContactError(''); }}
-            className={cn(
-              'flex flex-1 items-center justify-center gap-2 rounded-lg py-2.5 text-sm font-medium transition-all duration-200',
-              contactType === 'phone'
-                ? 'bg-[var(--color-accent)] text-[var(--color-primary)]'
-                : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text)]'
-            )}
-          >
-            <Phone className="h-4 w-4" />
-            Telefon
-          </button>
-          <button
-            onClick={() => { setContactType('email'); setContactError(''); }}
-            className={cn(
-              'flex flex-1 items-center justify-center gap-2 rounded-lg py-2.5 text-sm font-medium transition-all duration-200',
-              contactType === 'email'
-                ? 'bg-[var(--color-accent-blue)] text-white'
-                : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text)]'
-            )}
-          >
-            <Mail className="h-4 w-4" />
-            İş E-postası
-          </button>
-        </div>
-
-        {contactType === 'phone' ? (
-          <PhoneInput
-            value={phone}
-            onChange={(v) => { setPhone(v); if (contactError) setContactError(''); }}
-            error={contactError}
-            disabled={loading}
-          />
-        ) : (
-          <div>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => { setEmail(e.target.value); if (contactError) setContactError(''); }}
-              placeholder="isim@sirketiniz.com"
-              disabled={loading}
-              className="w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-card)] px-4 py-3 text-sm text-[var(--color-text)] placeholder:text-[var(--color-text-muted)] transition-all focus:border-[var(--color-accent-blue)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent-blue)]/30 disabled:opacity-50"
-            />
-            {contactError && (
-              <p className="mt-1.5 text-xs text-[var(--color-error)]">{contactError}</p>
-            )}
-          </div>
-        )}
+        <PhoneInput
+          value={phone}
+          onChange={(value) => {
+            setPhone(value);
+            if (contactError) setContactError('');
+          }}
+          error={contactError}
+          disabled={loading}
+        />
 
         {isTimedOut && (
           <p className="mt-3 text-sm text-[var(--color-error)]">
-            Çok fazla deneme. {Math.ceil(timeoutRemaining / 60)} dakika sonra tekrar deneyin.
+            {t.hero.errors.timeout.replace('{minutes}', String(Math.ceil(timeoutRemaining / 60)))}
           </p>
         )}
 
         <Button
           size="lg"
-          variant={contactType === 'phone' ? 'primary' : 'secondary'}
-          className={cn(
-            'mt-4 w-full',
-            contactType === 'email' && 'bg-[var(--color-accent-blue)] text-white hover:bg-[var(--color-accent-blue-hover)]'
-          )}
+          className="mt-4 w-full"
           onClick={handleSendOTP}
           disabled={loading || isTimedOut}
         >
-          {loading ? 'Gönderiliyor...' : 'Doğrulama Kodu Gönder'}
+          {loading ? t.hero.modal.phoneSending : t.hero.modal.phoneButton}
         </Button>
 
         <p className="mt-3 text-center text-xs text-[var(--color-text-muted)]">
-          {contactType === 'phone'
-            ? 'SMS ile 6 haneli kod gönderilecek'
-            : 'E-posta adresinize 6 haneli kod gönderilecek'}
+          {t.hero.modal.phoneNote}
         </p>
       </Modal>
 
@@ -284,15 +273,13 @@ export default function HeroSection() {
       <Modal
         open={step === 'otp'}
         onClose={handleCloseModal}
-        title="Doğrulama Kodu"
+        title={t.hero.modal.otpTitle}
       >
         <p className="mb-2 text-center text-sm text-[var(--color-text-secondary)]">
-          {contactType === 'phone'
-            ? `+90 ${phone} numarasına gönderilen`
-            : `${email} adresine gönderilen`}
+          +90 {phone} {t.hero.modal.otpSentTo}
         </p>
         <p className="mb-6 text-center text-sm text-[var(--color-text-muted)]">
-          6 haneli kodu girin
+          {t.hero.modal.otpEnterCode}
         </p>
         <OTPInput
           onComplete={handleVerifyOTP}
@@ -304,12 +291,12 @@ export default function HeroSection() {
         )}
         {attemptsLeft < 5 && attemptsLeft > 0 && (
           <p className="mt-2 text-center text-xs text-[var(--color-text-muted)]">
-            {attemptsLeft} deneme hakkınız kaldı
+            {attemptsLeft} {t.hero.modal.otpAttempts}
           </p>
         )}
         {loading && (
           <p className="mt-3 text-center text-sm text-[var(--color-text-muted)]">
-            Doğrulanıyor...
+            {t.hero.modal.otpVerifying}
           </p>
         )}
       </Modal>

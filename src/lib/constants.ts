@@ -40,18 +40,25 @@ export const HAMBURGER_MENU_ITEMS: NavItem[] = [
     href: '#',
     children: [
       { label: 'CRO Analizi', href: '/#hero' },
-      { label: 'E-Ticaret', href: '/e-ticaret' },
-      { label: 'Kurumsal', href: '/kurumsal' },
+      { label: 'E-Ticaret Web Tasarım', href: '/e-ticaret' },
+      { label: 'Kurumsal Web Tasarım', href: '/kurumsal' },
     ],
   },
-  { label: 'İletişim', href: '/iletisim' },
   {
-    label: 'Kurumsal',
+    label: 'Hakkımızda',
+    href: '#',
+    children: [
+      { label: 'Markamız', href: '/hakkimizda/markamiz' },
+      { label: 'İletişim', href: '/iletisim' },
+    ],
+  },
+  {
+    label: 'Yasal',
     href: '#',
     children: [
       { label: 'KVKK', href: '/kvkk' },
       { label: 'Satış Sözleşmesi', href: '/satis-sozlesmesi' },
-      { label: 'Gizlilik Politikası', href: '/gizlilik-politikasi' },
+      { label: 'Gizlilik & Çerez', href: '/gizlilik-politikasi' },
     ],
   },
 ];

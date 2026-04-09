@@ -1,80 +1,58 @@
 'use client';
 
 import Link from 'next/link';
-import { ArrowRight, MessageCircle, CheckCircle2, Shield, Layers, Users, Globe, FileText, Phone as PhoneIcon } from 'lucide-react';
+import { ArrowUpRight, MessageCircle, CheckCircle2, Shield, Layers, Users, Globe, FileText, Phone as PhoneIcon } from 'lucide-react';
 import { motion } from 'framer-motion';
-import Button from '@/components/ui/Button';
+import { Button } from '@/components/ui/Button';
 import Card from '@/components/ui/Card';
 import Accordion from '@/components/ui/Accordion';
 import { SITE_CONFIG } from '@/lib/constants';
 import { getWhatsAppUrl } from '@/lib/utils';
 
-const problems = [
-  'Web siteniz güven vermiyor, ziyaretçiler hemen çıkıyor',
-  'Hizmetleriniz net anlaşılmıyor, potansiyel müşteriler kaybolyor',
-  'İletişim formunuz dönüşüm üretmiyor',
-  'Rakipleriniz dijitalde sizden önde görünüyor',
-];
-
-const features = [
-  'Güçlü ilk izlenim yaratan ana sayfa',
-  'Net ve ikna edici hizmet sayfaları',
-  'Dönüşüm odaklı lead formları',
-  'WhatsApp CTA entegrasyonu',
-  'Referans ve güven sinyalleri',
-  'Mobil öncelikli responsive tasarım',
-  'SEO uyumlu altyapı',
-  'Süreç ve çalışma şekli sunumu',
-];
-
-const targetAudience = [
-  { icon: <Shield className="h-5 w-5" />, title: 'Klinikler & Sağlık', desc: 'Diş klinikleri, güzellik merkezleri, poliklinikler' },
-  { icon: <FileText className="h-5 w-5" />, title: 'Danışmanlık Firmaları', desc: 'Hukuk, finans, yönetim danışmanlığı' },
-  { icon: <Globe className="h-5 w-5" />, title: 'Ajanslar', desc: 'Reklam, PR, dijital pazarlama ajansları' },
-  { icon: <Layers className="h-5 w-5" />, title: 'Üretim & Servis', desc: 'Üretim firmaları, teknik servis, bakım hizmetleri' },
-  { icon: <Users className="h-5 w-5" />, title: 'Profesyonel Hizmetler', desc: 'Eğitim, koçluk, mimarlık, mühendislik' },
-  { icon: <PhoneIcon className="h-5 w-5" />, title: 'Yerel İşletmeler', desc: 'Restoran, otel, spor salonu, kuaför' },
-];
-
-const faqItems = [
-  { question: 'Kurumsal sitemin neden satış üretmediğini nasıl anlarım?', answer: 'Ücretsiz CRO analizimiz ile sitenizin ziyaretçi davranışlarını, form dönüşümlerini ve kullanıcı akışını inceliyoruz. Sitenizin nerede müşteri kaybettiğini net olarak görürsünüz.' },
-  { question: 'Lead form optimizasyonu nedir?', answer: 'Lead form optimizasyonu, iletişim formlarınızın dönüşüm oranını artırma sürecidir. Form alanlarını azaltma, güven sinyalleri ekleme, mikro-kopi iyileştirme gibi tekniklerle daha fazla müşteri adayı elde edersiniz.' },
-  { question: 'Site yenileme mi yoksa sıfırdan mı kurulum yapmalıyım?', answer: 'Bu tamamen mevcut sitenizin durumuna bağlı. CRO analizinden sonra en doğru yaklaşımı birlikte belirleriz. Bazen küçük optimizasyonlar büyük fark yaratır, bazen sıfırdan başlamak daha verimlidir.' },
-  { question: 'Kurumsal site ne kadar sürede hazır olur?', answer: 'Projenin kapsamına göre 3-6 hafta arasında değişir. İçerik hazırlığı ve geri bildirim süreci bu süreyi etkiler.' },
-  { question: 'Sonradan içerik ekleyebilir miyim?', answer: 'Evet, tüm sitelerimiz kolay yönetilebilir yapıda kurulur. Gerekirse CMS entegrasyonu da yapılabilir.' },
-];
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function CorporateContent() {
+  const { t } = useLanguage();
+
+  const targetAudience = [
+    { icon: <Shield className="h-5 w-5" />, ...t.corporate.audience[0] },
+    { icon: <FileText className="h-5 w-5" />, ...t.corporate.audience[1] },
+    { icon: <Globe className="h-5 w-5" />, ...t.corporate.audience[2] },
+    { icon: <Layers className="h-5 w-5" />, ...t.corporate.audience[3] },
+    { icon: <Users className="h-5 w-5" />, ...t.corporate.audience[4] },
+    { icon: <PhoneIcon className="h-5 w-5" />, ...t.corporate.audience[5] },
+  ];
+
   return (
-    <div className="pt-16 lg:pt-20">
+    <div className="pt-24 lg:pt-32">
       {/* Hero */}
-      <section className="relative py-20 lg:py-28">
+      <section className="relative py-16 lg:py-24 overflow-hidden">
         <div className="absolute inset-0">
-          <div className="absolute top-1/3 right-1/4 h-96 w-96 rounded-full bg-[var(--color-accent-secondary)]/5 blur-3xl" />
+          <div className="absolute top-1/4 right-1/4 h-[500px] w-[500px] rounded-full bg-[var(--color-accent-secondary)]/10 blur-[130px]" />
         </div>
-        <div className="relative mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+        <div className="relative mx-auto max-w-5xl px-4 text-center sm:px-6 lg:px-8">
+          <motion.div initial={false} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
             <span className="inline-block rounded-full bg-[var(--color-accent-secondary)]/10 px-4 py-1.5 text-xs font-semibold text-[var(--color-accent-secondary)]">
-              Kurumsal Web Tasarım
+              {t.corporate.tag}
             </span>
             <h1 className="mt-6 font-[family-name:var(--font-clash-display)] text-4xl font-bold text-[var(--color-text)] sm:text-5xl">
-              Kurumsal Siteniz{' '}
+              {t.corporate.title}{' '}
               <span className="bg-gradient-to-r from-[var(--color-accent-secondary)] to-[var(--color-accent)] bg-clip-text text-transparent">
-                İş Üretsin
+                {t.corporate.titleHighlight}
               </span>
             </h1>
             <p className="mt-4 text-lg text-[var(--color-text-secondary)]">
-              Web siteniz sadece bir kartvizit olmasın. Güven veren, lead üreten, iş getiren bir dijital varlık oluşturun.
+              {t.corporate.subtitle}
             </p>
-            <div className="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-              <Link href="/#hero">
-                <Button size="lg">
-                  Ücretsiz Analiz Al <ArrowRight className="h-4 w-4" />
+            <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+              <Link href="/#hero" className="w-full sm:w-auto">
+                <Button size="lg" className="w-full sm:w-auto px-8">
+                  {t.corporate.ctaAnalysis} <ArrowUpRight className="ml-2 h-4 w-4" />
                 </Button>
               </Link>
-              <a href={getWhatsAppUrl(SITE_CONFIG.whatsapp, 'Merhaba, kurumsal web tasarım hakkında bilgi almak istiyorum.')} target="_blank" rel="noopener noreferrer">
-                <Button variant="accent" size="lg">
-                  <MessageCircle className="h-4 w-4" /> WhatsApp İletişim
+              <a href={getWhatsAppUrl(SITE_CONFIG.whatsapp, 'Merhaba, kurumsal web tasarım hakkında bilgi almak istiyorum.')} target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto">
+                <Button variant="outline" size="lg" className="w-full sm:w-auto px-8">
+                  <MessageCircle className="mr-2 h-4 w-4" /> {t.corporate.ctaWhatsApp}
                 </Button>
               </a>
             </div>
@@ -83,17 +61,19 @@ export default function CorporateContent() {
       </section>
 
       {/* Problem */}
-      <section className="py-16 bg-[var(--color-surface-card)]/30">
+      <section className="py-12 bg-white/5 border-y border-white/5">
         <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
             <h2 className="font-[family-name:var(--font-clash-display)] text-2xl font-bold text-[var(--color-text)] sm:text-3xl text-center">
-              Siteniz Güven Veriyor mu?
+              {t.corporate.problemsTitle}
             </h2>
             <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
-              {problems.map((problem) => (
-                <div key={problem} className="flex items-start gap-3 rounded-xl border border-[var(--color-error)]/20 bg-[var(--color-error)]/5 p-4">
-                  <Shield className="mt-0.5 h-4 w-4 shrink-0 text-[var(--color-error)]" />
-                  <span className="text-sm text-[var(--color-text-secondary)]">{problem}</span>
+              {t.corporate.problems.map((problem) => (
+                <div key={problem} className="flex items-center gap-4 rounded-xl border border-[var(--color-error)]/20 bg-[var(--color-error)]/5 p-5">
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[var(--color-error)]/10">
+                    <Shield className="h-4 w-4 text-[var(--color-error)]" />
+                  </div>
+                  <span className="text-base text-[var(--color-text-secondary)]">{problem}</span>
                 </div>
               ))}
             </div>
@@ -105,11 +85,11 @@ export default function CorporateContent() {
       <section className="py-20">
         <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
           <h2 className="font-[family-name:var(--font-clash-display)] text-2xl font-bold text-[var(--color-text)] sm:text-3xl text-center">
-            Modern Kurumsal Sayfalar Paketi
+            {t.corporate.featuresTitle}
           </h2>
-          <div className="mt-10 rounded-2xl border border-[var(--color-accent-secondary)]/20 bg-[var(--color-surface-card)] p-8">
+          <div className="mt-10 rounded-2xl border border-[var(--color-accent-secondary)]/20 bg-[var(--color-surface-card)] p-5 sm:p-8">
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-              {features.map((feature) => (
+              {t.corporate.features.map((feature) => (
                 <div key={feature} className="flex items-center gap-2 text-sm text-[var(--color-text-secondary)]">
                   <CheckCircle2 className="h-4 w-4 shrink-0 text-[var(--color-accent-secondary)]" />
                   {feature}
@@ -119,7 +99,7 @@ export default function CorporateContent() {
             <div className="mt-8 text-center">
               <a href={getWhatsAppUrl(SITE_CONFIG.whatsapp, 'Merhaba, Kurumsal Web Tasarım paketi hakkında teklif almak istiyorum.')} target="_blank" rel="noopener noreferrer">
                 <Button size="lg">
-                  Teklif Al <ArrowRight className="h-4 w-4" />
+                  {t.corporate.ctaOffer} <ArrowUpRight className="h-4 w-4" />
                 </Button>
               </a>
             </div>
@@ -128,20 +108,23 @@ export default function CorporateContent() {
       </section>
 
       {/* Target Audience */}
-      <section className="py-20 bg-[var(--color-surface-card)]/30">
+      <section className="py-16 lg:py-20 bg-white/5 border-y border-white/5">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <h2 className="font-[family-name:var(--font-clash-display)] text-2xl font-bold text-[var(--color-text)] sm:text-3xl text-center">
-            Kimler İçin Uygun?
-          </h2>
-          <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="text-center max-w-3xl mx-auto mb-12">
+            <h2 className="font-[family-name:var(--font-clash-display)] text-3xl font-bold text-[var(--color-text)] sm:text-4xl text-gradient-blue">
+              {t.corporate.audienceTitle}
+            </h2>
+            <p className="mt-3 text-[var(--color-text-secondary)]">{t.corporate.audienceSubtitle}</p>
+          </div>
+          <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {targetAudience.map((item, i) => (
-              <motion.div key={item.title} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08 }}>
-                <Card>
-                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[var(--color-accent-secondary)]/10 text-[var(--color-accent-secondary)]">
+              <motion.div key={item.title} initial={{ opacity: 0, y: 15 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ delay: i * 0.05 }}>
+                <Card className="p-8 flex flex-col items-start border-white/5 hover:border-[var(--color-accent-secondary)]/30 transition-all duration-300 hover:shadow-2xl hover:shadow-[var(--color-accent-secondary)]/5">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--color-accent-secondary)]/10 text-[var(--color-accent-secondary)] ring-1 ring-[var(--color-accent-secondary)]/20 mb-6">
                     {item.icon}
                   </div>
-                  <h3 className="mt-3 font-semibold text-[var(--color-text)]">{item.title}</h3>
-                  <p className="mt-1 text-sm text-[var(--color-text-secondary)]">{item.desc}</p>
+                  <h3 className="text-xl font-bold text-[var(--color-text)] mb-3">{item.title}</h3>
+                  <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">{item.desc}</p>
                 </Card>
               </motion.div>
             ))}
@@ -150,29 +133,30 @@ export default function CorporateContent() {
       </section>
 
       {/* FAQ */}
-      <section className="py-20">
+      <section className="py-16">
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-          <h2 className="font-[family-name:var(--font-clash-display)] text-2xl font-bold text-[var(--color-text)] sm:text-3xl text-center">
-            Sıkça Sorulan Sorular
-          </h2>
-          <div className="mt-8">
-            <Accordion items={faqItems} />
+          <div className="text-center mb-12">
+            <h2 className="font-[family-name:var(--font-clash-display)] text-2xl font-bold text-[var(--color-text)] sm:text-3xl">
+              {t.corporate.faqTitle}
+            </h2>
           </div>
+          <Accordion items={[...t.corporate.faqItems]} />
         </div>
       </section>
 
       {/* CTA */}
-      <section className="py-20 bg-[var(--color-surface-card)]/30">
+      <section className="py-20 bg-gradient-to-b from-white/5 to-transparent border-t border-white/5">
         <div className="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
-          <h2 className="font-[family-name:var(--font-clash-display)] text-3xl font-bold text-[var(--color-text)]">
-            Kurumsal Sitenizi Dönüştürmeye Hazır mısınız?
+          <h2 className="font-[family-name:var(--font-clash-display)] text-3xl font-bold text-[var(--color-text)] sm:text-5xl leading-tight">
+            {t.corporate.ctaTitle} <br className="hidden sm:block" />
+            <span className="text-[var(--color-accent-secondary)]">{t.corporate.ctaTitleHighlight}</span>
           </h2>
-          <div className="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-            <Link href="/#hero">
-              <Button size="lg">Ücretsiz Analiz Al <ArrowRight className="h-4 w-4" /></Button>
+          <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+            <Link href="/#hero" className="w-full sm:w-auto">
+              <Button size="lg" className="w-full sm:w-auto px-10">{t.corporate.ctaAnalysis} <ArrowUpRight className="ml-2 h-4 w-4" /></Button>
             </Link>
-            <a href={getWhatsAppUrl(SITE_CONFIG.whatsapp, SITE_CONFIG.whatsappMessage)} target="_blank" rel="noopener noreferrer">
-              <Button variant="accent" size="lg"><MessageCircle className="h-4 w-4" /> WhatsApp</Button>
+            <a href={getWhatsAppUrl(SITE_CONFIG.whatsapp, SITE_CONFIG.whatsappMessage)} target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto">
+              <Button variant="outline" size="lg" className="w-full sm:w-auto px-10"><MessageCircle className="mr-2 h-4 w-4" /> {t.corporate.ctaWhatsApp}</Button>
             </a>
           </div>
         </div>

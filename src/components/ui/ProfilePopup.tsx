@@ -7,7 +7,9 @@ import { useAuth } from '@/contexts/AuthContext';
 import { maskPhone } from '@/lib/validators';
 import { SITE_CONFIG } from '@/lib/constants';
 import { getWhatsAppUrl } from '@/lib/utils';
-import Button from './Button';
+import { Button } from './Button';
+
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface ProfilePopupProps {
   open: boolean;
@@ -16,6 +18,7 @@ interface ProfilePopupProps {
 
 export default function ProfilePopup({ open, onClose }: ProfilePopupProps) {
   const { session, logout } = useAuth();
+  const { t } = useLanguage();
   const [showPhone, setShowPhone] = useState(false);
 
   if (!session) return null;
@@ -28,7 +31,7 @@ export default function ProfilePopup({ open, onClose }: ProfilePopupProps) {
   return (
     <AnimatePresence>
       {open && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-[140] flex items-center justify-center p-4">
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -45,13 +48,13 @@ export default function ProfilePopup({ open, onClose }: ProfilePopupProps) {
           >
             {/* Header */}
             <div className="flex items-center justify-between mb-6">
-              <h2 className="font-[family-name:var(--font-clash-display)] text-lg font-semibold text-[var(--color-text)]">
-                Profilim
+              <h2 className="font-[family-name:var(--font-heading)] text-lg font-semibold text-[var(--color-text)]">
+                {t.profile.title}
               </h2>
               <button
                 onClick={onClose}
                 className="flex h-8 w-8 items-center justify-center rounded-lg text-[var(--color-text-muted)] transition-colors hover:bg-[var(--color-surface-light)] hover:text-[var(--color-text)]"
-                aria-label="Kapat"
+                aria-label={t.profile.close}
               >
                 <X className="h-4 w-4" />
               </button>
@@ -62,7 +65,7 @@ export default function ProfilePopup({ open, onClose }: ProfilePopupProps) {
               <div className="flex items-center gap-3">
                 <Phone className="h-4 w-4 text-[var(--color-text-muted)]" />
                 <div className="flex-1">
-                  <p className="text-xs text-[var(--color-text-muted)]">Telefon</p>
+                  <p className="text-xs text-[var(--color-text-muted)]">{t.profile.phone}</p>
                   <p className="text-sm font-medium text-[var(--color-text)]">
                     {showPhone ? session.phoneRaw : maskPhone(session.phoneRaw)}
                   </p>
@@ -72,7 +75,7 @@ export default function ProfilePopup({ open, onClose }: ProfilePopupProps) {
                   className="text-xs text-[var(--color-accent)] hover:underline flex items-center gap-1"
                 >
                   {showPhone ? <EyeOff className="h-3 w-3" /> : <Eye className="h-3 w-3" />}
-                  {showPhone ? 'Gizle' : 'Göster'}
+                  {showPhone ? t.profile.hide : t.profile.show}
                 </button>
               </div>
             </div>
@@ -82,20 +85,20 @@ export default function ProfilePopup({ open, onClose }: ProfilePopupProps) {
               <div className="flex items-center gap-3">
                 <BarChart3 className="h-4 w-4 text-[var(--color-text-muted)]" />
                 <div className="flex-1">
-                  <p className="text-xs text-[var(--color-text-muted)]">Analiz Durumu</p>
+                  <p className="text-xs text-[var(--color-text-muted)]">{t.profile.status}</p>
                   {session.analysisStatus === 'pending' && (
                     <p className="text-sm font-medium text-[var(--color-warning)]">
-                      Rapor Hazırlanıyor...
+                      {t.profile.statusPending}
                     </p>
                   )}
                   {session.analysisStatus === 'completed' && (
                     <p className="text-sm font-medium text-[var(--color-success)]">
-                      Rapor Hazır
+                      {t.profile.statusCompleted}
                     </p>
                   )}
                   {session.analysisStatus === 'none' && (
                     <p className="text-sm font-medium text-[var(--color-text-secondary)]">
-                      Henüz analiz yok
+                      {t.profile.statusNone}
                     </p>
                   )}
                 </div>
@@ -107,7 +110,7 @@ export default function ProfilePopup({ open, onClose }: ProfilePopupProps) {
               <div className="flex items-center gap-3">
                 <CreditCard className="h-4 w-4 text-[var(--color-text-muted)]" />
                 <div className="flex-1">
-                  <p className="text-xs text-[var(--color-text-muted)]">Kalan Kredi</p>
+                  <p className="text-xs text-[var(--color-text-muted)]">{t.profile.credits}</p>
                   <p className="text-sm font-medium text-[var(--color-text)]">
                     {session.credits}
                   </p>
@@ -120,19 +123,19 @@ export default function ProfilePopup({ open, onClose }: ProfilePopupProps) {
                 className="mt-2 flex items-center gap-1.5 text-xs text-[var(--color-accent-secondary)] hover:underline"
               >
                 <MessageCircle className="h-3 w-3" />
-                Fazladan kredi için WhatsApp danışmanımıza yazınız
+                {t.profile.creditsButton}
               </a>
             </div>
 
             {/* Logout */}
             <Button
               variant="ghost"
-              size="md"
+              size="default"
               onClick={handleLogout}
               className="w-full text-[var(--color-error)] hover:bg-[var(--color-error)]/10"
             >
               <LogOut className="h-4 w-4" />
-              Çıkış Yap
+              {t.profile.logout}
             </Button>
           </motion.div>
         </div>

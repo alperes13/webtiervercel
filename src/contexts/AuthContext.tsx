@@ -25,6 +25,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const isAuthenticated = useMemo(() => {
     if (!session) return false;
+    // eslint-disable-next-line react-hooks/purity
     return session.expiresAt > Date.now();
   }, [session]);
 

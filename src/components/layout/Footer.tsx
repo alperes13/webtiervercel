@@ -1,23 +1,16 @@
+'use client';
+
 import Link from 'next/link';
 import Image from 'next/image';
 import { MessageCircle, Mail, Phone } from 'lucide-react';
 import { SITE_CONFIG } from '@/lib/constants';
 import { getWhatsAppUrl } from '@/lib/utils';
+import { useLanguage } from '@/contexts/LanguageContext';
 
-const footerLinks = {
-  hizmetler: [
-    { label: 'CRO Analizi', href: '/#hero' },
-    { label: 'E-Ticaret', href: '/e-ticaret' },
-    { label: 'Kurumsal', href: '/kurumsal' },
-  ],
-  kurumsal: [
-    { label: 'KVKK', href: '/kvkk' },
-    { label: 'Satış Sözleşmesi', href: '/satis-sozlesmesi' },
-    { label: 'Gizlilik Politikası', href: '/gizlilik-politikasi' },
-  ],
-};
+
 
 export default function Footer() {
+  const { t } = useLanguage();
   return (
     <footer className="border-t border-[var(--color-border)] bg-[var(--color-surface)]">
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
@@ -28,24 +21,23 @@ export default function Footer() {
               <Image
                 src="/images/logo-white.png"
                 alt="Webtier"
-                width={110}
-                height={32}
-                className="h-7 w-auto object-contain"
+                width={140}
+                height={40}
+                className="h-8 sm:h-9 w-auto object-contain"
               />
             </Link>
             <p className="mt-4 text-sm leading-relaxed text-[var(--color-text-muted)]">
-              {SITE_CONFIG.tagline}. Web sitenizin dönüşüm potansiyelini
-              keşfedin ve gelirinizi artırın.
+              {t.footer.tagline}
             </p>
           </div>
 
           {/* Hizmetler */}
           <div>
             <h3 className="text-xs font-semibold uppercase tracking-wider text-[var(--color-text-muted)]">
-              Hizmetler
+              {t.footer.servicesLabel}
             </h3>
             <ul className="mt-4 space-y-3">
-              {footerLinks.hizmetler.map((link) => (
+              {t.footer.services.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
@@ -61,10 +53,10 @@ export default function Footer() {
           {/* Kurumsal */}
           <div>
             <h3 className="text-xs font-semibold uppercase tracking-wider text-[var(--color-text-muted)]">
-              Yasal
+              {t.footer.legalLabel}
             </h3>
             <ul className="mt-4 space-y-3">
-              {footerLinks.kurumsal.map((link) => (
+              {t.footer.legal.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
@@ -80,7 +72,7 @@ export default function Footer() {
           {/* İletişim */}
           <div>
             <h3 className="text-xs font-semibold uppercase tracking-wider text-[var(--color-text-muted)]">
-              İletişim
+              {t.footer.contactLabel}
             </h3>
             <ul className="mt-4 space-y-3">
               <li>
@@ -119,10 +111,10 @@ export default function Footer() {
         {/* Bottom */}
         <div className="mt-12 border-t border-[var(--color-border)] pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-xs text-[var(--color-text-muted)]">
-            &copy; {new Date().getFullYear()} {SITE_CONFIG.name}. Tüm hakları saklıdır.
+            &copy; {new Date().getFullYear()} {SITE_CONFIG.name}. {t.footer.rights}
           </p>
           <Link href="/iletisim" className="text-xs text-[var(--color-text-muted)] hover:text-[var(--color-accent)] transition-colors">
-            İletişim
+            {t.footer.contact}
           </Link>
         </div>
       </div>

@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { ArrowRight, BarChart3, ShoppingCart, Building2 } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { SERVICES } from '@/lib/constants';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const iconMap: Record<string, React.ReactNode> = {
   BarChart3: <BarChart3 className="h-6 w-6" />,
@@ -22,8 +22,16 @@ const itemVariants = {
 };
 
 export default function ServicesOverview() {
+  const { t } = useLanguage();
+
+  const serviceConfig = [
+    { icon: <BarChart3 className="h-6 w-6" />, href: '/#hero' },
+    { icon: <ShoppingCart className="h-6 w-6" />, href: '/e-ticaret' },
+    { icon: <Building2 className="h-6 w-6" />, href: '/kurumsal' },
+  ];
+
   return (
-    <section className="py-24 lg:py-32">
+    <section className="py-16 lg:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
@@ -32,14 +40,14 @@ export default function ServicesOverview() {
           transition={{ duration: 0.6, ease: "easeOut" }}
           className="mb-14 text-center"
         >
-          <p className="mb-3 text-sm font-medium uppercase tracking-widest text-[var(--color-accent)]">
-            Hizmetlerimiz
+          <p className="mb-2 text-sm font-medium uppercase tracking-widest text-[var(--color-accent)]">
+            {t.services.label}
           </p>
           <h2 className="font-[family-name:var(--font-heading)] text-3xl font-extrabold text-[var(--color-text)] sm:text-4xl lg:text-5xl">
-            Her Web Sitesi Aynı Değildir
+            {t.services.title}
           </h2>
           <p className="mt-4 text-[var(--color-text-secondary)] max-w-2xl mx-auto">
-            E-ticaretten kurumsala, CRO analizinden sürekli optimizasyona — ihtiyacınıza özel çözümler.
+            {t.services.subtitle}
           </p>
         </motion.div>
 
@@ -50,12 +58,12 @@ export default function ServicesOverview() {
           viewport={{ once: true, amount: 0.1 }}
           className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
         >
-          {SERVICES.map((service, index) => (
+          {t.services.items.map((service, index) => (
             <motion.div
-              key={service.title}
+              key={index}
               variants={itemVariants}
               whileHover={{ y: -6, transition: { duration: 0.3, ease: 'easeOut' } }}
-              className="group gradient-border glass-card flex flex-col rounded-2xl p-7 transition-shadow hover:shadow-[0_20px_60px_rgba(0,0,0,0.3)]"
+              className="group gradient-border glass-card animate-shimmer flex flex-col rounded-2xl p-7 transition-shadow hover:shadow-[0_20px_60px_rgba(0,0,0,0.3)]"
             >
               <div className={`mb-5 flex h-13 w-13 items-center justify-center rounded-xl ${
                 index === 0
@@ -64,7 +72,7 @@ export default function ServicesOverview() {
                   ? 'bg-[var(--color-accent-blue)]/10 text-[var(--color-accent-blue)]'
                   : 'bg-[var(--color-accent-secondary)]/10 text-[var(--color-accent-secondary)]'
               }`}>
-                {iconMap[service.icon]}
+                {serviceConfig[index % serviceConfig.length].icon}
               </div>
               <h3 className="font-[family-name:var(--font-heading)] text-xl font-bold text-[var(--color-text)]">
                 {service.title}
@@ -73,7 +81,7 @@ export default function ServicesOverview() {
                 {service.description}
               </p>
               <Link
-                href={service.href}
+                href={serviceConfig[index % serviceConfig.length].href}
                 className={`mt-5 inline-flex items-center gap-1.5 text-sm font-semibold transition-colors ${
                   index === 0
                     ? 'text-[var(--color-accent)] hover:text-[var(--color-accent-hover)]'
@@ -82,7 +90,7 @@ export default function ServicesOverview() {
                     : 'text-[var(--color-accent-secondary)] hover:text-[var(--color-accent-secondary)]/80'
                 }`}
               >
-                {service.ctaText}
+                {service.cta}
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Link>
             </motion.div>

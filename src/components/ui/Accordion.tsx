@@ -19,49 +19,54 @@ export default function Accordion({ items, className }: AccordionProps) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   return (
-    <div className={cn('space-y-3', className)}>
+    <div className={cn('relative z-10 space-y-3', className)}>
       {items.map((item, index) => {
         const isOpen = openIndex === index;
         return (
           <div
             key={index}
             className={cn(
-              'rounded-xl border transition-colors duration-200',
+              'overflow-hidden rounded-xl border transition-all duration-300',
               isOpen
-                ? 'border-[var(--color-accent)]/30 bg-[var(--color-surface-card)]'
+                ? 'border-[var(--color-accent)] bg-[var(--color-surface-card)]'
                 : 'border-[var(--color-border)] bg-transparent'
             )}
           >
             <button
               onClick={() => setOpenIndex(isOpen ? null : index)}
-              className="flex w-full items-center justify-between px-5 py-4 text-left"
+              className="relative z-20 flex w-full items-center justify-between px-6 py-5 text-left outline-none cursor-pointer"
               aria-expanded={isOpen}
             >
-              <span className="text-sm font-medium text-[var(--color-text)] pr-4">
+              <span className={cn(
+                "text-base font-semibold transition-colors duration-300 pr-8",
+                isOpen ? "text-[var(--color-accent)]" : "text-[var(--color-text)]"
+              )}>
                 {item.question}
               </span>
-              <ChevronDown
-                className={cn(
-                  'h-4 w-4 shrink-0 text-[var(--color-text-muted)] transition-transform duration-200',
-                  isOpen && 'rotate-180 text-[var(--color-accent)]'
-                )}
-              />
+              <div className={cn(
+                "flex h-8 w-8 shrink-0 items-center justify-center rounded-full border transition-all duration-300",
+                isOpen 
+                  ? "border-[var(--color-accent)] bg-[var(--color-accent)]/10 rotate-180" 
+                  : "border-[var(--color-border)] bg-[var(--color-surface-light)]"
+              )}>
+                <ChevronDown
+                  className={cn(
+                    'h-4 w-4 transition-colors duration-300',
+                    isOpen ? 'text-[var(--color-accent)]' : 'text-[var(--color-text-muted)]'
+                  )}
+                />
+              </div>
             </button>
-            <AnimatePresence initial={false}>
-              {isOpen && (
-                <motion.div
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: 'auto', opacity: 1 }}
-                  exit={{ height: 0, opacity: 0 }}
-                  transition={{ duration: 0.2 }}
-                  className="overflow-hidden"
-                >
-                  <div className="px-5 pb-4 text-sm leading-relaxed text-[var(--color-text-secondary)]">
-                    {item.answer}
-                  </div>
-                </motion.div>
+            <div
+              className={cn(
+                'grid transition-all duration-300 ease-in-out',
+                isOpen ? 'grid-rows-[1fr] opacity-100 py-5' : 'grid-rows-[0fr] opacity-0 py-0'
               )}
-            </AnimatePresence>
+            >
+              <div className="overflow-hidden px-6 text-sm leading-relaxed text-[var(--color-text-secondary)]">
+                {item.answer}
+              </div>
+            </div>
           </div>
         );
       })}
