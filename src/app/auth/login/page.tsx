@@ -1,118 +1,80 @@
 'use client';
 
-import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import Image from 'next/image';
-import { FcGoogle } from 'react-icons/fc';
-import { Button } from '@/components/ui/Button';
-import { Input } from '@/components/ui/Input';
 import { useAuth } from '@/contexts/AuthContext';
 import { loginUser, redirectToGoogleOAuth } from '@/lib/api';
-import { isValidEmail } from '@/lib/validators';
-import { MIN_PASSWORD_LENGTH } from '@/lib/password';
+import { SignInPage, type Testimonial } from "@/components/ui/sign-in";
+import { useState } from 'react';
+
+const sampleTestimonials: Testimonial[] = [
+  {
+    avatarSrc: "https://randomuser.me/api/portraits/women/57.jpg",
+    name: "Sarah Chen",
+    handle: "@sarahdigital",
+    text: "Mükemmel bir platform! Kullanıcı deneyimi sorunsuz ve özellikler tam ihtiyacım olan şey."
+  },
+  {
+    avatarSrc: "https://randomuser.me/api/portraits/men/64.jpg",
+    name: "Marcus Johnson",
+    handle: "@marcustech",
+    text: "Bu servis çalışma şeklimi değiştirdi. Temiz tasarım, güçlü özellikler ve mükemmel destek."
+  },
+  {
+    avatarSrc: "https://randomuser.me/api/portraits/men/32.jpg",
+    name: "David Martinez",
+    handle: "@davidcreates",
+    text: "Birçok platform denedim ama bu gerçekten öne çıkıyor. Sezgisel, güvenilir ve üretkenlik için gerçekten yardımcı."
+  },
+];
 
 export default function LoginPage() {
   const router = useRouter();
   const { login } = useAuth();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!isValidEmail(email)) return setError('Geçerli bir e-posta adresi girin');
-    if (password.length < MIN_PASSWORD_LENGTH) return setError(`Şifre en az ${MIN_PASSWORD_LENGTH} karakter olmalı`);
-    setError('');
-    setLoading(true);
+  const handleSignIn = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const email = formData.get('email') as string;
+    const password = formData.get('password') as string;
+
+    if (!email || !password) {
+      alert('Lütfen e-posta ve şifrenizi girin.');
+      return;
+    }
+
     try {
       const res = await loginUser(email, password);
       login(res.session);
       router.push('/dashboard');
-    } catch (e) {
-      setError(e instanceof Error ? e.message : 'Giriş başarısız');
-    } finally {
-      setLoading(false);
+    } catch (e: any) {
+      alert(e.message || 'Giriş başarısız. Lütfen bilgilerinizi kontrol edin.');
     }
   };
 
+  const handleGoogleSignIn = () => {
+    redirectToGoogleOAuth();
+  };
+  
+  const handleResetPassword = () => {
+    alert("Şifre sıfırlama özelliği yakında aktif olacaktır. Lütfen destek ile iletişime geçin.");
+  };
+
+  const handleCreateAccount = () => {
+    router.push('/auth/signup');
+  };
+
   return (
-    <section className="min-h-screen bg-white">
-      <div className="flex min-h-screen items-center justify-center px-4">
-        <div className="flex w-full max-w-sm flex-col items-center gap-y-8 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] px-6 py-12 shadow-xl">
-          {/* Logo */}
-          <div className="flex flex-col items-center gap-y-2">
-            <Link href="/" className="flex items-center">
-              <Image
-                src="/images/logo-black.png"
-                alt="Webtier"
-                width={140}
-                height={40}
-                className="h-10 w-auto object-contain"
-                priority
-              />
-            </Link>
-            <h1 className="text-2xl font-semibold text-[var(--color-text)]">Giriş Yap</h1>
-            <p className="text-center text-sm text-[var(--color-text-muted)]">
-              Hesabınıza erişmek için giriş yapın
-            </p>
-          </div>
-
-          <form onSubmit={handleLogin} className="flex w-full flex-col gap-4">
-            <Input
-              type="email"
-              placeholder="E-posta adresiniz"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              disabled={loading}
-              autoComplete="email"
-              required
-            />
-            <Input
-              type="password"
-              placeholder="Şifreniz"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              disabled={loading}
-              autoComplete="current-password"
-              required
-            />
-
-            {error && (
-              <p className="rounded-lg bg-red-500/10 px-3 py-2 text-sm text-red-400">{error}</p>
-            )}
-
-            <Button type="submit" className="mt-1 w-full" disabled={loading}>
-              {loading ? 'Giriş yapılıyor...' : 'Giriş Yap'}
-            </Button>
-
-            <div className="relative flex items-center gap-3">
-              <div className="h-px flex-1 bg-[var(--color-border)]" />
-              <span className="text-xs text-[var(--color-text-muted)]">veya</span>
-              <div className="h-px flex-1 bg-[var(--color-border)]" />
-            </div>
-
-            <Button
-              type="button"
-              variant="outline"
-              className="w-full border-[var(--color-border)] bg-transparent text-[var(--color-text)] hover:bg-[var(--color-surface-light)]"
-              onClick={redirectToGoogleOAuth}
-              disabled={loading}
-            >
-              <FcGoogle className="mr-2 size-5" />
-              Google ile Giriş Yap
-            </Button>
-          </form>
-
-          <p className="text-sm text-[var(--color-text-muted)]">
-            Hesabın yok mu?{' '}
-            <Link href="/auth/signup" className="font-medium text-[var(--color-accent)] hover:underline">
-              Kayıt ol
-            </Link>
-          </p>
-        </div>
-      </div>
-    </section>
+    <SignInPage
+      title={<span className="font-light text-[var(--color-text)] tracking-tighter">Tekrar Hoş Geldiniz</span>}
+      description="Hesabınıza erişin ve dijital dönüşüm yolculuğunuza devam edin."
+      heroImageSrc="https://images.unsplash.com/photo-1642615835477-d303d7dc9ee9?w=2160&q=80"
+      testimonials={sampleTestimonials}
+      onSignIn={handleSignIn}
+      onGoogleSignIn={handleGoogleSignIn}
+      onResetPassword={handleResetPassword}
+      onCreateAccount={handleCreateAccount}
+      submitButtonText="Giriş Yap"
+    />
   );
 }

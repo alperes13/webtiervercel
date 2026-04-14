@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Menu, UserRound, ChevronDown, LogIn } from 'lucide-react';
+import { Menu, UserRound, ChevronDown, Globe } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import HamburgerMenu from './HamburgerMenu';
 import { Button } from '@/components/ui/Button';
@@ -67,87 +67,87 @@ export default function Navbar() {
             <div className="hidden items-center gap-8 md:flex">
                 <Link
                   href="/#hero"
-                  className="text-sm font-medium text-[var(--color-text-secondary)] transition-colors duration-200 hover:text-[var(--color-text)]"
+                  className="text-sm font-semibold text-[var(--color-text-secondary)] transition-colors duration-200 hover:text-[var(--color-text)]"
                 >
                   {t.nav.cro}
                 </Link>
                 <Link
-                  href="/e-ticaret"
-                  className="text-sm font-medium text-[var(--color-text-secondary)] transition-colors duration-200 hover:text-[var(--color-text)]"
+                  href="/retrainer"
+                  className="text-sm font-semibold text-[var(--color-text-secondary)] transition-colors duration-200 hover:text-[var(--color-text)]"
                 >
-                  {t.nav.ecommerce}
+                  {t.nav.retrainer}
+                </Link>
+                <Link
+                  href="/iletisim"
+                  className="text-sm font-semibold text-[var(--color-text-secondary)] transition-colors duration-200 hover:text-[var(--color-text)]"
+                >
+                  {t.nav.contact}
                 </Link>
             </div>
 
             {/* Right side */}
             <div className="flex items-center gap-3">
-              {/* Language Selector */}
+              {/* Simplified Language Selector */}
               <div ref={langRef} className="relative hidden sm:block">
                 <button
                   onClick={() => setLangOpen(v => !v)}
-                  className="flex h-9 items-center gap-1.5 rounded-lg border border-[var(--color-border)] px-2.5 text-xs font-medium text-[var(--color-text-secondary)] transition-all hover:border-[var(--color-border-light)] hover:bg-[var(--color-surface-light)] hover:text-[var(--color-text)]"
-                  aria-label="Dil seç"
+                  className="flex h-9 items-center gap-1.5 rounded-lg border border-[var(--color-border)] px-2.5 text-xs font-bold text-[var(--color-text-secondary)] transition-all hover:border-[var(--color-border-light)] hover:bg-[var(--color-surface-light)] hover:text-[var(--color-text)] uppercase"
+                  aria-label="Select Language"
                 >
-                  <span>{currentLang.flag}</span>
-                  <span className="hidden lg:inline">{currentLang.code.toUpperCase()}</span>
+                  <Globe className="h-3.5 w-3.5" />
+                  <span>{currentLang.code}</span>
                   <ChevronDown className={cn('h-3 w-3 transition-transform', langOpen && 'rotate-180')} />
                 </button>
 
                 {langOpen && (
-                  <div className="absolute right-0 top-full mt-2 w-40 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-xl overflow-hidden z-[90]">
+                  <div className="absolute right-0 top-full mt-2 w-32 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-xl overflow-hidden z-[90]">
                     {languages.map((lang) => (
                       <button
                         key={lang.code}
                         onClick={() => { setLanguage(lang.code); setLangOpen(false); }}
                         className={cn(
-                          'flex w-full items-center gap-2.5 px-3 py-2.5 text-sm transition-colors hover:bg-[var(--color-surface-light)]',
+                          'flex w-full items-center gap-2.5 px-3 py-2 text-xs font-bold transition-colors hover:bg-[var(--color-surface-light)] uppercase',
                           language === lang.code
-                            ? 'text-[var(--color-accent)] font-semibold'
+                            ? 'text-cyan-500 bg-cyan-500/5'
                             : 'text-[var(--color-text-secondary)]'
                         )}
                       >
                         <span>{lang.flag}</span>
-                        <span>{lang.label}</span>
+                        <span>{lang.code}</span>
                       </button>
                     ))}
                   </div>
                 )}
               </div>
 
+              {/* Profile/Login Button */}
               {isHydrated && isAuthenticated ? (
                 <Button
                   size="sm"
                   variant="secondary"
                   onClick={() => setProfileOpen(true)}
-                  className="rounded-xl border border-[var(--color-border-light)] bg-[var(--color-surface-card)]/80 px-3 text-[var(--color-text)] sm:px-4"
+                  className="rounded-xl border border-[var(--color-border-light)] bg-[var(--color-surface-card)]/80 px-3 text-[var(--color-text)] sm:px-4 font-bold"
                 >
                   <UserRound className="h-4 w-4" />
                   <span className="hidden sm:inline">Profilim</span>
                 </Button>
               ) : (
-                <>
-                  <Link href="/auth/login">
-                    <Button
-                      size="sm"
-                      variant="secondary"
-                      className="rounded-xl border border-[var(--color-border-light)] bg-[var(--color-surface-card)]/80 px-3 text-[var(--color-text)] sm:px-4"
-                    >
-                      <LogIn className="h-4 w-4" />
-                      <span className="hidden sm:inline">Giriş</span>
-                    </Button>
-                  </Link>
-                  <Link href="/#hero" className="hidden sm:block">
-                    <Button size="sm" className="animate-pulse-glow rounded-xl">
-                      {t.nav.freeAnalysis}
-                    </Button>
-                  </Link>
-                </>
+                <Link href="/auth/login">
+                  <Button
+                    size="sm"
+                    variant="secondary"
+                    className="rounded-xl border border-[var(--color-border-light)] bg-[var(--color-surface-card)]/80 px-3 text-[var(--color-text)] sm:px-4 font-bold"
+                  >
+                    <UserRound className="h-4 w-4" />
+                    <span className="hidden sm:inline">Profilim</span>
+                  </Button>
+                </Link>
               )}
 
               <button
                 onClick={() => setMenuOpen(true)}
                 className="flex h-9 w-9 items-center justify-center rounded-lg border border-[var(--color-border)] text-[var(--color-text-secondary)] transition-all hover:border-[var(--color-border-light)] hover:bg-[var(--color-surface-light)] hover:text-[var(--color-text)]"
-                aria-label="Menüyü aç"
+                aria-label="Open Menu"
               >
                 <Menu className="h-4 w-4" />
               </button>

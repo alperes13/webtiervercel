@@ -12,6 +12,7 @@ export interface Translations {
     salesAgreement: string;
     privacy: string;
     freeAnalysis: string;
+    retrainer: string;
   };
   hero: {
     badge: string;
@@ -236,7 +237,7 @@ export interface Translations {
 const tr: Translations = {
   nav: {
     products: 'Ürünler',
-    cro: 'CRO Analizi',
+    cro: 'CRO-X AI',
     ecommerce: 'E-Ticaret Web Tasarım',
     corporate: 'Kurumsal Web Tasarım',
     about: 'Hakkımızda',
@@ -247,6 +248,7 @@ const tr: Translations = {
     salesAgreement: 'Satış Sözleşmesi',
     privacy: 'Gizlilik & Çerez',
     freeAnalysis: 'Ücretsiz Analiz',
+    retrainer: 'Webtier Retrainer',
   },
   hero: {
     badge: 'türkiye\'nin cro odaklı Embedded AI modülü',

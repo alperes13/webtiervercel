@@ -3,7 +3,7 @@ import type { Translations } from './tr';
 const en: Translations = {
   nav: {
     products: 'Products',
-    cro: 'CRO Analysis',
+    cro: 'CRO-X AI',
     ecommerce: 'E-Commerce Design',
     corporate: 'Corporate Design',
     about: 'About Us',
@@ -14,6 +14,7 @@ const en: Translations = {
     salesAgreement: 'Sales Agreement',
     privacy: 'Privacy & Cookies',
     freeAnalysis: 'Free Analysis',
+    retrainer: 'Webtier Retrainer',
   },
   hero: {
     badge: 'Turkey\'s CRO-focused AI module',
