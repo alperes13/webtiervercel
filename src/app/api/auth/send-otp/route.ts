@@ -28,18 +28,18 @@ async function sendNetgsmSMS(phone: string, code: string): Promise<{ success: bo
   try {
     const rawMessage = `Webtier dogrulama kodunuz: ${code}. Bu kodu kimseyle paylasmayin.`;
     
+    // According to documentation for HTTP GET (/sms/send/get/):
+    // Required: usercode, password, msgheader, msg, no, type
     const params = new URLSearchParams({
       usercode,
       password,
-      gsm: cleanPhone,
-      message: rawMessage,
+      no: cleanPhone,    // Documentation says 'no'
+      msg: rawMessage,   // Documentation says 'msg'
       msgheader: header,
       dil: 'TR',
-      type: '1:n' // Adding missing type parameter
+      type: '1:n'
     });
 
-    // Use manual fetch to ensure encoding is handled strictly if needed, 
-    // but URLSearchParams is usually fine. Let's add 'type' first.
     const url = `https://api.netgsm.com.tr/sms/send/get/?${params.toString()}`;
     const res = await fetch(url);
     const text = await res.text();
