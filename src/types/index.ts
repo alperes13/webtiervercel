@@ -6,7 +6,8 @@ export interface UserSession {
   createdAt: number;
   expiresAt: number;
   analysisStatus: 'pending' | 'completed' | 'none';
-  credits: number;
+  creditsMini: number;
+  creditsUltra: number;
 }
 
 export interface OTPState {

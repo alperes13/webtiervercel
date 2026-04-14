@@ -4,32 +4,28 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { motion, animate } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
-import Modal from '@/components/ui/Modal';
-import PhoneInput from '@/components/ui/PhoneInput';
-import OTPInput from '@/components/ui/OTPInput';
+import LoginModal from '@/components/ui/LoginModal';
 import { AuroraBackground } from '@/components/ui/aurora-background';
 import { GradientText } from '@/components/ui/gradient-text';
 import { HeroInput, type CROModel } from '@/components/ui/animated-ai-input';
-import { Button } from '@/components/ui/Button';
-import { isValidUrl, isValidPhone, normalizeUrl } from '@/lib/validators';
-import { useOTP } from '@/hooks/useOTP';
+import { isValidUrl } from '@/lib/validators';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
-import type { UserSession } from '@/types';
+
+import { createMiniAnalysis, createUltraAnalysis } from '@/lib/api';
 
 export default function HeroSection() {
   const [siteUrl, setSiteUrl] = useState('');
   const [urlError, setUrlError] = useState('');
-  const [phone, setPhone] = useState('');
-  const [contactError, setContactError] = useState('');
   const [isFocused, setIsFocused] = useState(false);
   const [selectedModel, setSelectedModel] = useState<CROModel>('CRO-X MINI');
+  const [loginOpen, setLoginOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const { step, setStep, loading, error, attemptsLeft, isTimedOut, timeoutRemaining, sendOTP, verifyOTP, reset } = useOTP();
-  const { login } = useAuth();
+  const { isAuthenticated, session, updateSession } = useAuth();
   const { t } = useLanguage();
 
-  const handleAnalyze = () => {
+  const handleAnalyze = async () => {
     const trimmed = siteUrl.trim();
     if (!trimmed) {
       setUrlError(t.hero.errors.emptyUrl);
@@ -40,39 +36,38 @@ export default function HeroSection() {
       return;
     }
     setUrlError('');
-    setStep('phone');
-  };
 
-  const handleSendOTP = async () => {
-    if (!isValidPhone(phone)) {
-      setContactError(t.hero.errors.invalidPhone);
+    if (!isAuthenticated || !session) {
+      setLoginOpen(true);
       return;
     }
-    setContactError('');
-    await sendOTP(phone, normalizeUrl(siteUrl), 'phone');
-  };
 
-  const handleVerifyOTP = async (code: string) => {
-    const result = await verifyOTP(code);
-    if (result) {
-      const normalizedPhone = phone.replace(/\D/g, '');
-      const session: UserSession = {
-        token: 'placeholder-token',
-        phone: normalizedPhone,
-        phoneRaw: normalizedPhone,
-        createdAt: Date.now(),
-        expiresAt: Date.now() + 24 * 60 * 60 * 1000,
-        analysisStatus: 'pending',
-        credits: 3,
-      };
-      login(session);
+    // Credit check
+    if (selectedModel === 'CRO-X MINI' && session.creditsMini < 1) {
+      setUrlError('Yetersiz Mini kredi. Profilinizden ek kredi alabilirsiniz.');
+      return;
     }
-  };
+    if (selectedModel === 'CRO-X ULTRA' && session.creditsUltra < 1) {
+      setUrlError('Yetersiz Ultra kredi. Lütfen bakiye yükleyin.');
+      return;
+    }
 
-  const handleCloseModal = () => {
-    reset();
-    setPhone('');
-    setContactError('');
+    setLoading(true);
+    try {
+      if (selectedModel === 'CRO-X MINI') {
+        await createMiniAnalysis(session.token, { website_url: trimmed });
+        updateSession({ creditsMini: session.creditsMini - 1, analysisStatus: 'pending' });
+      } else {
+        await createUltraAnalysis(session.token, { website_url: trimmed });
+        updateSession({ creditsUltra: session.creditsUltra - 1, analysisStatus: 'pending' });
+      }
+      setSiteUrl('');
+      alert('Analiz talebiniz başarıyla alındı. Raporunuz hazırlandığında bilgilendirileceksiniz.');
+    } catch (e) {
+      setUrlError(e instanceof Error ? e.message : 'Analiz başlatılamadı');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const containerVariants = {
@@ -282,73 +277,7 @@ export default function HeroSection() {
         </motion.div>
       </div>
 
-      {/* Phone Modal */}
-      <Modal
-        open={step === 'phone'}
-        onClose={handleCloseModal}
-        title={t.hero.modal.phoneTitle}
-      >
-        <p className="mb-5 text-sm leading-relaxed text-[var(--color-text-secondary)]">
-          {t.hero.modal.phoneDesc}
-        </p>
-        <PhoneInput
-          value={phone}
-          onChange={(value) => {
-            setPhone(value);
-            if (contactError) setContactError('');
-          }}
-          error={contactError}
-          disabled={loading}
-        />
-        {isTimedOut && (
-          <p className="mt-3 text-sm text-[var(--color-error)]">
-            {t.hero.errors.timeout.replace('{minutes}', String(Math.ceil(timeoutRemaining / 60)))}
-          </p>
-        )}
-        <Button
-          size="lg"
-          className="mt-4 w-full"
-          onClick={handleSendOTP}
-          disabled={loading || isTimedOut}
-        >
-          {loading ? t.hero.modal.phoneSending : t.hero.modal.phoneButton}
-        </Button>
-        <p className="mt-3 text-center text-xs text-[var(--color-text-muted)]">
-          {t.hero.modal.phoneNote}
-        </p>
-      </Modal>
-
-      {/* OTP Modal */}
-      <Modal
-        open={step === 'otp'}
-        onClose={handleCloseModal}
-        title={t.hero.modal.otpTitle}
-      >
-        <p className="mb-2 text-center text-sm text-[var(--color-text-secondary)]">
-          +90 {phone} {t.hero.modal.otpSentTo}
-        </p>
-        <p className="mb-6 text-center text-sm text-[var(--color-text-muted)]">
-          {t.hero.modal.otpEnterCode}
-        </p>
-        <OTPInput
-          onComplete={handleVerifyOTP}
-          disabled={loading}
-          error={!!error}
-        />
-        {error && (
-          <p className="mt-4 text-center text-sm text-[var(--color-error)]">{error}</p>
-        )}
-        {attemptsLeft < 5 && attemptsLeft > 0 && (
-          <p className="mt-2 text-center text-xs text-[var(--color-text-muted)]">
-            {attemptsLeft} {t.hero.modal.otpAttempts}
-          </p>
-        )}
-        {loading && (
-          <p className="mt-3 text-center text-sm text-[var(--color-text-muted)]">
-            {t.hero.modal.otpVerifying}
-          </p>
-        )}
-      </Modal>
+      <LoginModal open={loginOpen} onClose={() => setLoginOpen(false)} initialMode="register" />
     </AuroraBackground>
   );
 }

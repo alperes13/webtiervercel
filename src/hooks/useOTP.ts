@@ -6,10 +6,8 @@ import { OTP_CONFIG } from '@/lib/constants';
 import {
   sendOTP as apiSendOTP,
   verifyOTP as apiVerifyOTP,
-  sendOTPEmail as apiSendOTPEmail,
-  verifyOTPEmail as apiVerifyOTPEmail,
 } from '@/lib/api';
-import type { OTPState } from '@/types';
+import type { OTPState, UserSession } from '@/types';
 
 const DEFAULT_OTP_STATE: OTPState = {
   attemptsLeft: OTP_CONFIG.maxAttempts,
@@ -35,9 +33,14 @@ export function useOTP() {
     : 0;
 
   const sendOTP = useCallback(
-    async (contact: string, siteUrl: string, contactType: 'phone' | 'email' = 'phone') => {
+    async (contact: string, _siteUrl: string, contactType: 'phone' | 'email' = 'phone') => {
       if (isTimedOut) {
         setError(`Çok fazla deneme yaptınız. ${Math.ceil(timeoutRemaining / 60)} dakika sonra tekrar deneyin.`);
+        return false;
+      }
+
+      if (contactType !== 'phone') {
+        setError('Şu anda sadece telefon ile doğrulama destekleniyor.');
         return false;
       }
 
@@ -45,11 +48,7 @@ export function useOTP() {
       setError(null);
 
       try {
-        if (contactType === 'phone') {
-          await apiSendOTP(contact, siteUrl);
-        } else {
-          await apiSendOTPEmail(contact, siteUrl);
-        }
+        await apiSendOTP(contact);
         setOtpState((prev) => ({ ...prev, phone: contact, contactType }));
         setStep('otp');
         return true;
@@ -64,20 +63,15 @@ export function useOTP() {
   );
 
   const verifyOTP = useCallback(
-    async (code: string) => {
+    async (code: string): Promise<UserSession | null> => {
       setLoading(true);
       setError(null);
 
       try {
-        let result;
-        if (otpState.contactType === 'phone') {
-          result = await apiVerifyOTP(otpState.phone, code);
-        } else {
-          result = await apiVerifyOTPEmail(otpState.phone, code);
-        }
+        const result = await apiVerifyOTP(otpState.phone, code);
         setStep('success');
         setOtpState(DEFAULT_OTP_STATE);
-        return result;
+        return result.session;
       } catch {
         const newAttempts = otpState.attemptsLeft - 1;
 

@@ -3,12 +3,12 @@
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Menu, UserRound, ChevronDown } from 'lucide-react';
-import { NAV_ITEMS } from '@/lib/constants';
+import { Menu, UserRound, ChevronDown, LogIn } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import HamburgerMenu from './HamburgerMenu';
 import { Button } from '@/components/ui/Button';
 import ProfilePopup from '@/components/ui/ProfilePopup';
+import LoginModal from '@/components/ui/LoginModal';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 
@@ -16,6 +16,7 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
+  const [loginOpen, setLoginOpen] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
   const langRef = useRef<HTMLDivElement>(null);
   const { isAuthenticated, isHydrated } = useAuth();
@@ -126,11 +127,22 @@ export default function Navbar() {
                   <span className="hidden sm:inline">Profilim</span>
                 </Button>
               ) : (
-                <Link href="/#hero" className="hidden sm:block">
-                  <Button size="sm" className="animate-pulse-glow rounded-xl">
-                    {t.nav.freeAnalysis}
+                <>
+                  <Button
+                    size="sm"
+                    variant="secondary"
+                    onClick={() => setLoginOpen(true)}
+                    className="rounded-xl border border-[var(--color-border-light)] bg-[var(--color-surface-card)]/80 px-3 text-[var(--color-text)] sm:px-4"
+                  >
+                    <LogIn className="h-4 w-4" />
+                    <span className="hidden sm:inline">Giriş</span>
                   </Button>
-                </Link>
+                  <Link href="/#hero" className="hidden sm:block">
+                    <Button size="sm" className="animate-pulse-glow rounded-xl">
+                      {t.nav.freeAnalysis}
+                    </Button>
+                  </Link>
+                </>
               )}
 
               <button
@@ -147,6 +159,7 @@ export default function Navbar() {
 
       <HamburgerMenu open={menuOpen} onClose={() => setMenuOpen(false)} />
       <ProfilePopup open={profileOpen} onClose={() => setProfileOpen(false)} />
+      <LoginModal open={loginOpen} onClose={() => setLoginOpen(false)} />
     </>
   );
 }

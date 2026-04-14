@@ -18,15 +18,16 @@ export const OTP_CONFIG = {
   phoneFormat: /^5\d{9}$/,
 };
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://api.example.com';
-
 export const ENDPOINTS = {
-  sendOTP: `${API_BASE_URL}/api/v1/otp/send`,
-  verifyOTP: `${API_BASE_URL}/api/v1/otp/verify`,
-  sendOTPEmail: `${API_BASE_URL}/api/v1/otp/send-email`,
-  verifyOTPEmail: `${API_BASE_URL}/api/v1/otp/verify-email`,
-  getProfile: `${API_BASE_URL}/api/v1/profile`,
-  getAnalysis: `${API_BASE_URL}/api/v1/analysis`,
+  register: '/api/auth/register',
+  login: '/api/auth/login',
+  sendOTP: '/api/auth/send-otp',
+  verifyOTP: '/api/auth/verify-otp',
+  resetPassword: '/api/auth/reset-password',
+  creditsBalance: '/api/credits/balance',
+  analysisMini: '/api/analysis/mini',
+  analysisUltra: '/api/analysis/ultra',
+  paymentCreate: '/api/payment/create',
 };
 
 export const NAV_ITEMS: NavItem[] = [

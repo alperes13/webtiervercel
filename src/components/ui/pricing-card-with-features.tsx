@@ -22,7 +22,7 @@ export const Box = ({
   features?: string[];
   ctaText?: string;
   onCtaClick?: () => void;
-}): JSX.Element => {
+}) => {
   return (
     <div className="pricing-box-wrapper flex justify-center w-full">
       <Card className="pricing-box-card w-full max-w-[464px] rounded-[32px] border border-white/10 bg-zinc-900/50 backdrop-blur-xl text-white p-6 sm:p-8 flex flex-col gap-6 shadow-[0_20px_50px_rgba(0,0,0,0.5)] relative overflow-hidden group">

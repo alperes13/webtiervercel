@@ -1,17 +1,13 @@
 'use client';
 
-import React from 'react';
 import { motion } from 'framer-motion';
-import { CheckCircle, Rocket, ArrowRight } from 'lucide-react';
+import { CheckCircle } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import RuixenStats from "@/components/ui/ruixen-stats";
 import { Box } from "@/components/ui/pricing-card-with-features";
-import { Banner } from "@/components/ui/banner";
-import { Button } from '@/components/ui/Button';
 
 export default function CROXUltraSection() {
   const { t } = useLanguage();
-  const [showBanner, setShowBanner] = React.useState(true);
 
   return (
     <section
@@ -55,7 +51,7 @@ export default function CROXUltraSection() {
             >
               <div className="relative rounded-[32px] border border-white/10 bg-zinc-900/40 backdrop-blur-lg p-8 lg:p-10 shadow-2xl">
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-x-6 gap-y-3">
-                  {t.croxUltra.items.map((item, idx) => (
+                  {(t.croxUltra.items ?? []).map((item, idx) => (
                     <motion.div
                       key={idx}
                       initial={{ opacity: 0 }}
@@ -102,7 +98,7 @@ export default function CROXUltraSection() {
               <Box
                 title="CRO-X AI ULTRA"
                 subtitle="Geleceğinizi analiz ile tecrübe edin"
-                price={t.croxUltra.price}
+                price="249 TL"
                 ctaText={t.croxUltra.cta}
               />
             </div>

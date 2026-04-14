@@ -52,13 +52,18 @@ export interface Translations {
   croxUltra: {
     badge: string;
     title: string;
-    titleHighlight: string;
+    titleHighlight?: string;
     subtitle: string;
-    slideDeckLabel: string;
-    benefitCategories: readonly { title: string; items: readonly string[] }[];
-    totalLabel: string;
+    slideDeckLabel?: string;
+    benefitCategories?: readonly { title: string; items: readonly string[] }[];
+    totalLabel?: string;
     cta: string;
-    problems: readonly string[];
+    problems?: readonly string[];
+    price?: string;
+    summaryLabel?: string;
+    bannerTitle?: string;
+    bannerSubtext?: string;
+    items?: readonly string[];
   };
   trustSignals: {
     stats: readonly { value: number; suffix: string; label: string }[];
