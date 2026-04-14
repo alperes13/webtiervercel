@@ -22,19 +22,26 @@ async function sendNetgsmSMS(phone: string, code: string): Promise<{ success: bo
     return { success: true };
   }
 
-  const cleanPhone = phone.replace('+90', '').replace(/\s/g, '');
+  // Netgsm expects phone with 90 (e.g. 905xxxxxxxxx) or 10 digits. Using 12-digit format for better compatibility.
+  const cleanPhone = phone.replace('+', '').replace(/\s/g, '');
 
   try {
+    const rawMessage = `Webtier dogrulama kodunuz: ${code}. Bu kodu kimseyle paylasmayin.`;
+    
     const params = new URLSearchParams({
       usercode,
       password,
       gsm: cleanPhone,
-      message: `Webtier dogrulama kodunuz: ${code}. Bu kodu kimseyle paylasmayin.`,
+      message: rawMessage,
       msgheader: header,
       dil: 'TR',
+      type: '1:n' // Adding missing type parameter
     });
 
-    const res = await fetch(`https://api.netgsm.com.tr/sms/send/get/?${params.toString()}`);
+    // Use manual fetch to ensure encoding is handled strictly if needed, 
+    // but URLSearchParams is usually fine. Let's add 'type' first.
+    const url = `https://api.netgsm.com.tr/sms/send/get/?${params.toString()}`;
+    const res = await fetch(url);
     const text = await res.text();
     
     // Netgsm returns "00" or "01 32132" for success
