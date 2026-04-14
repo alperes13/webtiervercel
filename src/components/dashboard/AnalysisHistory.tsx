@@ -6,8 +6,17 @@ import { useAuth } from '@/contexts/AuthContext';
 import { Card } from '@/components/ui/Card';
 import Badge from '@/components/ui/Badge';
 import { ExternalLink, Clock, CheckCircle2, AlertCircle, BarChart3, Search } from 'lucide-react';
-import { format } from 'date-fns';
-import { tr } from 'date-fns/locale';
+
+const formatTurkishDate = (dateStr: string) => {
+  const date = new Date(dateStr);
+  return date.toLocaleString('tr-TR', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  });
+};
 
 interface Analysis {
   id: string;
@@ -100,7 +109,7 @@ export default function AnalysisHistory() {
                   <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-[var(--color-text-muted)]">
                     <span className="flex items-center gap-1">
                       <Clock className="h-3 w-3" />
-                      {format(new Date(analysis.created_at), 'd MMMM yyyy HH:mm', { locale: tr })}
+                      {formatTurkishDate(analysis.created_at)}
                     </span>
                     <span className="capitalize px-1.5 py-0.5 rounded bg-[var(--color-surface-light)] font-medium">
                       {analysis.analysis_type}

@@ -188,7 +188,13 @@ export default function DashboardPage() {
                         <h4 className="text-lg font-bold">{pkg.label}</h4>
                         <p className="text-3xl font-black text-white">{pkg.price}</p>
                       </div>
-                      <Button onClick={() => setPurchaseModalOpen(true)} className={pkg.popular ? "bg-cyan-500 hover:bg-cyan-600" : "variant-outline"}>Satın Al</Button>
+                      <Button 
+                        onClick={() => setPurchaseModalOpen(true)} 
+                        variant={pkg.popular ? "default" : "outline"}
+                        className={pkg.popular ? "bg-cyan-500 hover:bg-cyan-600" : ""}
+                      >
+                        Satın Al
+                      </Button>
                     </Card>
                   ))}
                 </div>

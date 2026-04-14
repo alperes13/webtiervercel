@@ -51,7 +51,7 @@ export default function CorporateContent() {
                 </Button>
               </Link>
               <a href={getWhatsAppUrl(SITE_CONFIG.whatsapp, 'Merhaba, kurumsal web tasarım hakkında bilgi almak istiyorum.')} target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto">
-                <Button variant="outline" size="lg" className="w-full sm:w-auto px-8">
+                <Button variant="outline" size="lg" className="w-full sm:w-auto px-8 text-white border-white/20">
                   <MessageCircle className="mr-2 h-4 w-4" /> {t.corporate.ctaWhatsApp}
                 </Button>
               </a>
@@ -156,7 +156,7 @@ export default function CorporateContent() {
               <Button size="lg" className="w-full sm:w-auto px-10">{t.corporate.ctaAnalysis} <ArrowUpRight className="ml-2 h-4 w-4" /></Button>
             </Link>
             <a href={getWhatsAppUrl(SITE_CONFIG.whatsapp, SITE_CONFIG.whatsappMessage)} target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto">
-              <Button variant="outline" size="lg" className="w-full sm:w-auto px-10"><MessageCircle className="mr-2 h-4 w-4" /> {t.corporate.ctaWhatsApp}</Button>
+              <Button variant="outline" size="lg" className="w-full sm:w-auto px-10 text-white border-white/20"><MessageCircle className="mr-2 h-4 w-4" /> {t.corporate.ctaWhatsApp}</Button>
             </a>
           </div>
         </div>

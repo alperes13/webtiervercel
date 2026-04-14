@@ -20,9 +20,9 @@ interface SidebarProps {
 }
 
 const MENU_ITEMS = [
-  { id: 'overview' as const, label: 'Dashboad', icon: LayoutDashboard },
+  { id: 'overview' as const, label: 'Panel', icon: LayoutDashboard },
   { id: 'start-analysis' as const, label: 'Analiz Başlat', icon: BarChart2 },
-  { id: 'history' as const, label: 'Analiz Gezmişi', icon: History },
+  { id: 'history' as const, label: 'Analiz Geçmişi', icon: History },
   { id: 'credits' as const, label: 'Kredi Al', icon: CreditCard },
   { id: 'settings' as const, label: 'Ayarlar', icon: Settings },
 ];

@@ -12,6 +12,7 @@ export interface Testimonial {
 }
 
 interface SignInPageProps {
+  theme?: "light" | "dark";
   title?: React.ReactNode;
   description?: string;
   heroImageSrc?: string;
@@ -21,6 +22,7 @@ interface SignInPageProps {
   onResetPassword?: () => void;
   onCreateAccount?: () => void;
   submitButtonText?: string;
+  children?: React.ReactNode;
 }
 
 const GoogleIcon = () => (
@@ -32,25 +34,31 @@ const GoogleIcon = () => (
   </svg>
 );
 
-const GlassInputWrapper = ({ children }: { children: React.ReactNode }) => (
-  <div className="rounded-2xl border border-[var(--color-border)] bg-[var(--foreground)]/5 backdrop-blur-sm transition-colors focus-within:border-[#a78bfa] focus-within:bg-[#a78bfa]/10">
+const GlassInputWrapper = ({ children, theme }: { children: React.ReactNode, theme?: "light" | "dark" }) => (
+  <div className={cn(
+    "rounded-2xl border transition-colors focus-within:ring-2 focus-within:ring-[#a78bfa]/50",
+    theme === "light" 
+      ? "border-zinc-200 bg-zinc-50 focus-within:border-[#a78bfa] focus-within:bg-white" 
+      : "border-[var(--color-border)] bg-[var(--foreground)]/5 backdrop-blur-sm focus-within:border-[#a78bfa] focus-within:bg-[#a78bfa]/10"
+  )}>
     {children}
   </div>
 );
 
 const TestimonialCard = ({ testimonial, delay }: { testimonial: Testimonial, delay: string }) => (
-  <div className={cn("animate-testimonial flex items-start gap-3 rounded-3xl bg-[var(--color-surface-card)]/40 backdrop-blur-xl border border-white/10 p-5 w-64", delay)}>
+  <div className={cn("animate-testimonial flex items-start gap-3 rounded-3xl bg-white/10 backdrop-blur-xl border border-white/10 p-5 w-64", delay)}>
     <img src={testimonial.avatarSrc} className="h-10 w-10 object-cover rounded-2xl" alt="avatar" />
     <div className="text-sm leading-snug">
-      <p className="flex items-center gap-1 font-medium text-[var(--color-text)]">{testimonial.name}</p>
-      <p className="text-[var(--color-text-muted)]">{testimonial.handle}</p>
-      <p className="mt-1 text-[var(--color-text-secondary)]">{testimonial.text}</p>
+      <p className="flex items-center gap-1 font-medium text-white">{testimonial.name}</p>
+      <p className="text-white/60">{testimonial.handle}</p>
+      <p className="mt-1 text-white/80">{testimonial.text}</p>
     </div>
   </div>
 );
 
 export const SignInPage: React.FC<SignInPageProps> = ({
-  title = <span className="font-light text-[var(--color-text)] tracking-tighter">Welcome</span>,
+  theme = "dark",
+  title = <span className="font-light tracking-tighter">Welcome</span>,
   description = "Access your account and continue your journey with us",
   heroImageSrc,
   testimonials = [],
@@ -59,35 +67,68 @@ export const SignInPage: React.FC<SignInPageProps> = ({
   onResetPassword,
   onCreateAccount,
   submitButtonText = "Sign In",
+  children,
 }) => {
   const [showPassword, setShowPassword] = useState(false);
 
+  const isLight = theme === "light";
+
   return (
-    <div className="min-h-screen flex flex-col md:flex-row w-full bg-[var(--color-background)] overflow-x-hidden">
+    <div className={cn(
+      "min-h-screen flex flex-col md:flex-row w-full overflow-x-hidden",
+      isLight ? "bg-white text-zinc-900" : "bg-[var(--color-background)] text-[var(--color-text)]"
+    )}>
       {/* Left column: sign-in form */}
-      <section className="flex-1 flex items-center justify-center p-8 bg-[var(--color-background)]">
+      <section className={cn(
+        "flex-1 flex items-center justify-center p-8",
+        isLight ? "bg-white" : "bg-[var(--color-background)]"
+      )}>
         <div className="w-full max-w-md">
           <div className="flex flex-col gap-6">
-            <h1 className="animate-element animate-delay-100 text-4xl md:text-5xl font-semibold leading-tight text-[var(--color-text)]">{title}</h1>
-            <p className="animate-element animate-delay-200 text-[var(--color-text-secondary)]">{description}</p>
+            <h1 className={cn(
+              "animate-element animate-delay-100 text-4xl md:text-5xl font-semibold leading-tight",
+              isLight ? "text-zinc-900" : "text-[var(--color-text)]"
+            )}>{title}</h1>
+            <p className={cn(
+              "animate-element animate-delay-200",
+              isLight ? "text-zinc-500" : "text-[var(--color-text-secondary)]"
+            )}>{description}</p>
             
             <form className="space-y-5" onSubmit={onSignIn}>
               <div className="animate-element animate-delay-300">
-                <label className="text-sm font-medium text-[var(--color-text-muted)]">Email Adresi</label>
-                <GlassInputWrapper>
-                  <input name="email" type="email" placeholder="E-posta adresinizi girin" required className="w-full bg-transparent text-sm p-4 rounded-2xl outline-none text-[var(--color-text)] placeholder:text-[var(--color-text-muted)]/50" />
+                <label className={cn(
+                  "text-sm font-medium mb-1.5 block",
+                  isLight ? "text-zinc-700" : "text-[var(--color-text-muted)]"
+                )}>Email Adresi</label>
+                <GlassInputWrapper theme={theme}>
+                  <input 
+                    name="email" 
+                    type="email" 
+                    placeholder="E-posta adresinizi girin" 
+                    required 
+                    className={cn(
+                      "w-full bg-transparent text-sm p-4 rounded-2xl outline-none",
+                      isLight ? "text-zinc-900 placeholder:text-zinc-400" : "text-[var(--color-text)] placeholder:text-[var(--color-text-muted)]/50"
+                    )} 
+                  />
                 </GlassInputWrapper>
               </div>
               <div className="animate-element animate-delay-400">
-                <label className="text-sm font-medium text-[var(--color-text-muted)]">Şifre</label>
-                <GlassInputWrapper>
+                <label className={cn(
+                  "text-sm font-medium mb-1.5 block",
+                  isLight ? "text-zinc-700" : "text-[var(--color-text-muted)]"
+                )}>Şifre</label>
+                <GlassInputWrapper theme={theme}>
                   <div className="relative">
                     <input
                       name="password"
                       type={showPassword ? 'text' : 'password'}
                       placeholder="Şifrenizi girin"
                       required
-                      className="w-full bg-transparent text-sm p-4 pr-12 rounded-2xl outline-none text-[var(--color-text)] placeholder:text-[var(--color-text-muted)]/50"
+                      className={cn(
+                        "w-full bg-transparent text-sm p-4 pr-12 rounded-2xl outline-none",
+                        isLight ? "text-zinc-900 placeholder:text-zinc-400" : "text-[var(--color-text)] placeholder:text-[var(--color-text-muted)]/50"
+                      )}
                     />
                     <button
                       type="button"
@@ -95,9 +136,9 @@ export const SignInPage: React.FC<SignInPageProps> = ({
                       className="absolute inset-y-0 right-3 flex items-center"
                     >
                       {showPassword ? (
-                        <EyeOff className="w-5 h-5 text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors" />
+                        <EyeOff className={cn("w-5 h-5 transition-colors", isLight ? "text-zinc-400 hover:text-zinc-600" : "text-[var(--color-text-muted)] hover:text-[var(--color-text)]")} />
                       ) : (
-                        <Eye className="w-5 h-5 text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors" />
+                        <Eye className={cn("w-5 h-5 transition-colors", isLight ? "text-zinc-400 hover:text-zinc-600" : "text-[var(--color-text-muted)] hover:text-[var(--color-text)]")} />
                       )}
                     </button>
                   </div>
@@ -107,8 +148,8 @@ export const SignInPage: React.FC<SignInPageProps> = ({
               <div className="animate-element animate-delay-500 flex items-center justify-between text-sm">
                 <div className="flex items-center gap-3 cursor-pointer">
                   <label className="flex items-center gap-2 cursor-pointer">
-                    <input type="checkbox" name="rememberMe" className="custom-checkbox" />
-                    <span className="text-[var(--color-text-secondary)]">Oturumu açık tut</span>
+                    <input type="checkbox" name="rememberMe" className={cn("custom-checkbox", isLight && "border-zinc-300")} />
+                    <span className={isLight ? "text-zinc-500" : "text-[var(--color-text-secondary)]"}>Oturumu açık tut</span>
                   </label>
                 </div>
                 <button
@@ -117,7 +158,7 @@ export const SignInPage: React.FC<SignInPageProps> = ({
                     e.preventDefault();
                     onResetPassword?.();
                   }}
-                  className="hover:underline text-[#a78bfa] transition-colors"
+                  className={cn("hover:underline transition-colors", isLight ? "text-zinc-500" : "text-[#a78bfa]")}
                 >
                   Şifremi unuttum
                 </button>
@@ -125,27 +166,38 @@ export const SignInPage: React.FC<SignInPageProps> = ({
 
               <button
                 type="submit"
-                className="animate-element animate-delay-600 w-full rounded-2xl bg-[#a78bfa] py-4 font-bold text-white hover:bg-[#9061f9] transition-all transform hover:scale-[0.99] active:scale-[0.97]"
+                className="animate-element animate-delay-600 w-full rounded-2xl bg-[#a78bfa] py-4 font-bold text-white hover:bg-[#9061f9] transition-all transform hover:scale-[0.99] active:scale-[0.97] shadow-lg shadow-[#a78bfa]/20"
               >
                 {submitButtonText}
               </button>
             </form>
 
             <div className="animate-element animate-delay-700 relative flex items-center justify-center">
-              <span className="w-full border-t border-[var(--color-border)]" />
-              <span className="px-4 text-sm text-[var(--color-text-muted)] bg-[var(--color-background)] absolute">veya şununla devam et</span>
+              <span className={cn("w-full border-t", isLight ? "border-zinc-100" : "border-[var(--color-border)]")} />
+              <span className={cn(
+                "px-4 text-xs font-medium uppercase tracking-wider absolute",
+                isLight ? "text-zinc-400 bg-white" : "text-[var(--color-text-muted)] bg-[var(--color-background)]"
+              )}>veya şununla devam et</span>
             </div>
 
             <button
               type="button"
               onClick={onGoogleSignIn}
-              className="animate-element animate-delay-800 w-full flex items-center justify-center gap-3 border border-[var(--color-border)] rounded-2xl py-4 hover:bg-[var(--color-surface-light)] transition-colors text-[var(--color-text)]"
+              className={cn(
+                "animate-element animate-delay-800 w-full flex items-center justify-center gap-3 border rounded-2xl py-4 transition-all hover:scale-[0.99] active:scale-[0.97]",
+                isLight 
+                  ? "border-zinc-200 bg-white text-zinc-900 hover:bg-zinc-50 hover:border-zinc-300 shadow-sm" 
+                  : "border-[var(--color-border)] text-[var(--color-text)] hover:bg-[var(--color-surface-light)]"
+              )}
             >
               <GoogleIcon />
-              Google ile devam et
+              <span className="font-medium">Google ile devam et</span>
             </button>
 
-            <p className="animate-element animate-delay-900 text-center text-sm text-[var(--color-text-muted)]">
+            <p className={cn(
+              "animate-element animate-delay-900 text-center text-sm",
+              isLight ? "text-zinc-500" : "text-[var(--color-text-muted)]"
+            )}>
               {submitButtonText === "Giriş Yap" ? "Hesabınız yok mu?" : "Zaten hesabınız var mı?"}{" "}
               <button
                 type="button"
@@ -158,6 +210,7 @@ export const SignInPage: React.FC<SignInPageProps> = ({
                 {submitButtonText === "Giriş Yap" ? "Hesap Oluştur" : "Giriş Yap"}
               </button>
             </p>
+            {children}
           </div>
         </div>
       </section>

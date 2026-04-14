@@ -137,24 +137,24 @@ export default function ProfilePopup({ open, onClose }: ProfilePopupProps) {
                   </div>
                 </div>
 
-                <div className="px-2">
-                  <Button 
-                    variant="outline" 
-                    size="sm" 
-                    className="w-full text-xs font-bold border-cyan-500/20 hover:bg-cyan-500/5 text-cyan-400"
-                    onClick={() => setPurchaseOpen(true)}
-                  >
-                    {t.profile.creditsButton}
-                  </Button>
-                </div>
+                <Link 
+                  href="/dashboard" 
+                  onClick={onClose}
+                  className="mb-3 w-full inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-primary text-white hover:bg-primary/90 h-10 px-4 py-2"
+                >
+                  Panel
+                </Link>
               </div>
 
-              {/* Logout */}
-              <Button asChild variant="outline" size="default" className="mb-3 w-full">
-                <Link href="/dashboard" onClick={onClose}>
-                  Dashboard
+              <div className="px-2 mb-6">
+                <Link 
+                  href="/dashboard#ultra"
+                  onClick={onClose}
+                  className="w-full inline-flex items-center justify-center whitespace-nowrap rounded-md text-xs font-bold border border-cyan-500/20 bg-cyan-500/5 hover:bg-cyan-500/10 text-cyan-400 h-9 px-3 transition-colors"
+                >
+                  {t.profile.creditsButton}
                 </Link>
-              </Button>
+              </div>
 
               <Button
                 variant="ghost"

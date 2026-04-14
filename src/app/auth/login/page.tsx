@@ -39,16 +39,17 @@ export default function LoginPage() {
     const password = formData.get('password') as string;
 
     if (!email || !password) {
-      alert('Lütfen e-posta ve şifrenizi girin.');
+      setError('Lütfen e-posta ve şifrenizi girin.');
       return;
     }
 
+    setError('');
     try {
       const res = await loginUser(email, password);
       login(res.session);
       router.push('/dashboard');
     } catch (e: any) {
-      alert(e.message || 'Giriş başarısız. Lütfen bilgilerinizi kontrol edin.');
+      setError(e.message || 'Giriş başarısız. Lütfen bilgilerinizi kontrol edin.');
     }
   };
 
@@ -66,7 +67,8 @@ export default function LoginPage() {
 
   return (
     <SignInPage
-      title={<span className="font-light text-[var(--color-text)] tracking-tighter">Tekrar Hoş Geldiniz</span>}
+      theme="light"
+      title={<span className="font-light tracking-tighter">Tekrar Hoş Geldiniz</span>}
       description="Hesabınıza erişin ve dijital dönüşüm yolculuğunuza devam edin."
       heroImageSrc="https://images.unsplash.com/photo-1642615835477-d303d7dc9ee9?w=2160&q=80"
       testimonials={sampleTestimonials}
@@ -75,6 +77,12 @@ export default function LoginPage() {
       onResetPassword={handleResetPassword}
       onCreateAccount={handleCreateAccount}
       submitButtonText="Giriş Yap"
-    />
+    >
+      {error && (
+        <div className="animate-element mt-1 bg-red-50 border border-red-100 text-red-600 p-3 rounded-xl text-xs font-medium text-center">
+          {error}
+        </div>
+      )}
+    </SignInPage>
   );
 }

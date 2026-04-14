@@ -67,7 +67,8 @@ export default function SignupPage() {
 
   return (
     <SignInPage
-      title={<span className="font-light text-[var(--color-text)] tracking-tighter">Hesap Oluştur</span>}
+      theme="light"
+      title={<span className="font-light tracking-tighter">Hesap Oluştur</span>}
       description="Webtier ailesine katılın ve dijital varlığınızı analiz etmeye bugün başlayın."
       heroImageSrc="https://images.unsplash.com/photo-1643101809754-43a91784ebec?w=2160&q=80"
       testimonials={sampleTestimonials}
@@ -76,6 +77,12 @@ export default function SignupPage() {
       onResetPassword={handleResetPassword}
       onCreateAccount={handleLoginRedirect}
       submitButtonText="Hesap Oluştur"
-    />
+    >
+      {error && (
+        <div className="animate-element mt-1 bg-red-50 border border-red-100 text-red-600 p-3 rounded-xl text-xs font-medium text-center">
+          {error}
+        </div>
+      )}
+    </SignInPage>
   );
 }

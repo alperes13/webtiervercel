@@ -567,7 +567,7 @@ const tr: Translations = {
     statusNone: 'Henüz analiz yok',
     credits: 'Kalan Kredi',
     creditsLabel: 'Kredi',
-    creditsButton: 'Fazladan kredi için WhatsApp danışmanımıza yazınız',
+    creditsButton: 'CRO-X Ultra\'ya Git',
     logout: 'Çıkış Yap',
     hide: 'Gizle',
     show: 'Göster',
