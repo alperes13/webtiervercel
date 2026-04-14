@@ -12,12 +12,9 @@ export const SITE_CONFIG = {
 };
 
 export const ENDPOINTS = {
-  register: '/api/auth/register',
-  login: '/api/auth/login',
-  googleCallback: '/api/auth/google/callback',
-  creditsBalance: '/api/credits/balance',
   analysisMini: '/api/analysis/mini',
   analysisUltra: '/api/analysis/ultra',
+  analysisList: '/api/analysis/list',
   paymentCreate: '/api/payment/create',
 };
 

@@ -396,18 +396,6 @@ h1, h2, h3, h4, h5, h6 {
   color: transparent;
 }
 
-/* ─── Light page override ─── */
-/* Ana sayfa koyu temada kalır; diğer sayfalar bu class ile açık temaya geçer */
-.light-page {
-  background-color: #ffffff !important;
-  color: #0F172A !important;
-}
-
-.light-page,
-.light-page * {
-  color-scheme: light;
-}
-
 .hero-metallic-placeholder {
   display: inline-block;
   color: transparent;

@@ -7,7 +7,7 @@ export const metadata: Metadata = {
 
 export default function SaleContractPage() {
   return (
-    <div className="light-page min-h-screen pt-16 lg:pt-20">
+    <div className="pt-16 lg:pt-20">
       <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
         <h1 className="font-[family-name:var(--font-clash-display)] text-3xl font-bold text-[var(--color-text)] sm:text-4xl">
           Mesafeli Satış Sözleşmesi

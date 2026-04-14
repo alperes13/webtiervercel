@@ -86,3 +86,7 @@ export async function createPayment(
 ): Promise<{ success: boolean; payment: { id: string; merchant_oid: string; token: string; amount: number; credit_amount: number }; iframe_url: string }> {
   return postJson(ENDPOINTS.paymentCreate, { credit_amount: creditAmount }, token);
 }
+
+export async function getAnalyses(token: string): Promise<{ success: boolean; analyses: any[] }> {
+  return getJson(ENDPOINTS.analysisList, token);
+}

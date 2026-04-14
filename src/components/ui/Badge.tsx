@@ -10,6 +10,7 @@ const variantStyles = {
   default: 'bg-[var(--color-surface-light)] text-[var(--color-text-secondary)] border-[var(--color-border)]',
   accent: 'bg-[var(--color-accent)]/10 text-[var(--color-accent)] border-[var(--color-accent)]/20',
   success: 'bg-[var(--color-success)]/10 text-[var(--color-success)] border-[var(--color-success)]/20',
+  warning: 'bg-amber-500/10 text-amber-500 border-amber-500/20',
 };
 
 export default function Badge({ children, variant = 'default', className }: BadgeProps) {

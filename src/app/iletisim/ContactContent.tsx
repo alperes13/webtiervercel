@@ -38,7 +38,7 @@ export default function ContactContent() {
   ];
 
   return (
-    <div className="light-page min-h-screen pt-16 lg:pt-20">
+    <div className="pt-16 lg:pt-20">
       {/* Hero */}
       <section className="py-20 lg:py-28">
         <div className="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">

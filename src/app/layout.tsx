@@ -5,6 +5,7 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import Navbar from "@/components/layout/Navbar";
 import DynamicFooter from "@/components/layout/DynamicFooter";
+import MainWrapper from "@/components/layout/MainWrapper";
 import ScrollToTop from "@/components/shared/ScrollToTop";
 import CookieConsent from "@/components/shared/CookieConsent";
 import StructuredData from "@/components/shared/StructuredData";
@@ -92,7 +93,7 @@ export default function RootLayout({
         <LanguageProvider>
           <AuthProvider>
             <Navbar />
-            <main className="relative w-full overflow-x-clip">{children}</main>
+            <MainWrapper>{children}</MainWrapper>
             <DynamicFooter />
             <CookieConsent />
             <ScrollToTop />
