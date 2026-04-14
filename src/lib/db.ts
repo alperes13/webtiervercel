@@ -2,13 +2,17 @@ import { Pool, type QueryResult, type QueryResultRow } from 'pg';
 
 const globalForPg = globalThis as unknown as { pgPool?: Pool };
 
-function createPool(): Pool {
+function createPool(): Pool | null {
   const connectionString =
     process.env.POSTGRES_PRISMA_URL ||
     process.env.POSTGRES_URL ||
     process.env.POSTGRES_URL_NON_POOLING;
 
   if (!connectionString) {
+    if (process.env.NODE_ENV === 'production') {
+      console.warn('[db] POSTGRES_URL is not set. Database operations will fail if called.');
+      return null;
+    }
     throw new Error('POSTGRES_URL is not set');
   }
 
@@ -20,7 +24,7 @@ function createPool(): Pool {
   });
 }
 
-export const pool: Pool = globalForPg.pgPool ?? createPool();
+export const pool: Pool = (globalForPg.pgPool ?? createPool()) as Pool;
 
 if (process.env.NODE_ENV !== 'production') {
   globalForPg.pgPool = pool;
@@ -30,6 +34,9 @@ export async function query<T extends QueryResultRow = QueryResultRow>(
   sql: string,
   params: unknown[] = []
 ): Promise<QueryResult<T>> {
+  if (!pool) {
+    throw new Error('Database pool is not initialized. Check your POSTGRES_URL environment variable.');
+  }
   const start = Date.now();
   try {
     const result = await pool.query<T>(sql, params as never[]);
