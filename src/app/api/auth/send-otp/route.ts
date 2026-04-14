@@ -12,28 +12,36 @@ function generateOtp(): string {
   return String(Math.floor(100000 + Math.random() * 900000));
 }
 
-async function sendWhatsAppOTP(phone: string, code: string): Promise<boolean> {
-  const url = process.env.WHATSAPP_API_URL;
-  const token = process.env.WHATSAPP_API_TOKEN;
-  if (!url || !token) {
-    console.log(`[otp] DEV STUB — phone=${phone} code=${code}`);
+async function sendNetgsmSMS(phone: string, code: string): Promise<boolean> {
+  const usercode = process.env.NETGSM_USERCODE;
+  const password = process.env.NETGSM_PASSWORD;
+  const header = process.env.NETGSM_HEADER;
+
+  if (!usercode || !password || !header) {
+    console.log(`[otp] DEV STUB (NETGSM) — phone=${phone} code=${code}`);
     return true;
   }
+
+  // Netgsm expects phone without +90 (e.g. 5xxxxxxxxx)
+  const cleanPhone = phone.replace('+90', '').replace(/\s/g, '');
+
   try {
-    const res = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        phone,
-        message: `Webtier doğrulama kodunuz: ${code}\n\nBu kodu kimseyle paylaşmayın.`,
-      }),
+    const params = new URLSearchParams({
+      usercode,
+      password,
+      gsm: cleanPhone,
+      message: `Webtier dogrulama kodunuz: ${code}. Bu kodu kimseyle paylasmayin.`,
+      msgheader: header,
+      dil: 'TR',
     });
-    return res.ok;
+
+    const res = await fetch(`https://api.netgsm.com.tr/sms/send/get/?${params.toString()}`);
+    const text = await res.text();
+
+    // Netgsm returns "00" or "01 32132" for success (00 means job started)
+    return text.startsWith('00') || text.startsWith('01');
   } catch (err) {
-    console.error('[otp] whatsapp send failed', err);
+    console.error('[otp] netgsm send failed', err);
     return false;
   }
 }
@@ -64,7 +72,7 @@ export async function POST(request: Request) {
     [normalized.phone, code, expiresAt]
   );
 
-  const sent = await sendWhatsAppOTP(normalized.phone, code);
+  const sent = await sendNetgsmSMS(normalized.phone, code);
   if (!sent) {
     return NextResponse.json({ success: false, error: 'OTP gönderilemedi' }, { status: 502 });
   }
