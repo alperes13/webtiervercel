@@ -14,6 +14,7 @@ const de: Translations = {
     salesAgreement: 'Kaufvertrag',
     privacy: 'Datenschutz & Cookies',
     freeAnalysis: 'Kostenlose Analyse',
+    retrainer: 'Webtier Retrainer',
   },
   hero: {
     badge: 'Türkei\'s CRO-fokussiertes KI-Modul',

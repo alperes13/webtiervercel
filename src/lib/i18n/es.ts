@@ -14,6 +14,7 @@ const es: Translations = {
     salesAgreement: 'Contrato de Venta',
     privacy: 'Privacidad & Cookies',
     freeAnalysis: 'Análisis Gratuito',
+    retrainer: 'Webtier Retrainer',
   },
   hero: {
     badge: 'El módulo de IA turco centrado en CRO',
