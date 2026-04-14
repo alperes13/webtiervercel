@@ -1,7 +1,6 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { query, queryOne } from '@/lib/db';
 import { getUserFromRequest } from '@/lib/auth';
-import { getUserPhoneVerifiedById } from '@/lib/phone-verification';
 
 export const runtime = 'nodejs';
 
@@ -22,14 +21,6 @@ function isValidUrl(v: string): boolean {
 export async function POST(request: NextRequest) {
   const user = await getUserFromRequest(request);
   if (!user) return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
-
-  const phoneVerified = await getUserPhoneVerifiedById(user.sub);
-  if (!phoneVerified) {
-    return NextResponse.json(
-      { success: false, error: 'Analiz başlatmak için önce telefon numaranızı dashboard üzerinden doğrulayın.' },
-      { status: 403 }
-    );
-  }
 
   const body = (await request.json().catch(() => ({}))) as Body;
   if (!body.website_url || !isValidUrl(body.website_url)) {

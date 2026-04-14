@@ -33,20 +33,8 @@ export interface Translations {
     errors: {
       emptyUrl: string;
       invalidUrl: string;
-      invalidPhone: string;
+      invalidEmail: string;
       timeout: string;
-    };
-    modal: {
-      phoneTitle: string;
-      phoneDesc: string;
-      phoneButton: string;
-      phoneSending: string;
-      phoneNote: string;
-      otpTitle: string;
-      otpSentTo: string;
-      otpEnterCode: string;
-      otpVerifying: string;
-      otpAttempts: string;
     };
   };
   croxUltra: {
@@ -308,20 +296,8 @@ const tr: Translations = {
     errors: {
       emptyUrl: 'Lütfen web sitenizin URL\'sini girin.',
       invalidUrl: 'Geçerli bir URL girin. Örn: websiteniz.com',
-      invalidPhone: 'Geçerli bir Türkiye telefon numarası girin. (5XX XXX XX XX)',
+      invalidEmail: 'Geçerli bir e-posta adresi girin.',
       timeout: 'Çok fazla deneme. {minutes} dakika sonra tekrar deneyin.',
-    },
-    modal: {
-      phoneTitle: 'Telefon Numaranız',
-      phoneDesc: 'Analiz sonuçlarınızı iletebilmemiz ve uzman ekibimizin sizinle iletişime geçebilmesi için telefon numaranızı bırakın.',
-      phoneButton: 'Doğrulama Kodu Gönder',
-      phoneSending: 'Gönderiliyor...',
-      phoneNote: 'SMS ile 6 haneli doğrulama kodu gönderilecektir.',
-      otpTitle: 'Doğrulama Kodu',
-      otpSentTo: 'numarasına gönderilen',
-      otpEnterCode: '6 haneli kodu girin',
-      otpVerifying: 'Doğrulanıyor...',
-      otpAttempts: 'deneme hakkınız kaldı',
     },
   },
   croxUltra: {

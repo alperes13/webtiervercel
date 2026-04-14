@@ -39,20 +39,8 @@ const fr: Translations = {
     errors: {
       emptyUrl: 'Veuillez saisir l\'URL de votre site web.',
       invalidUrl: 'Saisissez une URL valide. ex : votresite.fr',
-      invalidPhone: 'Saisissez un numéro de téléphone valide.',
+      invalidEmail: 'Saisissez une adresse e-mail valide.',
       timeout: 'Trop de tentatives. Réessayez dans {minutes} minutes.',
-    },
-    modal: {
-      phoneTitle: 'Votre numéro de téléphone',
-      phoneDesc: 'Laissez votre numéro de téléphone afin que nous puissions vous envoyer les résultats de votre analyse et que notre équipe d\'experts puisse vous contacter.',
-      phoneButton: 'Envoyer le code de vérification',
-      phoneSending: 'Envoi en cours...',
-      phoneNote: 'Un code de vérification à 6 chiffres sera envoyé par SMS.',
-      otpTitle: 'Code de vérification',
-      otpSentTo: 'envoyé au',
-      otpEnterCode: 'Saisissez le code à 6 chiffres',
-      otpVerifying: 'Vérification en cours...',
-      otpAttempts: 'tentatives restantes',
     },
   },
   croxUltra: {

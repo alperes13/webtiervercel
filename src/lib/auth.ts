@@ -11,12 +11,12 @@ function getSecret(): Uint8Array {
 
 export interface JWTPayload {
   sub: string;
-  phone: string;
+  email: string;
 }
 
 export async function signSession(payload: JWTPayload): Promise<{ token: string; expiresAt: number }> {
   const expiresAt = Date.now() + SESSION_TTL_SECONDS * 1000;
-  const token = await new SignJWT({ phone: payload.phone })
+  const token = await new SignJWT({ email: payload.email })
     .setProtectedHeader({ alg: 'HS256' })
     .setSubject(payload.sub)
     .setIssuedAt()
@@ -28,8 +28,16 @@ export async function signSession(payload: JWTPayload): Promise<{ token: string;
 export async function verifySession(token: string): Promise<JWTPayload | null> {
   try {
     const { payload } = await jwtVerify(token, getSecret());
-    if (!payload.sub || typeof payload.phone !== 'string') return null;
-    return { sub: payload.sub, phone: payload.phone };
+    if (!payload.sub) return null;
+    // Support both old tokens (phone field) and new tokens (email field)
+    const email =
+      typeof payload.email === 'string'
+        ? payload.email
+        : typeof payload.phone === 'string'
+          ? payload.phone
+          : null;
+    if (!email) return null;
+    return { sub: payload.sub, email };
   } catch {
     return null;
   }

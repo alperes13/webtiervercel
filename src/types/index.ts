@@ -1,21 +1,14 @@
 export interface UserSession {
   token: string;
-  phone: string;
-  phoneRaw: string;
-  phoneVerified: boolean;
-  email?: string;
+  email: string;
+  phone?: string;
+  phoneRaw?: string;
   createdAt: number;
   expiresAt: number;
   analysisStatus: 'pending' | 'completed' | 'none';
   creditsMini: number;
   creditsUltra: number;
-}
-
-export interface OTPState {
-  attemptsLeft: number;
-  timeoutUntil: number | null;
-  phone: string;
-  contactType: 'phone' | 'email';
+  oauthProvider?: string;
 }
 
 export interface AnalysisRequest {

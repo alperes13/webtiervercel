@@ -25,37 +25,35 @@ async function getJson<T>(url: string, token?: string): Promise<T> {
   return data as T;
 }
 
-export async function sendOTP(
-  phone: string,
-  purpose: 'register' | 'reset' | 'verify' = 'register'
-): Promise<{ success: boolean; sessionId?: string; expiresIn?: number }> {
-  return postJson(ENDPOINTS.sendOTP, { phone, purpose });
-}
-
 export async function registerUser(
-  phone: string,
+  email: string,
   password: string
 ): Promise<{ success: boolean; session: UserSession }> {
-  return postJson(ENDPOINTS.register, { phone, password });
+  return postJson(ENDPOINTS.register, { email, password });
 }
 
 export async function loginUser(
-  phone: string,
+  email: string,
   password: string
 ): Promise<{ success: boolean; session: UserSession }> {
-  return postJson(ENDPOINTS.login, { phone, password });
+  return postJson(ENDPOINTS.login, { email, password });
 }
 
-export async function resetPassword(
-  phone: string,
-  otpCode: string,
-  password: string
-): Promise<{ success: boolean }> {
-  return postJson(ENDPOINTS.resetPassword, { phone, otp_code: otpCode, password });
-}
-
-export async function verifyOTP(phone: string, code: string): Promise<{ success: boolean; session: UserSession }> {
-  return postJson(ENDPOINTS.verifyOTP, { phone, otp_code: code });
+export function redirectToGoogleOAuth(): void {
+  const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
+  if (!clientId) {
+    console.error('NEXT_PUBLIC_GOOGLE_CLIENT_ID is not set');
+    return;
+  }
+  const params = new URLSearchParams({
+    client_id: clientId,
+    redirect_uri: `${window.location.origin}/api/auth/google/callback`,
+    response_type: 'code',
+    scope: 'openid email profile',
+    access_type: 'offline',
+    prompt: 'select_account',
+  });
+  window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`;
 }
 
 export async function getCreditsBalance(token: string): Promise<{ success: boolean; credits: { mini: number; ultra: number; total: number } }> {

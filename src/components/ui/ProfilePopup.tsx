@@ -2,10 +2,10 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { X, Phone, BarChart3, CreditCard, LogOut, Eye, EyeOff, MessageCircle } from 'lucide-react';
+import { X, Mail, BarChart3, CreditCard, LogOut, Eye, EyeOff, MessageCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '@/contexts/AuthContext';
-import { maskPhone } from '@/lib/validators';
+import { maskEmail } from '@/lib/validators';
 import { SITE_CONFIG } from '@/lib/constants';
 import { getWhatsAppUrl } from '@/lib/utils';
 import { Button } from './Button';
@@ -21,7 +21,7 @@ interface ProfilePopupProps {
 export default function ProfilePopup({ open, onClose }: ProfilePopupProps) {
   const { session, logout } = useAuth();
   const { t } = useLanguage();
-  const [showPhone, setShowPhone] = useState(false);
+  const [showEmail, setShowEmail] = useState(false);
   const [purchaseOpen, setPurchaseOpen] = useState(false);
 
   if (!session) return null;
@@ -64,22 +64,22 @@ export default function ProfilePopup({ open, onClose }: ProfilePopupProps) {
                 </button>
               </div>
 
-              {/* Phone */}
+              {/* Email */}
               <div className="mb-4 rounded-xl bg-[var(--color-surface-card)] p-4">
                 <div className="flex items-center gap-3">
-                  <Phone className="h-4 w-4 text-[var(--color-text-muted)]" />
+                  <Mail className="h-4 w-4 text-[var(--color-text-muted)]" />
                   <div className="flex-1">
-                    <p className="text-xs text-[var(--color-text-muted)]">{t.profile.phone}</p>
+                    <p className="text-xs text-[var(--color-text-muted)]">E-posta</p>
                     <p className="text-sm font-medium text-[var(--color-text)]">
-                      {showPhone ? session.phoneRaw : maskPhone(session.phoneRaw)}
+                      {showEmail ? session.email : maskEmail(session.email)}
                     </p>
                   </div>
                   <button
-                    onClick={() => setShowPhone(!showPhone)}
+                    onClick={() => setShowEmail(!showEmail)}
                     className="text-xs text-[var(--color-accent)] hover:underline flex items-center gap-1"
                   >
-                    {showPhone ? <EyeOff className="h-3 w-3" /> : <Eye className="h-3 w-3" />}
-                    {showPhone ? t.profile.hide : t.profile.show}
+                    {showEmail ? <EyeOff className="h-3 w-3" /> : <Eye className="h-3 w-3" />}
+                    {showEmail ? t.profile.hide : t.profile.show}
                   </button>
                 </div>
               </div>
@@ -105,19 +105,6 @@ export default function ProfilePopup({ open, onClose }: ProfilePopupProps) {
                         {t.profile.statusNone}
                       </p>
                     )}
-                  </div>
-                </div>
-              </div>
-
-              {/* Verification Status */}
-              <div className="mb-4 rounded-xl bg-[var(--color-surface-card)] p-4">
-                <div className="flex items-center gap-3">
-                  <Phone className="h-4 w-4 text-[var(--color-text-muted)]" />
-                  <div className="flex-1">
-                    <p className="text-xs text-[var(--color-text-muted)]">Telefon Doğrulama</p>
-                    <p className={`text-sm font-medium ${session.phoneVerified ? 'text-[var(--color-success)]' : 'text-[var(--color-warning)]'}`}>
-                      {session.phoneVerified ? 'Doğrulandı' : 'Doğrulanmadı'}
-                    </p>
                   </div>
                 </div>
               </div>

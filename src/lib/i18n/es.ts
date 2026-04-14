@@ -39,20 +39,8 @@ const es: Translations = {
     errors: {
       emptyUrl: 'Por favor, introduzca la URL de su sitio web.',
       invalidUrl: 'Introduzca una URL válida. Ej: susitio.es',
-      invalidPhone: 'Introduzca un número de teléfono válido.',
+      invalidEmail: 'Introduzca una dirección de correo electrónico válida.',
       timeout: 'Demasiados intentos. Inténtelo de nuevo en {minutes} minutos.',
-    },
-    modal: {
-      phoneTitle: 'Su número de teléfono',
-      phoneDesc: 'Deje su número de teléfono para que podamos enviarle los resultados del análisis y nuestro equipo de expertos pueda contactarle.',
-      phoneButton: 'Enviar código de verificación',
-      phoneSending: 'Enviando...',
-      phoneNote: 'Se enviará un código de verificación de 6 dígitos por SMS.',
-      otpTitle: 'Código de verificación',
-      otpSentTo: 'enviado al',
-      otpEnterCode: 'Introduzca el código de 6 dígitos',
-      otpVerifying: 'Verificando...',
-      otpAttempts: 'intentos restantes',
     },
   },
   croxUltra: {

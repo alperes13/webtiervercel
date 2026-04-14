@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { motion, animate } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
-import LoginModal from '@/components/ui/LoginModal';
 import { AuroraBackground } from '@/components/ui/aurora-background';
 import { GradientText } from '@/components/ui/gradient-text';
 import { HeroInput, type CROModel } from '@/components/ui/animated-ai-input';
@@ -21,7 +20,6 @@ export default function HeroSection() {
   const [urlError, setUrlError] = useState('');
   const [isFocused, setIsFocused] = useState(false);
   const [selectedModel, setSelectedModel] = useState<CROModel>('CRO-X MINI');
-  const [loginOpen, setLoginOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const { isAuthenticated, session, updateSession } = useAuth();
@@ -40,13 +38,7 @@ export default function HeroSection() {
     setUrlError('');
 
     if (!isAuthenticated || !session) {
-      setLoginOpen(true);
-      return;
-    }
-
-    if (!session.phoneVerified) {
-      setUrlError('Analiz başlatmadan önce dashboard üzerinden telefon doğrulaması yapmalısınız.');
-      router.push('/dashboard');
+      router.push('/auth/login');
       return;
     }
 
@@ -285,7 +277,6 @@ export default function HeroSection() {
         </motion.div>
       </div>
 
-      <LoginModal open={loginOpen} onClose={() => setLoginOpen(false)} initialMode="register" />
     </AuroraBackground>
   );
 }

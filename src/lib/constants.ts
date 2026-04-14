@@ -11,19 +11,10 @@ export const SITE_CONFIG = {
   whatsappMessage: 'Merhaba, web sitem hakkında bilgi almak istiyorum.',
 };
 
-export const OTP_CONFIG = {
-  maxAttempts: 5,
-  timeoutDuration: 30 * 60,
-  otpLength: 6,
-  phoneFormat: /^5\d{9}$/,
-};
-
 export const ENDPOINTS = {
   register: '/api/auth/register',
   login: '/api/auth/login',
-  sendOTP: '/api/auth/send-otp',
-  verifyOTP: '/api/auth/verify-otp',
-  resetPassword: '/api/auth/reset-password',
+  googleCallback: '/api/auth/google/callback',
   creditsBalance: '/api/credits/balance',
   analysisMini: '/api/analysis/mini',
   analysisUltra: '/api/analysis/ultra',
