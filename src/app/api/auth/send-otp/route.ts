@@ -47,35 +47,57 @@ async function sendNetgsmSMS(phone: string, code: string): Promise<boolean> {
 }
 
 export async function POST(request: Request) {
-  const body = (await request.json().catch(() => ({}))) as { phone?: string; purpose?: OtpPurpose };
-  const normalized = normalizePhone(body.phone ?? '');
-  if (!normalized) {
-    return NextResponse.json({ success: false, error: 'Geçersiz telefon numarası' }, { status: 400 });
+  try {
+    const body = (await request.json().catch(() => ({}))) as { phone?: string; purpose?: OtpPurpose };
+    const normalized = normalizePhone(body.phone ?? '');
+    
+    if (!normalized) {
+      return NextResponse.json({ success: false, error: 'Geçersiz telefon numarası' }, { status: 400 });
+    }
+
+    const purpose: OtpPurpose = body.purpose === 'reset' ? 'reset' : 'register';
+    
+    // Check if user exists
+    const existing = await queryOne<{ id: string }>('SELECT id FROM users WHERE phone = $1', [normalized.phone]);
+
+    if (purpose === 'register' && existing) {
+      return NextResponse.json({ success: false, error: 'Bu numara zaten kayıtlı. Lütfen giriş yapın.' }, { status: 409 });
+    }
+    if (purpose === 'reset' && !existing) {
+      return NextResponse.json({ success: false, error: 'Bu numaraya ait kayıt bulunamadı.' }, { status: 404 });
+    }
+
+    const code = generateOtp();
+    const expiresAt = new Date(Date.now() + OTP_TTL_MINUTES * 60_000);
+
+    // Save session
+    const session = await queryOne<{ id: string }>(
+      `INSERT INTO otp_sessions (phone, otp_code, expires_at)
+       VALUES ($1, $2, $3) RETURNING id`,
+      [normalized.phone, code, expiresAt]
+    );
+
+    if (!session) {
+      return NextResponse.json({ success: false, error: 'OTP oturumu oluşturulamadı (DB hatası)' }, { status: 500 });
+    }
+
+    const sent = await sendNetgsmSMS(normalized.phone, code);
+    if (!sent) {
+      return NextResponse.json({ success: false, error: 'SMS gönderim servisinden yanıt alınamadı' }, { status: 502 });
+    }
+
+    return NextResponse.json({ 
+      success: true, 
+      sessionId: session.id, 
+      expiresIn: OTP_TTL_MINUTES * 60 
+    });
+  } catch (error: any) {
+    console.error('[otp] critical route failure:', error);
+    return NextResponse.json({ 
+      success: false, 
+      error: 'Sunucu hatası oluştu',
+      details: process.env.NODE_ENV === 'development' ? error.message : undefined,
+      code: error.code // PG provides error codes like '42P01' for missing tables
+    }, { status: 500 });
   }
-
-  const purpose: OtpPurpose = body.purpose === 'reset' ? 'reset' : 'register';
-  const existing = await queryOne<{ id: string }>('SELECT id FROM users WHERE phone = $1', [normalized.phone]);
-
-  if (purpose === 'register' && existing) {
-    return NextResponse.json({ success: false, error: 'Bu numara zaten kayıtlı. Lütfen giriş yapın.' }, { status: 409 });
-  }
-  if (purpose === 'reset' && !existing) {
-    return NextResponse.json({ success: false, error: 'Bu numaraya ait kayıt bulunamadı.' }, { status: 404 });
-  }
-
-  const code = generateOtp();
-  const expiresAt = new Date(Date.now() + OTP_TTL_MINUTES * 60_000);
-
-  const session = await queryOne<{ id: string }>(
-    `INSERT INTO otp_sessions (phone, otp_code, expires_at)
-     VALUES ($1, $2, $3) RETURNING id`,
-    [normalized.phone, code, expiresAt]
-  );
-
-  const sent = await sendNetgsmSMS(normalized.phone, code);
-  if (!sent) {
-    return NextResponse.json({ success: false, error: 'OTP gönderilemedi' }, { status: 502 });
-  }
-
-  return NextResponse.json({ success: true, sessionId: session?.id, expiresIn: OTP_TTL_MINUTES * 60 });
 }
