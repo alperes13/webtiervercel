@@ -68,6 +68,7 @@ export async function POST(request: Request) {
         analysisStatus: 'none' as const,
         creditsMini: inserted.mini_credits,
         creditsUltra: inserted.ultra_credits,
+        emailVerified: false,
       },
     });
   } catch (err: any) {

@@ -32,6 +32,7 @@ function AuthCallbackInner() {
       analysisStatus: 'none',
       creditsMini,
       creditsUltra,
+      emailVerified: true,
       ...(oauthProvider ? { oauthProvider } : {}),
     };
 
