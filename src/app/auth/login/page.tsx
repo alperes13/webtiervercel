@@ -38,7 +38,7 @@ export default function LoginPage() {
   };
 
   return (
-    <section className="min-h-screen bg-[var(--color-bg)]">
+    <section className="light-page min-h-screen bg-white">
       <div className="flex min-h-screen items-center justify-center px-4">
         <div className="flex w-full max-w-sm flex-col items-center gap-y-8 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] px-6 py-12 shadow-xl">
           {/* Logo */}

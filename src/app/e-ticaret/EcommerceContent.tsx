@@ -24,7 +24,7 @@ export default function EcommerceContent() {
   ];
 
   return (
-    <div className="pt-24 lg:pt-32">
+    <div className="light-page min-h-screen pt-24 lg:pt-32">
       {/* Hero */}
       <section className="relative py-16 lg:py-24 overflow-hidden">
         <div className="absolute inset-0">

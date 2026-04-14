@@ -5,7 +5,9 @@ const globalForPg = globalThis as unknown as { pgPool?: Pool };
 function createPool(): Pool | null {
   const connectionString =
     process.env.POSTGRES_PRISMA_URL ||
+    process.env.PRISMA_DATABASE_URL ||
     process.env.POSTGRES_URL ||
+    process.env.DATABASE_URL ||
     process.env.POSTGRES_URL_NON_POOLING;
 
   if (!connectionString) {
