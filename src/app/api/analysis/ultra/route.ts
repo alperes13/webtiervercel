@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { query, queryOne } from '@/lib/db';
 import { getUserFromRequest } from '@/lib/auth';
+import { getUserPhoneVerifiedById } from '@/lib/phone-verification';
 
 export const runtime = 'nodejs';
 
@@ -25,18 +26,8 @@ export async function POST(request: NextRequest) {
   const user = await getUserFromRequest(request);
   if (!user) return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
 
-  const account = await queryOne<{ phone_verified: boolean }>(
-    `SELECT CASE WHEN LOWER(COALESCE(metadata->>'phoneVerified', 'false')) = 'true' THEN true ELSE false END AS phone_verified
-     FROM users
-     WHERE id = $1`,
-    [user.sub]
-  );
-
-  if (!account) {
-    return NextResponse.json({ success: false, error: 'Kullanıcı bulunamadı' }, { status: 404 });
-  }
-
-  if (!account.phone_verified) {
+  const phoneVerified = await getUserPhoneVerifiedById(user.sub);
+  if (!phoneVerified) {
     return NextResponse.json(
       { success: false, error: 'Analiz başlatmak için önce telefon numaranızı dashboard üzerinden doğrulayın.' },
       { status: 403 }

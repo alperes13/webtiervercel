@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { query, queryOne } from '@/lib/db';
 import { normalizePhone } from '@/lib/phone';
 import { signSession } from '@/lib/auth';
+import { markUserPhoneVerified } from '@/lib/phone-verification';
 
 export const runtime = 'nodejs';
 
@@ -28,7 +29,6 @@ interface UserRow {
   mini_credits: number;
   ultra_credits: number;
   created_at: Date;
-  phone_verified: boolean;
 }
 
 export async function POST(request: Request) {
@@ -64,14 +64,13 @@ export async function POST(request: Request) {
 
   await query('UPDATE otp_sessions SET verified = true, verified_at = NOW() WHERE id = $1', [otp.id]);
 
+  await markUserPhoneVerified(normalized.phone);
+
   const user = await queryOne<UserRow>(
     `UPDATE users
-     SET
-       last_login = NOW(),
-       metadata = jsonb_set(COALESCE(metadata, '{}'::jsonb), '{phoneVerified}', 'true'::jsonb, true)
+     SET last_login = NOW()
      WHERE phone = $1
-     RETURNING id, phone, phone_raw, email, mini_credits, ultra_credits, created_at,
-       CASE WHEN LOWER(COALESCE(metadata->>'phoneVerified', 'false')) = 'true' THEN true ELSE false END AS phone_verified`,
+     RETURNING id, phone, phone_raw, email, mini_credits, ultra_credits, created_at`,
     [normalized.phone]
   );
 
@@ -87,7 +86,7 @@ export async function POST(request: Request) {
       token,
       phone: user.phone,
       phoneRaw: user.phone_raw,
-      phoneVerified: user.phone_verified,
+      phoneVerified: true,
       email: user.email,
       createdAt: user.created_at.getTime(),
       expiresAt,

@@ -3,6 +3,7 @@ import { query, queryOne } from '@/lib/db';
 import { normalizePhone } from '@/lib/phone';
 import { verifyPassword } from '@/lib/password';
 import { signSession } from '@/lib/auth';
+import { getUserPhoneVerifiedByPhone } from '@/lib/phone-verification';
 
 export const runtime = 'nodejs';
 
@@ -21,7 +22,6 @@ interface UserRow {
   ultra_credits: number;
   created_at: Date;
   is_active: boolean;
-  phone_verified: boolean;
 }
 
 export async function POST(request: Request) {
@@ -34,8 +34,7 @@ export async function POST(request: Request) {
   }
 
   const user = await queryOne<UserRow>(
-    `SELECT id, phone, phone_raw, email, password_hash, mini_credits, ultra_credits, created_at, is_active,
-      CASE WHEN LOWER(COALESCE(metadata->>'phoneVerified', 'false')) = 'true' THEN true ELSE false END AS phone_verified
+    `SELECT id, phone, phone_raw, email, password_hash, mini_credits, ultra_credits, created_at, is_active
      FROM users WHERE phone = $1`,
     [normalized.phone]
   );
@@ -53,6 +52,7 @@ export async function POST(request: Request) {
   }
 
   await query('UPDATE users SET last_login = NOW() WHERE id = $1', [user.id]);
+  const phoneVerified = await getUserPhoneVerifiedByPhone(user.phone);
 
   const { token, expiresAt } = await signSession({ sub: user.id, phone: user.phone });
 
@@ -62,7 +62,7 @@ export async function POST(request: Request) {
       token,
       phone: user.phone,
       phoneRaw: user.phone_raw,
-      phoneVerified: user.phone_verified,
+      phoneVerified,
       email: user.email,
       createdAt: user.created_at.getTime(),
       expiresAt,

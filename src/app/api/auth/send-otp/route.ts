@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { query, queryOne } from '@/lib/db';
 import { normalizePhone } from '@/lib/phone';
+import { getUserPhoneVerifiedByPhone } from '@/lib/phone-verification';
 
 export const runtime = 'nodejs';
 
@@ -150,13 +151,7 @@ export async function POST(request: Request) {
     if (body.purpose === 'reset') purpose = 'reset';
     if (body.purpose === 'verify') purpose = 'verify';
 
-    const existing = await queryOne<{ id: string; phone_verified: boolean }>(
-      `SELECT id,
-        CASE WHEN LOWER(COALESCE(metadata->>'phoneVerified', 'false')) = 'true' THEN true ELSE false END AS phone_verified
-       FROM users
-       WHERE phone = $1`,
-      [normalized.phone]
-    );
+    const existing = await queryOne<{ id: string }>('SELECT id FROM users WHERE phone = $1', [normalized.phone]);
 
     if (purpose === 'register' && existing) {
       return NextResponse.json({ success: false, error: 'Bu numara zaten kayıtlı. Lütfen giriş yapın.' }, { status: 409 });
@@ -167,8 +162,11 @@ export async function POST(request: Request) {
     if (purpose === 'verify' && !existing) {
       return NextResponse.json({ success: false, error: 'Bu numaraya ait hesap bulunamadı.' }, { status: 404 });
     }
-    if (purpose === 'verify' && existing?.phone_verified) {
-      return NextResponse.json({ success: false, error: 'Bu telefon numarası zaten doğrulandı.' }, { status: 409 });
+    if (purpose === 'verify' && existing) {
+      const alreadyVerified = await getUserPhoneVerifiedByPhone(normalized.phone);
+      if (alreadyVerified) {
+        return NextResponse.json({ success: false, error: 'Bu telefon numarası zaten doğrulandı.' }, { status: 409 });
+      }
     }
 
     const code = generateOtp();

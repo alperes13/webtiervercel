@@ -19,7 +19,6 @@ interface UserRow {
   mini_credits: number;
   ultra_credits: number;
   created_at: Date;
-  phone_verified: boolean;
 }
 
 export async function POST(request: Request) {
@@ -41,10 +40,9 @@ export async function POST(request: Request) {
   const passwordHash = await hashPassword(body.password as string);
 
   const inserted = await queryOne<UserRow>(
-    `INSERT INTO users (phone, phone_raw, password_hash, mini_credits, ultra_credits, last_login, metadata)
-     VALUES ($1, $2, $3, 2, 0, CURRENT_TIMESTAMP, jsonb_build_object('phoneVerified', false))
-     RETURNING id, phone, phone_raw, email, mini_credits, ultra_credits, created_at,
-       CASE WHEN LOWER(COALESCE(metadata->>'phoneVerified', 'false')) = 'true' THEN true ELSE false END AS phone_verified`,
+    `INSERT INTO users (phone, phone_raw, password_hash, mini_credits, ultra_credits, last_login)
+     VALUES ($1, $2, $3, 2, 0, CURRENT_TIMESTAMP)
+     RETURNING id, phone, phone_raw, email, mini_credits, ultra_credits, created_at`,
     [normalized.phone, normalized.phoneRaw, passwordHash]
   );
 
@@ -66,7 +64,7 @@ export async function POST(request: Request) {
       token,
       phone: inserted.phone,
       phoneRaw: inserted.phone_raw,
-      phoneVerified: inserted.phone_verified,
+      phoneVerified: false,
       email: inserted.email,
       createdAt: inserted.created_at.getTime(),
       expiresAt,
