@@ -12,47 +12,47 @@ export default function DashboardHeader() {
   if (!session) return null;
 
   return (
-    <div className="space-y-8">
-      <div className="flex flex-col gap-2">
-        <h1 className="text-3xl font-bold tracking-tight text-[var(--color-text)]">
+    <div className="space-y-4">
+      <div className="flex flex-col">
+        <h1 className="text-xl font-bold tracking-tight text-slate-900">
           Merhaba, {session.email.split('@')[0]}
         </h1>
-        <p className="text-[var(--color-text-secondary)]">
-          Webtier Dashboard'a hoş geldiniz. Analizlerinizi yönetebilir ve yeni analizler başlatabilirsiniz.
+        <p className="text-xs text-slate-500">
+          Webtier Dashboard'a hoş geldiniz.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        <Card className="p-6 relative overflow-hidden group">
-          <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-            <LayoutDashboard className="h-16 w-16" />
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+        <Card className="p-4 relative overflow-hidden group border-zinc-200 bg-white">
+          <div className="absolute top-0 right-0 p-2 opacity-5">
+            <LayoutDashboard className="h-10 w-10" />
           </div>
-          <p className="text-sm font-medium text-[var(--color-text-muted)] uppercase tracking-wider">Mini Kredi</p>
-          <div className="mt-2 flex items-baseline gap-2">
-            <span className="text-4xl font-bold text-[var(--color-text)]">{session.creditsMini}</span>
-            <span className="text-xs text-[var(--color-text-muted)]">Analiz Hakkı</span>
-          </div>
-        </Card>
-
-        <Card className="p-6 border-cyan-500/20 bg-cyan-500/5 relative overflow-hidden group">
-          <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity text-cyan-500">
-            <Zap className="h-16 w-16" />
-          </div>
-          <p className="text-sm font-medium text-cyan-500 uppercase tracking-wider">Ultra Kredi</p>
-          <div className="mt-2 flex items-baseline gap-2">
-            <span className="text-4xl font-bold text-[var(--color-text)]">{session.creditsUltra}</span>
-            <span className="text-xs text-[var(--color-text-muted)]">Premium Analiz</span>
+          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Mini Krediler</p>
+          <div className="mt-1 flex items-baseline gap-1.5">
+            <span className="text-2xl font-black text-slate-900">{session.creditsMini}</span>
+            <span className="text-[10px] text-slate-400 font-bold">HAK</span>
           </div>
         </Card>
 
-        <Card className="p-6 relative overflow-hidden group hidden lg:block">
-          <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-            <Target className="h-16 w-16" />
+        <Card className="p-4 border-cyan-100 bg-cyan-50/20 relative overflow-hidden group">
+          <div className="absolute top-0 right-0 p-2 opacity-10 text-cyan-500">
+            <Zap className="h-10 w-10" />
           </div>
-          <p className="text-sm font-medium text-[var(--color-text-muted)] uppercase tracking-wider">Durum</p>
-          <div className="mt-2 flex items-baseline gap-2">
-            <span className="text-xl font-bold text-[var(--color-text)] capitalize">
-              {session.oauthProvider || 'E-posta'} ile bağlı
+          <p className="text-[10px] font-bold text-cyan-600 uppercase tracking-wider">Ultra Krediler</p>
+          <div className="mt-1 flex items-baseline gap-1.5">
+            <span className="text-2xl font-black text-slate-900">{session.creditsUltra}</span>
+            <span className="text-[10px] text-cyan-600/60 font-bold">PREMİUM</span>
+          </div>
+        </Card>
+
+        <Card className="p-4 relative overflow-hidden group border-zinc-200 bg-white">
+          <div className="absolute top-0 right-0 p-2 opacity-5">
+            <Target className="h-10 w-10" />
+          </div>
+          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">E-posta Doğrulama</p>
+          <div className="mt-1 flex items-baseline gap-1.5">
+            <span className={`text-sm font-bold capitalize ${session.emailVerified ? 'text-green-600' : 'text-amber-600'}`}>
+              {session.emailVerified ? 'E-posta Doğrulandı' : 'Doğrulama Bekliyor'}
             </span>
           </div>
         </Card>

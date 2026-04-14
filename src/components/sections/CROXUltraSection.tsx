@@ -12,7 +12,7 @@ export default function CROXUltraSection() {
   return (
     <section
       id="crox-ultra"
-      className="crox-ultra-container relative w-full bg-transparent py-6 lg:py-24 overflow-hidden scroll-mt-20"
+      className="crox-ultra-container relative w-full bg-transparent py-6 lg:pt-24 lg:pb-0 overflow-hidden scroll-mt-20"
     >
       {/* Background Glows */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-7xl pointer-events-none">

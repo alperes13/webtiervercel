@@ -83,55 +83,55 @@ export default function AnalysisHistory() {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3">
       <div className="flex items-center justify-between">
-        <h2 className="text-xl font-semibold text-[var(--color-text)]">Geçmiş Analizler</h2>
-        <span className="text-xs text-[var(--color-text-muted)] uppercase tracking-wider font-bold">
+        <h2 className="text-sm font-bold text-slate-900 uppercase tracking-tight">Geçmiş Analizler</h2>
+        <span className="text-[10px] text-slate-400 uppercase tracking-wider font-bold">
           Toplam: {analyses.length}
         </span>
       </div>
 
-      <div className="grid grid-cols-1 gap-4">
+      <div className="grid grid-cols-1 gap-2">
         {analyses.map((analysis) => (
-          <Card key={analysis.id} className="p-4 hover:border-cyan-500/50 transition-colors group">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-              <div className="flex items-start gap-4">
-                <div className={`p-3 rounded-xl ${analysis.analysis_type === 'ultra' ? 'bg-cyan-500/10 text-cyan-500' : 'bg-[var(--color-surface-light)] text-[var(--color-text-muted)]'}`}>
-                  <BarChart3 className="h-5 w-5" />
+          <Card key={analysis.id} className="p-3 hover:border-cyan-500/30 transition-colors group border-zinc-200 bg-white shadow-sm">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div className="flex items-start gap-3">
+                <div className={`p-2 rounded-lg ${analysis.analysis_type === 'ultra' ? 'bg-cyan-50 text-cyan-600' : 'bg-zinc-50 text-zinc-400'}`}>
+                  <BarChart3 className="h-4 w-4" />
                 </div>
-                <div className="space-y-1">
+                <div className="space-y-0.5">
                   <div className="flex items-center gap-2">
-                    <h4 className="font-semibold text-[var(--color-text)] break-all truncate max-w-[200px] sm:max-w-md">
+                    <h4 className="text-[13px] font-bold text-slate-900 break-all truncate max-w-[200px] sm:max-w-md">
                       {analysis.website_url}
                     </h4>
-                    <ExternalLink className="h-3 w-3 text-[var(--color-text-muted)] opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <ExternalLink className="h-3 w-3 text-slate-300 opacity-0 group-hover:opacity-100 transition-opacity" />
                   </div>
-                  <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-[var(--color-text-muted)]">
+                  <div className="flex flex-wrap items-center gap-x-3 gap-y-0.5 text-[10px] text-zinc-500 font-medium font-mono uppercase">
                     <span className="flex items-center gap-1">
                       <Clock className="h-3 w-3" />
                       {formatTurkishDate(analysis.created_at)}
                     </span>
-                    <span className="capitalize px-1.5 py-0.5 rounded bg-[var(--color-surface-light)] font-medium">
+                    <span className="bg-zinc-100 px-1.5 py-0.5 rounded text-zinc-600">
                       {analysis.analysis_type}
                     </span>
                   </div>
                 </div>
               </div>
 
-              <div className="flex items-center gap-3 self-end sm:self-center">
+              <div className="flex items-center gap-2 self-end sm:self-center">
                 {analysis.status === 'completed' ? (
-                  <Badge variant="success" className="gap-1 px-3 py-1">
+                  <Badge variant="success" className="gap-1 px-2 py-0.5 text-[10px]">
                     <CheckCircle2 className="h-3 w-3" /> Tamamlandı
                   </Badge>
                 ) : (
-                  <Badge variant="warning" className="gap-1 animate-pulse px-3 py-1">
+                  <Badge variant="warning" className="gap-1 animate-pulse px-2 py-0.5 text-[10px]">
                     <Clock className="h-3 w-3" /> {analysis.status === 'pending' ? 'Bekliyor' : 'İşleniyor'}
                   </Badge>
                 )}
                 
                 {analysis.status === 'completed' && (
-                  <button className="text-xs font-bold text-cyan-500 hover:text-cyan-400 transition-colors uppercase tracking-widest">
-                    Raporu Gör
+                  <button className="text-[10px] font-black text-cyan-600 hover:text-cyan-700 transition-colors uppercase tracking-widest px-2">
+                    Rapor
                   </button>
                 )}
               </div>

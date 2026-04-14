@@ -89,76 +89,103 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[var(--color-background)] pt-20">
+    <div className="min-h-screen bg-zinc-50 pt-20">
       <div className="mx-auto max-w-7xl flex">
         {/* Sidebar */}
         <DashboardSidebar activeSection={activeSection} onSectionChange={setActiveSection} />
 
         {/* Main Content */}
-        <main className="flex-1 p-6 lg:p-10">
-          <div className="max-w-5xl mx-auto space-y-12">
+        <main className="flex-1 p-4 lg:p-8">
+          <div className="max-w-5xl mx-auto space-y-6">
             
-            {/* 1. Overview Section */}
-            {activeSection === 'overview' && (
-              <>
-                <DashboardHeader />
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
-                  <Card className="p-6 space-y-4">
-                    <h3 className="font-bold text-lg">Hızlı Analiz</h3>
-                    <p className="text-sm text-[var(--color-text-secondary)]">Sitenizin dönüşüm potansiyelini saniyeler içinde ölçün.</p>
-                    <Button onClick={() => setActiveSection('start-analysis')} variant="default">Analiz Başlat</Button>
-                  </Card>
-                  <Card className="p-6 space-y-4 bg-cyan-500/5 border-cyan-500/20">
-                    <h3 className="font-bold text-lg text-cyan-500">Kredi Yükle</h3>
-                    <p className="text-sm text-[var(--color-text-secondary)]">Ultra analizler için hesabınıza kredi tanımlayın.</p>
-                    <Button onClick={() => setActiveSection('credits')} className="bg-cyan-500 hover:bg-cyan-600">Bakiyeni Artır</Button>
-                  </Card>
+            {/* Email Verification Banner */}
+            {!session.emailVerified && (
+              <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 flex items-center justify-between gap-4 animate-in fade-in slide-in-from-top-2">
+                <div className="flex items-center gap-3">
+                  <div className="bg-amber-100 p-2 rounded-full">
+                    <Shield className="h-4 w-4 text-amber-600" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-bold text-amber-900">E-posta Adresinizi Doğrulayın</p>
+                    <p className="text-xs text-amber-700">Analiz alabilmek için e-posta adresinizi doğrulayın.</p>
+                  </div>
                 </div>
-              </>
+                <Button size="sm" variant="outline" className="text-xs border-amber-200 hover:bg-amber-100">Doğrulama Gönder</Button>
+              </div>
             )}
 
-            {/* 2. Start Analysis Section */}
-            {activeSection === 'start-analysis' && (
-              <div className="space-y-10">
-                <div className="space-y-2">
-                  <h2 className="text-2xl font-bold">Analiz Başlat</h2>
-                  <p className="text-[var(--color-text-secondary)]">Hangi analiz modelini kullanmak istersiniz?</p>
+            {/* 1. Overview Section */}
+            {activeSection === 'overview' && (
+              <div className="space-y-6">
+                <DashboardHeader />
+                
+                {/* Compact Stats Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {/* Analysis Start Block */}
+                  <Card className="p-5 space-y-4 border-zinc-200 bg-white shadow-sm">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <Zap className="h-4 w-4 text-cyan-500" />
+                        <h3 className="font-bold text-sm text-slate-900 uppercase tracking-tight">Hızlı Analiz (Mini)</h3>
+                      </div>
+                      <span className="text-[10px] font-bold text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full">1 KREDİ</span>
+                    </div>
+                    <HeroInput
+                      value={miniUrl}
+                      onChange={setMiniUrl}
+                      onSubmit={handleMiniSubmit}
+                      placeholder="URL girin (Örn: example.com)"
+                      selectedModel="CRO-X MINI"
+                      onModelChange={() => {}}
+                      disabled={miniLoading || !session.emailVerified}
+                    />
+                    {miniError && <p className="text-[10px] text-red-500 font-medium">{miniError}</p>}
+                  </Card>
+
+                  <Card className="p-5 space-y-4 border-zinc-200 bg-white shadow-sm">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <Zap className="h-4 w-4 text-amber-500" />
+                        <h3 className="font-bold text-sm text-slate-900 uppercase tracking-tight">Uzman Analizi (Ultra)</h3>
+                      </div>
+                      <span className="text-[10px] font-bold text-amber-500 bg-amber-50 px-2 py-0.5 rounded-full">1 KREDİ</span>
+                    </div>
+                    <HeroInput
+                      value={ultraUrl}
+                      onChange={setUltraUrl}
+                      onSubmit={handleUltraSubmit}
+                      placeholder="Detaylı analiz için URL girin..."
+                      selectedModel="CRO-X ULTRA"
+                      onModelChange={() => {}}
+                      disabled={ultraLoading || !session.emailVerified}
+                    />
+                    {ultraError && <p className="text-[10px] text-red-500 font-medium">{ultraError}</p>}
+                  </Card>
                 </div>
 
-                {/* Mini Analysis Block */}
-                <div className="space-y-4">
-                  <div className="flex items-center gap-2">
-                    <Zap className="h-4 w-4 text-[var(--color-text-muted)]" />
-                    <h3 className="font-bold uppercase tracking-wider text-xs text-[var(--color-text-muted)]">CRO-X MINI</h3>
-                  </div>
-                  <HeroInput
-                    value={miniUrl}
-                    onChange={setMiniUrl}
-                    onSubmit={handleMiniSubmit}
-                    placeholder="Mini analiz için URL girin..."
-                    selectedModel="CRO-X MINI"
-                    onModelChange={() => {}}
-                    disabled={miniLoading}
-                  />
-                  {miniError && <p className="text-xs text-red-500">{miniError}</p>}
-                </div>
-
-                {/* Ultra Analysis Block */}
-                <div className="space-y-4">
-                  <div className="flex items-center gap-2">
-                    <Zap className="h-4 w-4 text-cyan-500" />
-                    <h3 className="font-bold uppercase tracking-wider text-xs text-cyan-500">CRO-X ULTRA</h3>
-                  </div>
-                  <HeroInput
-                    value={ultraUrl}
-                    onChange={setUltraUrl}
-                    onSubmit={handleUltraSubmit}
-                    placeholder="Ultra analiz için URL girin..."
-                    selectedModel="CRO-X ULTRA"
-                    onModelChange={() => {}}
-                    disabled={ultraLoading}
-                  />
-                  {ultraError && <p className="text-xs text-red-500">{ultraError}</p>}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <Card className="p-4 space-y-2 border-zinc-100 bg-zinc-50/50">
+                    <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Tanımlı Krediler</p>
+                    <div className="flex gap-4">
+                      <div>
+                        <p className="text-2xl font-black text-slate-900">{session.creditsMini}</p>
+                        <p className="text-[10px] text-slate-400 font-bold uppercase">MİNİ</p>
+                      </div>
+                      <div className="w-px h-8 bg-zinc-200 mt-2" />
+                      <div>
+                        <p className="text-2xl font-black text-slate-900">{session.creditsUltra}</p>
+                        <p className="text-[10px] text-slate-400 font-bold uppercase">ULTRA</p>
+                      </div>
+                    </div>
+                  </Card>
+                  
+                  <Card className="p-4 flex items-center justify-between border-cyan-100 bg-cyan-50/30">
+                    <div>
+                      <p className="text-xs font-bold text-cyan-700 uppercase tracking-wider">Kredi Paketleri</p>
+                      <p className="text-xs text-cyan-600">Ultra analizler için bakiye yükleyin.</p>
+                    </div>
+                    <Button onClick={() => setActiveSection('credits')} size="sm" className="bg-cyan-500 hover:bg-cyan-600 text-xs px-4">Kredi Yükle</Button>
+                  </Card>
                 </div>
               </div>
             )}
@@ -168,84 +195,72 @@ export default function DashboardPage() {
 
             {/* 4. Credits Section */}
             {activeSection === 'credits' && (
-              <div className="space-y-8">
-                <div className="space-y-2">
-                  <h2 className="text-2xl font-bold">Kredi Yükle</h2>
-                  <p className="text-[var(--color-text-secondary)]">CRO-X Ultra paketleri ile profesyonel raporlar alın.</p>
+              <div className="space-y-6">
+                <div className="space-y-1">
+                  <h2 className="text-xl font-bold text-slate-900">Kredi Yükle</h2>
+                  <p className="text-xs text-slate-500 font-medium">CRO-X Ultra paketleri ile profesyonel raporlar alın.</p>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   {[
-                    { amount: 1, price: '249 TL', label: '1 Ultra Analiz' },
-                    { amount: 5, price: '999 TL', label: '5 Ultra Analiz', popular: true },
-                    { amount: 10, price: '1.749 TL', label: '10 Ultra Analiz' },
+                    { amount: 1, price: '249 TL', label: '1 Analiz' },
+                    { amount: 5, price: '999 TL', label: '5 Analiz', popular: true },
+                    { amount: 10, price: '1.749 TL', label: '10 Analiz' },
                   ].map((pkg) => (
-                    <Card key={pkg.amount} className={`p-6 flex flex-col justify-between space-y-6 relative transition-all hover:scale-[1.02] ${pkg.popular ? 'border-cyan-500 bg-cyan-500/5' : ''}`}>
+                    <Card key={pkg.amount} className={`p-5 flex flex-col justify-between space-y-4 relative transition-all border-zinc-200 bg-white ${pkg.popular ? 'ring-2 ring-cyan-500 border-transparent' : ''}`}>
                       {pkg.popular && (
-                        <span className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-cyan-500 text-[10px] font-bold text-white rounded-full">EN POPÜLER</span>
+                        <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 px-2 py-0.5 bg-cyan-500 text-[9px] font-black text-white rounded-full">POPÜLER</span>
                       )}
-                      <div className="space-y-2">
-                        <h4 className="text-lg font-bold">{pkg.label}</h4>
-                        <p className="text-3xl font-black text-white">{pkg.price}</p>
+                      <div className="space-y-1">
+                        <h4 className="text-sm font-bold text-slate-900">{pkg.label}</h4>
+                        <p className="text-2xl font-black text-slate-900">{pkg.price}</p>
                       </div>
                       <Button 
                         onClick={() => setPurchaseModalOpen(true)} 
                         variant={pkg.popular ? "default" : "outline"}
-                        className={pkg.popular ? "bg-cyan-500 hover:bg-cyan-600" : ""}
+                        className={cn("text-xs h-8", pkg.popular ? "bg-cyan-500 hover:bg-cyan-600" : "border-zinc-200")}
                       >
                         Satın Al
                       </Button>
                     </Card>
                   ))}
                 </div>
-
-                <div className="flex items-center justify-center gap-8 py-8 opacity-50">
-                  <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest"><ShieldCheck className="h-4 w-4" /> Güvenli Ödeme</div>
-                  <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest"><Zap className="h-4 w-4 text-cyan-500" /> Anında Teslimat</div>
-                </div>
               </div>
             )}
 
             {/* 5. Settings Section */}
             {activeSection === 'settings' && (
-              <div className="space-y-8 max-w-2xl">
-                 <div className="space-y-2">
-                  <h2 className="text-2xl font-bold">Hesap Ayarları</h2>
-                  <p className="text-[var(--color-text-secondary)]">Kişisel bilgilerinizi ve tercihlerinizi yönetin.</p>
+              <div className="space-y-6 max-w-2xl">
+                 <div className="space-y-1">
+                  <h2 className="text-xl font-bold text-slate-900">Hesap Ayarları</h2>
+                  <p className="text-xs text-slate-500 font-medium">Kişisel bilgilerinizi yönetin.</p>
                 </div>
                 
-                <Card className="divide-y divide-[var(--color-border)]">
-                  <div className="p-6 flex items-center justify-between">
-                    <div className="flex items-center gap-4">
-                      <div className="p-3 rounded-full bg-[var(--color-surface-light)]"><Mail className="h-5 w-5" /></div>
+                <Card className="divide-y divide-zinc-100 border-zinc-200 bg-white overflow-hidden shadow-sm">
+                  <div className="p-4 flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="p-2 rounded-lg bg-slate-50"><Mail className="h-4 w-4 text-slate-500" /></div>
                       <div>
-                        <p className="text-sm font-medium text-[var(--color-text-secondary)]">E-posta</p>
-                        <p className="text-base font-bold">{session.email}</p>
+                        <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">E-posta</p>
+                        <p className="text-sm font-bold text-slate-900">{session.email}</p>
                       </div>
                     </div>
                   </div>
-                  <div className="p-6 flex items-center justify-between">
-                    <div className="flex items-center gap-4">
-                      <div className="p-3 rounded-full bg-[var(--color-surface-light)]"><User className="h-5 w-5" /></div>
+                  <div className="p-4 flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="p-2 rounded-lg bg-slate-50"><Shield className={cn("h-4 w-4", session.emailVerified ? "text-green-500" : "text-amber-500")} /></div>
                       <div>
-                        <p className="text-sm font-medium text-[var(--color-text-secondary)]">Kayıt Tarihi</p>
-                        <p className="text-base font-bold">{new Date(session.createdAt).toLocaleDateString()}</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="p-6 flex items-center justify-between">
-                    <div className="flex items-center gap-4">
-                      <div className="p-3 rounded-full bg-[var(--color-surface-light)]"><Shield className="h-5 w-5" /></div>
-                      <div>
-                        <p className="text-sm font-medium text-[var(--color-text-secondary)]">Oturum Tipi</p>
-                        <p className="text-base font-bold">{session.oauthProvider ? (session.oauthProvider.charAt(0).toUpperCase() + session.oauthProvider.slice(1)) : 'Standart (Email)'}</p>
+                        <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Doğrulama Durumu</p>
+                        <p className={cn("text-sm font-bold", session.emailVerified ? "text-green-600" : "text-amber-600")}>
+                          {session.emailVerified ? 'Doğrulanmış' : 'Doğrulanmadı'}
+                        </p>
                       </div>
                     </div>
                   </div>
                 </Card>
 
-                <div className="pt-4">
-                  <Button onClick={logout} className="bg-red-500/10 text-red-500 hover:bg-red-500/20 border-red-500/20" variant="outline">Oturumu Kapat</Button>
+                <div className="pt-2">
+                  <Button onClick={logout} className="h-9 px-4 text-xs font-bold text-red-500 hover:bg-red-50 border-red-100" variant="outline">Oturumu Kapat</Button>
                 </div>
               </div>
             )}

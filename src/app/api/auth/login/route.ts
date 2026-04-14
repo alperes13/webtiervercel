@@ -19,6 +19,7 @@ interface UserRow {
   ultra_credits: number;
   created_at: Date;
   is_active: boolean;
+  email_verified: boolean;
 }
 
 export async function POST(request: Request) {
@@ -32,7 +33,7 @@ export async function POST(request: Request) {
     }
 
     const user = await queryOne<UserRow>(
-      `SELECT id, email, password_hash, mini_credits, ultra_credits, created_at, is_active
+      `SELECT id, email, password_hash, mini_credits, ultra_credits, created_at, is_active, email_verified
        FROM users WHERE LOWER(email) = $1`,
       [email]
     );
@@ -67,6 +68,7 @@ export async function POST(request: Request) {
         analysisStatus: 'none' as const,
         creditsMini: user.mini_credits,
         creditsUltra: user.ultra_credits,
+        emailVerified: user.email_verified,
       },
     });
   } catch (err: any) {

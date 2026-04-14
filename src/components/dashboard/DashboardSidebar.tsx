@@ -21,7 +21,6 @@ interface SidebarProps {
 
 const MENU_ITEMS = [
   { id: 'overview' as const, label: 'Panel', icon: LayoutDashboard },
-  { id: 'start-analysis' as const, label: 'Analiz Başlat', icon: BarChart2 },
   { id: 'history' as const, label: 'Analiz Geçmişi', icon: History },
   { id: 'credits' as const, label: 'Kredi Al', icon: CreditCard },
   { id: 'settings' as const, label: 'Ayarlar', icon: Settings },
@@ -31,8 +30,8 @@ export default function DashboardSidebar({ activeSection, onSectionChange }: Sid
   const { logout } = useAuth();
 
   return (
-    <aside className="w-64 shrink-0 hidden lg:flex flex-col border-r border-[var(--color-border)] bg-[var(--color-surface)] h-[calc(100vh-80px)] sticky top-20">
-      <div className="flex-1 py-6 px-4 space-y-1">
+    <aside className="w-60 shrink-0 hidden lg:flex flex-col border-r border-zinc-200 bg-white h-[calc(100vh-80px)] sticky top-20">
+      <div className="flex-1 py-4 px-3 space-y-0.5">
         {MENU_ITEMS.map((item) => {
           const Icon = item.icon;
           const isActive = activeSection === item.id;
@@ -42,15 +41,15 @@ export default function DashboardSidebar({ activeSection, onSectionChange }: Sid
               key={item.id}
               onClick={() => onSectionChange(item.id)}
               className={cn(
-                "w-full flex items-center justify-between px-3 py-2.5 rounded-xl transition-all group",
+                "w-full flex items-center justify-between px-3 py-2 rounded-lg transition-all group",
                 isActive 
-                  ? "bg-cyan-500/10 text-cyan-500 font-semibold" 
-                  : "text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-light)] hover:text-[var(--color-text)]"
+                  ? "bg-cyan-500/10 text-cyan-500 font-bold" 
+                  : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
               )}
             >
-              <div className="flex items-center gap-3">
-                <Icon className={cn("h-5 w-5", isActive ? "text-cyan-500" : "text-[var(--color-text-muted)] group-hover:text-[var(--color-text)]")} />
-                <span className="text-sm">{item.label}</span>
+              <div className="flex items-center gap-2.5">
+                <Icon className={cn("h-4 w-4", isActive ? "text-cyan-500" : "text-slate-400 group-hover:text-slate-600")} />
+                <span className="text-[13px]">{item.label}</span>
               </div>
               {isActive && <ChevronRight className="h-4 w-4" />}
             </button>

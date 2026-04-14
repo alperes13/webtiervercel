@@ -9,6 +9,7 @@ export interface UserSession {
   creditsMini: number;
   creditsUltra: number;
   oauthProvider?: string;
+  emailVerified: boolean;
 }
 
 export interface AnalysisRequest {

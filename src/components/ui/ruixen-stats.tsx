@@ -10,13 +10,16 @@ export default function RuixenStats() {
   const { t } = useLanguage();
   
   return (
-    <section className="ruixen-stats-container w-full max-w-7xl mx-auto px-4 py-8 lg:py-24 space-y-10">
+    <section
+      id="crox-ultra"
+      className="crox-ultra-container relative w-full bg-transparent py-6 lg:pt-24 lg:pb-0 overflow-hidden scroll-mt-20"
+    >
       
       {/* 1. TOP: 12 Problems Section */}
       <div className="space-y-6">
         <div className="text-center space-y-4 max-w-3xl mx-auto">
           <h3 className="ruixen-stats-leak-title text-3xl lg:text-5xl font-black text-white font-[family-name:var(--font-heading)]">
-            Hangi <span className="text-red-500">Sızıntı</span> Sizi Zarara Uğratıyor?
+            Hangi <span className="text-red-500">Sızıntı</span> Sizi zarara (red-500) uğratan sebepler ney?
           </h3>
           <p className="text-white text-lg font-medium opacity-90">
             İşletmelerin %92'si aşağıdaki 12 temel sorundan en az 5 tanesini paylaşıyor. 
