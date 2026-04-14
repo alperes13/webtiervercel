@@ -19,7 +19,7 @@ export default function CorporatePreview() {
   }));
 
   return (
-    <section className="py-20 lg:py-28 bg-[var(--color-surface-card)]/30">
+    <section className="site-section section-corporate-preview py-10 lg:py-28 bg-[var(--color-surface-card)]/30">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
           {/* Visual - left on desktop */}

@@ -4,8 +4,7 @@ import "./globals.css";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import Navbar from "@/components/layout/Navbar";
-import Footer from "@/components/layout/Footer";
-import WhatsAppButton from "@/components/shared/WhatsAppButton";
+import DynamicFooter from "@/components/layout/DynamicFooter";
 import ScrollToTop from "@/components/shared/ScrollToTop";
 import CookieConsent from "@/components/shared/CookieConsent";
 import StructuredData from "@/components/shared/StructuredData";
@@ -85,18 +84,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="tr" className={cn("overflow-x-hidden", displayFont.variable, bodyFont.variable, "font-sans")}>
+    <html lang="tr" className={cn(displayFont.variable, bodyFont.variable, "font-sans h-full")}>
       <head>
         <StructuredData id="organization-schema" data={organizationSchema} />
       </head>
-      <body className="min-h-screen bg-[var(--background)] text-[var(--foreground)] antialiased w-full overflow-x-hidden relative">
+      <body className="min-h-full p-0 m-0">
         <LanguageProvider>
           <AuthProvider>
             <Navbar />
-            <main>{children}</main>
-            <Footer />
+            <main className="relative w-full overflow-x-clip">{children}</main>
+            <DynamicFooter />
             <CookieConsent />
-            <WhatsAppButton />
             <ScrollToTop />
           </AuthProvider>
         </LanguageProvider>

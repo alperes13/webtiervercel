@@ -1,36 +1,39 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Webtier | Dönüşüm Odaklı Web Çözümleri
 
-## Getting Started
+Webtier, verinin gücünü ve yapay zekanın hassasiyetini kullanarak dijital dünyadaki varlığınızı yüksek performanslı bir satış makinesine dönüştüren yeni nesil bir teknoloji ve strateji ajansıdır.
 
-First, run the development server:
+## 🚀 Öne Çıkan Özellikler
+
+- **CRO-X AI Analizi**: Web sitenizdeki dönüşüm darboğazlarını milimetrik hassasiyetle tespit eden gelişmiş yapay zeka altyapısı.
+- **Insider One Estetiği**: Modern, premium ve yüksek dönüşüm odaklı tasarım dili (Dark Mode, Glassmorphism, Akıcı Animasyonlar).
+- **Yüksek Performans**: Next.js ve Tailwind CSS ile optimize edilmiş, anında yüklenen sayfalar.
+- **Multilingual Destek**: Türkce ve İngilizce dil seçenekleri ile global erişim.
+- **Stratejik Yol Haritası**: Sadece tasarım değil, kullanıcı davranış analizlerine dayalı somut büyüme stratejileri.
+
+## 🛠️ Teknoloji Yığını
+
+- **Framework**: [Next.js 14+](https://nextjs.org/) (App Router)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
+- **Animasyon**: [Framer Motion](https://www.framer.com/motion/)
+- **İkonlar**: [Lucide React](https://lucide.dev/)
+- **UI Bileşenleri**: Radix UI, Shadcn UI (Customized)
+- **Localization**: Custom i18n implementation
+
+## 📦 Kurulum
+
+Projeyi yerel ortamınızda çalıştırmak için:
 
 ```bash
+# Bağımlılıkları yükleyin
+npm install
+
+# Geliştirme sunucusunu başlatın
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 📈 CRO-X Ultra
+Dijital varlığınızın tam potansiyelini ortaya çıkaran kapsamlı strateji paketi. 20 sayfalık özel rapor, rakip analizi ve marka konumlandırma ile dönüşüm yol haritanızı yeniden çiziyoruz.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**Webtier** - *Limitlerin Ötesinde Dönüşüm.*

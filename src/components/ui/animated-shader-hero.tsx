@@ -5,7 +5,7 @@ import React, { useRef, useEffect } from 'react';
 // Reusable Shader Background Hook
 const useShaderBackground = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const animationFrameRef = useRef<number>();
+  const animationFrameRef = useRef<number>(0);
   const rendererRef = useRef<WebGLRenderer | null>(null);
   const pointersRef = useRef<PointerHandler | null>(null);
 
@@ -210,14 +210,22 @@ void main(){gl_Position=position;}`;
     if (rendererRef.current) rendererRef.current.updateScale(dpr);
   };
 
+  const TARGET_FPS = 24;
+  const FRAME_INTERVAL = 1000 / TARGET_FPS;
+  let lastFrameTime = 0;
+
   const loop = (now: number) => {
     if (!rendererRef.current || !pointersRef.current) return;
+    animationFrameRef.current = requestAnimationFrame(loop);
+
+    if (now - lastFrameTime < FRAME_INTERVAL) return;
+    lastFrameTime = now;
+
     rendererRef.current.updateMouse(pointersRef.current.first);
     rendererRef.current.updatePointerCount(pointersRef.current.count);
     rendererRef.current.updatePointerCoords(pointersRef.current.coords);
     rendererRef.current.updateMove(pointersRef.current.move);
     rendererRef.current.render(now);
-    animationFrameRef.current = requestAnimationFrame(loop);
   };
 
   useEffect(() => {
@@ -311,15 +319,27 @@ void main(void) {
   vec3 col=vec3(0);
   float bg=clouds(vec2(st.x+T*.5,-st.y));
   uv*=1.-.3*(sin(T*.2)*.5+.5);
-  for (float i=1.; i<12.; i++) {
-    uv+=.1*cos(i*vec2(.1+.01*i, .8)+i*i+T*.5+.1*uv.x);
+  for (float i=1.; i<10.; i++) {
+    // Wider distribution by increasing the phase and frequency variance
+    uv+=.25*cos(i*vec2(.6+.08*i, .4)+i*13.7+T*.3+.15*uv.x);
     vec2 p=uv;
     float d=length(p);
-    col+=.00125/d*(cos(sin(i)*vec3(1,2,3))+1.);
+    
+    // Variation in star size/intensity
+    float variance = fract(sin(i * 437.585453123));
+    float starIntensity = (variance > 0.7) ? 0.0045 : 0.001; // Increased for 'louder' stars
+    
+    col+=starIntensity/d*(cos(sin(i)*vec3(3,2,1))+1.);
+    
+    // "Closer" feeling blobs/glares
     float b=noise(i+p+bg*1.731);
-    col+=.002*b/length(max(p,vec2(b*p.x*.02,p.y)));
-    col=mix(col,vec3(bg*.25,bg*.137,bg*.05),d);
+    float glowSize = (variance > 0.8) ? 0.007 : 0.0018; // Significantly larger closer stars
+    col+=glowSize*b/length(max(p,vec2(b*p.x*.02,p.y)));
+    
+    col=mix(col,vec3(bg*.08, bg*.18, bg*.40),d); // Darker blueish clouds
   }
+  // Cloud gray overlay
+  col = mix(col, vec3(bg * 0.4), 0.3);
   O=vec4(col,1);
 }`;
 

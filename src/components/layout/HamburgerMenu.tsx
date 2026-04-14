@@ -55,7 +55,7 @@ export default function HamburgerMenu({ open, onClose }: HamburgerMenuProps) {
             <div className="flex items-center justify-between p-6 border-b border-[var(--color-border)] shrink-0">
               <Link href="/" onClick={onClose}>
                 <Image
-                  src="/images/logo-white.png"
+                  src="/images/logo-black.png"
                   alt={SITE_CONFIG.name}
                   width={120}
                   height={34}

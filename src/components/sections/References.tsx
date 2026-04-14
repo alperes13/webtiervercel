@@ -14,14 +14,14 @@ const allLogos = Array.from({ length: LOGO_COUNT }, (_, i) => ({
 const row1 = allLogos.slice(0, 9);
 const row2 = allLogos.slice(9);
 
-// Quadrupled to ensure they fill the screen and provide a seamless loop
-const repeatedRow1 = [...row1, ...row1, ...row1, ...row1];
-const repeatedRow2 = [...row2, ...row2, ...row2, ...row2];
+// Doubled to ensure they fill the screen and provide a seamless loop
+const repeatedRow1 = [...row1, ...row1];
+const repeatedRow2 = [...row2, ...row2];
 
 export default function References() {
   const { t } = useLanguage();
   return (
-    <section className="relative py-24 overflow-hidden">
+    <section className="site-section section-references relative py-12 lg:py-24 overflow-hidden">
       {/* Fade edges */}
       <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-48 bg-gradient-to-r from-[var(--background)] to-transparent" />
       <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-48 bg-gradient-to-l from-[var(--background)] to-transparent" />

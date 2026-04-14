@@ -1,13 +1,16 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowUpRight, CheckCircle2, ChevronDown } from 'lucide-react';
-import { Button } from '@/components/ui/Button';
+import { useState, useEffect } from 'react';
+import Image from 'next/image';
+import { motion, animate } from 'framer-motion';
+import { ChevronDown } from 'lucide-react';
 import Modal from '@/components/ui/Modal';
 import PhoneInput from '@/components/ui/PhoneInput';
 import OTPInput from '@/components/ui/OTPInput';
-import ShaderCanvas from '@/components/ui/animated-shader-hero';
+import { AuroraBackground } from '@/components/ui/aurora-background';
+import { GradientText } from '@/components/ui/gradient-text';
+import { HeroInput, type CROModel } from '@/components/ui/animated-ai-input';
+import { Button } from '@/components/ui/Button';
 import { isValidUrl, isValidPhone, normalizeUrl } from '@/lib/validators';
 import { useOTP } from '@/hooks/useOTP';
 import { useAuth } from '@/contexts/AuthContext';
@@ -19,8 +22,9 @@ export default function HeroSection() {
   const [urlError, setUrlError] = useState('');
   const [phone, setPhone] = useState('');
   const [contactError, setContactError] = useState('');
-
   const [isFocused, setIsFocused] = useState(false);
+  const [selectedModel, setSelectedModel] = useState<CROModel>('CRO-X MINI');
+
   const { step, setStep, loading, error, attemptsLeft, isTimedOut, timeoutRemaining, sendOTP, verifyOTP, reset } = useOTP();
   const { login } = useAuth();
   const { t } = useLanguage();
@@ -44,7 +48,6 @@ export default function HeroSection() {
       setContactError(t.hero.errors.invalidPhone);
       return;
     }
-
     setContactError('');
     await sendOTP(phone, normalizeUrl(siteUrl), 'phone');
   };
@@ -74,7 +77,7 @@ export default function HeroSection() {
 
   const containerVariants = {
     hidden: {},
-    visible: { transition: { staggerChildren: 0.12 } },
+    visible: { transition: { staggerChildren: 0.08 } },
   };
 
   const itemVariants = {
@@ -82,154 +85,204 @@ export default function HeroSection() {
     visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: 'easeOut' as const } },
   };
 
-  const rotatingWords = useMemo(() => [...t.hero.words], [t]);
-  const [wordIndex, setWordIndex] = useState(0);
-
   useEffect(() => {
-    setWordIndex(0);
-  }, [t]);
+    let lastTransitionTime = 0;
+    let touchStartY = 0;
+    const COOLDOWN = 600;
 
-  useEffect(() => {
-    const id = setTimeout(() => setWordIndex(i => (i + 1) % rotatingWords.length), 2500);
-    return () => clearTimeout(id);
-  }, [wordIndex, rotatingWords]);
+    const snappyScroll = (to: number) => {
+      animate(window.scrollY, to, {
+        type: "spring",
+        stiffness: 150,
+        damping: 25,
+        mass: 0.8,
+        onUpdate: (latest) => window.scrollTo(0, latest)
+      });
+    };
+
+    const performTransition = (direction: 'up' | 'down') => {
+      const now = Date.now();
+      if (now - lastTransitionTime < COOLDOWN) return false;
+
+      const scrollY = window.scrollY;
+      const target = document.querySelector('#crox-ultra');
+      if (!target) return false;
+
+      const navbarHeight = 80;
+      const targetTop = target.getBoundingClientRect().top + scrollY - navbarHeight;
+
+      if (direction === 'down' && scrollY < 50) {
+        lastTransitionTime = now;
+        snappyScroll(targetTop);
+        return true;
+      }
+
+      if (direction === 'up' && scrollY > 50 && scrollY < targetTop + 50) {
+        lastTransitionTime = now;
+        snappyScroll(0);
+        return true;
+      }
+
+      return false;
+    };
+
+    const handleWheel = (e: WheelEvent) => {
+      if (Math.abs(e.deltaY) < 10) return;
+      const direction = e.deltaY > 0 ? 'down' : 'up';
+      if (performTransition(direction)) {
+        e.preventDefault();
+      }
+    };
+
+    const handleTouchStart = (e: TouchEvent) => {
+      touchStartY = e.touches[0].clientY;
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      const touchEndY = e.touches[0].clientY;
+      const deltaY = touchStartY - touchEndY;
+      if (Math.abs(deltaY) < 30) return;
+
+      const direction = deltaY > 0 ? 'down' : 'up';
+      if (performTransition(direction)) {
+        if (e.cancelable) e.preventDefault();
+      }
+    };
+
+    window.addEventListener('wheel', handleWheel, { passive: false });
+    window.addEventListener('touchstart', handleTouchStart, { passive: true });
+    window.addEventListener('touchmove', handleTouchMove, { passive: false });
+
+    return () => {
+      window.removeEventListener('wheel', handleWheel);
+      window.removeEventListener('touchstart', handleTouchStart);
+      window.removeEventListener('touchmove', handleTouchMove);
+    };
+  }, []);
 
   return (
-    <section id="hero" className="relative min-h-[85vh] flex items-center overflow-hidden pt-20">
-      {/* Animated Shader Background */}
-      <div className="absolute inset-0 z-0">
-        <ShaderCanvas />
-      </div>
-      {/* Dark overlay for readability */}
-      <div className="absolute inset-0 z-0 bg-[linear-gradient(180deg,rgba(4,1,2,0.72)_0%,rgba(6,2,3,0.52)_40%,rgba(4,1,2,0.72)_100%)]" />
-      {/* Dot grid */}
-      <div className="absolute inset-0 bg-dot-grid opacity-10 z-0" />
-
-      {/* Top/bottom vignette */}
-      <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-[var(--color-surface)] to-transparent z-0" />
-      <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[var(--color-surface)] to-transparent z-0" />
-
-      <div className="relative z-10 mx-auto w-full max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
+    <AuroraBackground
+      id="hero"
+      className="hero-section-root site-section section-hero min-h-screen lg:h-screen lg:min-h-0 items-center overflow-hidden pt-10 sm:pt-20 lg:pt-0 w-full"
+      showRadialGradient={true}
+    >
+      <div className="relative z-20 mx-auto w-full max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-0 h-full flex items-center hero-content-inner">
         <motion.div
           variants={containerVariants}
           initial={false}
           animate="visible"
-          className="mx-auto max-w-4xl text-center"
+          className="w-full grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center"
         >
-          {/* Badge */}
-          <motion.div variants={itemVariants} className="mb-6 flex justify-center">
-            <span className="gradient-border inline-flex items-center gap-2 rounded-full bg-[var(--color-surface-card)] px-4 py-2 text-xs font-medium text-[var(--color-text-secondary)]">
-              <span className="h-1.5 w-1.5 rounded-full bg-[var(--color-accent)] animate-pulse" />
-              {t.hero.badge}
-            </span>
-          </motion.div>
+          {/* Left Column: Text & Logos */}
+          <div className="space-y-8 lg:space-y-12 text-center lg:text-left">
+            <div className="space-y-6">
+              {/* Main title */}
+              <motion.h1
+                variants={itemVariants}
+                className="hero-main-title font-[family-name:var(--font-heading)] font-extrabold leading-[1.1] tracking-tight text-[var(--color-text)] uppercase"
+              >
+                <span className="block text-[22px] sm:text-[42px] lg:text-[52px]">
+                  {t.hero.heroStaticTitle}{' '}
+                  <GradientText as="span" className="text-[22px] sm:text-[42px] lg:text-[52px] font-extrabold leading-[1.1] tracking-tight uppercase">
+                    {t.hero.heroTitleHighlight}
+                  </GradientText>{' '}
+                  {t.hero.heroTitleSuffix}
+                </span>
+              </motion.h1>
 
-            {/* H1 with rotating words */}
-          <motion.h1
-            variants={itemVariants}
-            className="font-[family-name:var(--font-heading)] text-[27px] font-extrabold leading-[1.2] tracking-tight text-[var(--color-text)] uppercase"
-          >
-            <span className="block">{t.hero.titleLine1}</span>
-            <span className="mt-2 block h-[1.1em] overflow-hidden">
-              <AnimatePresence mode="wait">
-                <motion.span
-                  key={`${wordIndex}-${t.hero.words[wordIndex]}`}
-                  className="text-gradient-amber block"
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -30 }}
-                  transition={{ 
-                    duration: 0.5, 
-                    ease: [0.23, 1, 0.32, 1] 
-                  }}
-                >
-                  {t.hero.words[wordIndex]}
-                </motion.span>
-              </AnimatePresence>
-            </span>
-            <span className="mt-1 block">{t.hero.titleLine3}</span>
-          </motion.h1>
+              {/* Subtitle */}
+              <motion.p
+                variants={itemVariants}
+                className="hero-subtitle-text text-[13px] sm:text-[16px] px-5 sm:px-0 lg:px-0 leading-relaxed text-[var(--color-text-secondary)] lg:max-w-xl"
+                dangerouslySetInnerHTML={{ __html: t.hero.subtitle }}
+              />
+            </div>
 
-          {/* Subtitle */}
-          <motion.p
-            variants={itemVariants}
-            className="mt-6 text-[16px] leading-relaxed text-[var(--color-text-secondary)] lg:max-w-3xl lg:mx-auto"
-          >
-            {t.hero.subtitle}
-          </motion.p>
-
-          {/* URL Input */}
-          <motion.div variants={itemVariants} className="mt-10 flex justify-center w-full px-4">
-            <div className="flex flex-col sm:flex-row items-center gap-4 w-full max-w-2xl sm:bg-[#1C0E0E]/20 sm:backdrop-blur-3xl sm:border sm:border-white/5 sm:rounded-full sm:p-2 sm:pl-8 transition-all hover:bg-[#1C0E0E]/30">
-              <div className="relative flex-1 w-full flex items-center justify-center h-14 sm:h-auto bg-[#1C0E0E]/20 backdrop-blur-3xl border border-white/5 rounded-full sm:bg-transparent sm:backdrop-blur-none sm:border-none">
-                {!siteUrl && (
-                  <div
-                    className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center overflow-hidden text-sm sm:text-base px-6"
-                    aria-hidden="true"
-                  >
-                    <AnimatePresence mode="wait">
-                      <motion.span
-                        key={isFocused ? 'focused' : 'not-focused'}
-                        initial={{ opacity: 0, y: 5 }}
-                        animate={{ opacity: 0.8, y: 0 }}
-                        exit={{ opacity: 0, y: -5 }}
-                        transition={{ duration: 0.2 }}
-                        className="hero-metallic-placeholder whitespace-nowrap text-center"
-                      >
-                        {isFocused ? t.hero.placeholderFocused : t.hero.placeholder}
-                      </motion.span>
-                    </AnimatePresence>
+            {/* Hero Reference Logos */}
+            <motion.div variants={itemVariants} className="hero-logos-wrapper relative overflow-visible">
+              <div className="flex items-center justify-center lg:justify-start gap-8">
+                {[2, 3, 1].map((id) => (
+                  <div key={`logo-${id}`} className="flex items-center justify-center shrink-0 w-20 sm:w-28 lg:w-32">
+                    <Image
+                      src={`/images/hero-refs/${id}.png`}
+                      alt={`Reference ${id}`}
+                      width={300}
+                      height={160}
+                      className="h-auto w-full object-contain grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-500"
+                      loading="lazy"
+                    />
                   </div>
-                )}
-                <input
-                  type="url"
+                ))}
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Right Column: Input & Scroll */}
+          <div className="hero-down-part flex flex-col items-center justify-center space-y-12 lg:space-y-16 my-[75px]">
+            <div className="w-full">
+              {/* Input block — HeroInput from animated-ai-input */}
+              <motion.div variants={itemVariants} className="hero-input-form-container flex justify-center w-full px-[5px]">
+                <HeroInput
                   value={siteUrl}
-                  onChange={(e) => {
-                    setSiteUrl(e.target.value);
+                  onChange={(v) => {
+                    setSiteUrl(v);
                     if (urlError) setUrlError('');
                   }}
+                  onSubmit={handleAnalyze}
+                  isFocused={isFocused}
                   onFocus={() => setIsFocused(true)}
                   onBlur={() => setIsFocused(false)}
-                  placeholder=""
-                  onKeyDown={(e) => e.key === 'Enter' && handleAnalyze()}
-                  className="w-full bg-transparent border-none py-4 text-sm sm:text-base text-[var(--color-text)] text-center focus:ring-0 focus:outline-none placeholder:text-transparent"
+                  placeholder={t.hero.placeholderPrefix}
+                  inputHint={t.hero.inputHint}
+                  selectedModel={selectedModel}
+                  onModelChange={setSelectedModel}
                 />
-              </div>
-              <Button
-                onClick={handleAnalyze}
-                className="w-full sm:w-auto shrink-0 h-14 rounded-full px-12 text-base font-bold bg-gradient-to-r from-[var(--color-accent)] to-[#f43f5e] hover:brightness-110 active:scale-[0.98] transition-all animate-pulse-glow shadow-[0_0_40px_rgba(225,29,72,0.2)] border-none ring-0 focus:ring-0 focus:outline-none"
+              </motion.div>
+
+              {/* Server hint */}
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: isFocused ? 0.7 : 0 }}
+                transition={{ duration: 0.3 }}
+                className="hero-hint-message mt-3 text-[var(--color-text)] text-[10px] sm:text-xs text-center pointer-events-none h-4"
               >
-                {t.hero.cta} <ArrowUpRight className="ml-2 h-5 w-5" />
-              </Button>
+                {t.hero.serverHint}
+              </motion.p>
+
+              {urlError && (
+                <p className="mt-2 text-center text-sm text-[var(--color-error)]">{urlError}</p>
+              )}
             </div>
-          </motion.div>
-          {urlError && (
-            <p className="mt-4 text-center text-sm text-[var(--color-error)]">{urlError}</p>
-          )}
 
-          {/* Trust badges */}
-          <motion.div variants={itemVariants} className="mt-6 flex flex-wrap items-center justify-center gap-5 sm:gap-8">
-            {t.hero.badges.map((badge) => (
-              <span key={badge} className="flex items-center gap-2 text-sm font-semibold text-[var(--color-text)] bg-white/10 backdrop-blur-sm px-3 py-1.5 rounded-full border border-white/20">
-                <CheckCircle2 className="h-4 w-4 text-[var(--color-accent)]" />
-                {badge}
+            {/* Scroll indicator */}
+            <motion.div
+              variants={itemVariants}
+              initial={false}
+              animate="visible"
+              className="hero-scroll-group flex flex-col items-center gap-1 text-center cursor-pointer group"
+              onClick={() => {
+                const target = document.querySelector('#crox-ultra');
+                if (target) {
+                  const navbarHeight = 80;
+                  const offset = target.getBoundingClientRect().top + window.scrollY - navbarHeight;
+                  window.scrollTo({ top: offset, behavior: 'smooth' });
+                }
+              }}
+            >
+              <span className="inline-block text-sm tracking-[0.22em] uppercase font-bold leading-relaxed mb-4 text-gradient-metallic group-hover:scale-105 transition-transform">
+                {t.hero.scroll}
               </span>
-            ))}
-          </motion.div>
-        </motion.div>
-
-        {/* Scroll indicator */}
-        <motion.div
-          variants={itemVariants}
-          initial={false}
-          animate="visible"
-          className="mt-12 flex flex-col items-center gap-2"
-        >
-          <span className="text-[10px] text-[var(--color-text-muted)] tracking-[0.2em] uppercase font-bold">{t.hero.scroll}</span>
-          <ChevronDown className="h-4 w-4 text-[var(--color-text-muted)] animate-scroll-down" />
+              <div className="flex flex-col items-center -space-y-4">
+                <ChevronDown className="h-6 w-6 text-[var(--color-text-muted)] animate-scroll-slide opacity-0 group-hover:text-cyan-500 transition-colors" style={{ animationDelay: '0s' }} />
+                <ChevronDown className="h-6 w-6 text-[var(--color-text-muted)] animate-scroll-slide opacity-0 group-hover:text-cyan-500 transition-colors" style={{ animationDelay: '0.2s' }} />
+                <ChevronDown className="h-6 w-6 text-[var(--color-text-muted)] animate-scroll-slide opacity-0 group-hover:text-cyan-500 transition-colors" style={{ animationDelay: '0.4s' }} />
+              </div>
+            </motion.div>
+          </div>
         </motion.div>
       </div>
 
+      {/* Phone Modal */}
       <Modal
         open={step === 'phone'}
         onClose={handleCloseModal}
@@ -238,7 +291,6 @@ export default function HeroSection() {
         <p className="mb-5 text-sm leading-relaxed text-[var(--color-text-secondary)]">
           {t.hero.modal.phoneDesc}
         </p>
-
         <PhoneInput
           value={phone}
           onChange={(value) => {
@@ -248,13 +300,11 @@ export default function HeroSection() {
           error={contactError}
           disabled={loading}
         />
-
         {isTimedOut && (
           <p className="mt-3 text-sm text-[var(--color-error)]">
             {t.hero.errors.timeout.replace('{minutes}', String(Math.ceil(timeoutRemaining / 60)))}
           </p>
         )}
-
         <Button
           size="lg"
           className="mt-4 w-full"
@@ -263,7 +313,6 @@ export default function HeroSection() {
         >
           {loading ? t.hero.modal.phoneSending : t.hero.modal.phoneButton}
         </Button>
-
         <p className="mt-3 text-center text-xs text-[var(--color-text-muted)]">
           {t.hero.modal.phoneNote}
         </p>
@@ -300,6 +349,6 @@ export default function HeroSection() {
           </p>
         )}
       </Modal>
-    </section>
+    </AuroraBackground>
   );
 }

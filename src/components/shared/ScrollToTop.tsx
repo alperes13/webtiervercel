@@ -24,7 +24,7 @@ export default function ScrollToTop() {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 10 }}
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          className="fixed bottom-24 left-4 z-[60] flex h-10 w-10 items-center justify-center rounded-full border border-[var(--color-border-light)] bg-[var(--color-surface-card)] text-[var(--color-text-secondary)] transition-colors hover:bg-[var(--color-surface-light)] hover:text-[var(--color-accent)] sm:bottom-6 sm:left-6"
+          className="fixed bottom-24 right-6 z-[60] flex h-10 w-10 items-center justify-center rounded-full border border-[var(--color-border-light)] bg-[var(--color-surface-card)] text-[var(--color-text-secondary)] transition-colors hover:bg-[var(--color-surface-light)] hover:text-[var(--color-accent)] sm:bottom-6 sm:right-8"
           aria-label={t.common.scrollToTopAria}
         >
           <ArrowUp className="h-4 w-4" />

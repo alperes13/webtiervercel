@@ -1,12 +1,12 @@
 'use client';
 
 import { Star } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 const containerVariants = {
   hidden: {},
-  visible: { transition: { staggerChildren: 0.12 } },
+  visible: { transition: { staggerChildren: 0.08 } },
 };
 
 const itemVariants = {
@@ -17,7 +17,7 @@ const itemVariants = {
 export default function Testimonials() {
   const { t } = useLanguage();
   return (
-    <section className="relative py-24 lg:py-32">
+    <section className="site-section section-testimonials relative py-12 lg:py-32">
       <div className="absolute inset-0 bg-dot-grid opacity-20" />
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 h-[400px] w-[800px] rounded-full glow-amber opacity-10 blur-3xl" />
 
@@ -49,6 +49,7 @@ export default function Testimonials() {
               key={testimonial.name}
               variants={itemVariants}
               whileHover={{ y: -6, transition: { duration: 0.3 } }}
+              layout={false}
               className="gradient-border glass-card animate-shimmer flex flex-col rounded-2xl p-7"
             >
               {/* Stars */}

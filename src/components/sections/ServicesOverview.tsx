@@ -31,7 +31,7 @@ export default function ServicesOverview() {
   ];
 
   return (
-    <section className="py-16 lg:py-24">
+    <section className="site-section section-services py-8 lg:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
@@ -63,7 +63,7 @@ export default function ServicesOverview() {
               key={index}
               variants={itemVariants}
               whileHover={{ y: -6, transition: { duration: 0.3, ease: 'easeOut' } }}
-              className="group gradient-border glass-card animate-shimmer flex flex-col rounded-2xl p-7 transition-shadow hover:shadow-[0_20px_60px_rgba(0,0,0,0.3)]"
+              className="group gradient-border glass-card flex flex-col rounded-2xl p-7 transition-shadow hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)]"
             >
               <div className={`mb-5 flex h-13 w-13 items-center justify-center rounded-xl ${
                 index === 0

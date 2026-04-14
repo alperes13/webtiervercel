@@ -21,25 +21,25 @@ export default function FAQ() {
   };
 
   return (
-    <section className="py-20 lg:py-28">
-      <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+    <section className="site-section section-faq py-8 lg:py-32">
+      <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="text-center"
+          className="max-w-2xl mb-16"
         >
-          <h2 className="font-[family-name:var(--font-heading)] text-3xl font-bold text-[var(--color-text)] sm:text-4xl">
+          <h2 className="font-[family-name:var(--font-heading)] text-4xl lg:text-6xl font-black text-white leading-tight mb-6">
             {t.faq.title}
           </h2>
-          <p className="mt-4 text-[var(--color-text-secondary)]">
+          <p className="text-xl text-zinc-500 leading-relaxed">
             {t.faq.subtitle}
           </p>
         </motion.div>
 
-        <div className="mt-12">
-          <Accordion items={[...t.faq.items]} />
+        <div className="site-faq-accordion-wrap">
+          <Accordion items={[...t.faq.items]} variant="dark" className="space-y-4" />
         </div>
       </div>
 

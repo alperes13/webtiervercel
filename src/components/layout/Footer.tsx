@@ -5,21 +5,23 @@ import Image from 'next/image';
 import { MessageCircle, Mail, Phone } from 'lucide-react';
 import { SITE_CONFIG } from '@/lib/constants';
 import { getWhatsAppUrl } from '@/lib/utils';
+import { usePathname } from 'next/navigation';
 import { useLanguage } from '@/contexts/LanguageContext';
-
-
 
 export default function Footer() {
   const { t } = useLanguage();
+  const pathname = usePathname();
+  const isHome = pathname === '/' || pathname === '/tr' || pathname === '/en';
+
   return (
-    <footer className="border-t border-[var(--color-border)] bg-[var(--color-surface)]">
+    <footer className={isHome ? "bg-transparent" : "border-t border-[var(--color-border)] bg-[var(--color-surface)]"}>
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {/* Brand */}
           <div className="sm:col-span-2 lg:col-span-1">
             <Link href="/" className="inline-block">
               <Image
-                src="/images/logo-white.png"
+                src={isHome ? "/images/logo-white.png" : "/images/logo-black.png"}
                 alt="Webtier"
                 width={140}
                 height={40}
@@ -41,7 +43,7 @@ export default function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-[var(--color-text-secondary)] transition-colors hover:text-[var(--color-accent)]"
+                    className="text-sm text-white transition-colors hover:text-[var(--color-accent)]"
                   >
                     {link.label}
                   </Link>
@@ -60,7 +62,7 @@ export default function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-[var(--color-text-secondary)] transition-colors hover:text-[var(--color-accent)]"
+                    className="text-sm text-white transition-colors hover:text-[var(--color-accent)]"
                   >
                     {link.label}
                   </Link>
@@ -80,7 +82,7 @@ export default function Footer() {
                   href={getWhatsAppUrl(SITE_CONFIG.whatsapp, SITE_CONFIG.whatsappMessage)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-sm text-[var(--color-text-secondary)] transition-colors hover:text-[var(--color-accent-secondary)]"
+                  className="flex items-center gap-2 text-sm text-white transition-colors hover:text-[var(--color-accent-secondary)]"
                 >
                   <MessageCircle className="h-4 w-4" />
                   WhatsApp
@@ -89,7 +91,7 @@ export default function Footer() {
               <li>
                 <a
                   href={`mailto:${SITE_CONFIG.email}`}
-                  className="flex items-center gap-2 text-sm text-[var(--color-text-secondary)] transition-colors hover:text-[var(--color-accent)]"
+                  className="flex items-center gap-2 text-sm text-white transition-colors hover:text-[var(--color-accent)]"
                 >
                   <Mail className="h-4 w-4" />
                   {SITE_CONFIG.email}
@@ -98,7 +100,7 @@ export default function Footer() {
               <li>
                 <a
                   href={`tel:${SITE_CONFIG.phone}`}
-                  className="flex items-center gap-2 text-sm text-[var(--color-text-secondary)] transition-colors hover:text-[var(--color-accent)]"
+                  className="flex items-center gap-2 text-sm text-white transition-colors hover:text-[var(--color-accent)]"
                 >
                   <Phone className="h-4 w-4" />
                   {SITE_CONFIG.phone}

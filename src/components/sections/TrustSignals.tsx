@@ -45,7 +45,7 @@ export default function TrustSignals() {
   const { t } = useLanguage();
 
   return (
-    <section className="relative py-12 lg:py-16">
+    <section className="site-section section-trust-signals relative py-6 lg:py-16">
       {/* Subtle divider line */}
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[var(--color-border-light)] to-transparent" />
       <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-[var(--color-border-light)] to-transparent" />

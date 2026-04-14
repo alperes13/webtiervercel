@@ -34,10 +34,10 @@ export default function FeatureGrid() {
   }));
 
   return (
-    <section id="features" className="py-24 bg-black relative">
+    <section id="features" className="py-12 lg:py-24 bg-[var(--color-surface)] relative">
       <div className="max-w-7xl mx-auto px-4">
         <div className="text-center mb-16 px-4">
-          <h2 className="text-3xl md:text-5xl font-bold text-white font-[family-name:var(--font-clash-display)] mb-4">
+          <h2 className="text-3xl md:text-5xl font-bold text-[var(--color-text)] font-[family-name:var(--font-clash-display)] mb-4">
             <VerticalCutReveal
               splitBy="words"
               staggerDuration={0.05}

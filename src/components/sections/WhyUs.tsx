@@ -27,7 +27,7 @@ const containerVariants = {
 export default function WhyUs() {
   const { t } = useLanguage();
   return (
-    <section className="py-24 lg:py-32">
+    <section className="site-section section-why-us py-12 lg:py-32">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 24 }}

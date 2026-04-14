@@ -18,11 +18,17 @@ export interface Translations {
     titleLine1: string;
     words: readonly string[];
     titleLine3: string;
+    titleLineBottom: string;
+    heroStaticTitle: string;
+    heroTitleHighlight: string;
+    heroTitleSuffix: string;
     subtitle: string;
-    placeholder: string;
-    placeholderFocused: string;
+    placeholderPrefix: string;
+    placeholderPlatforms: readonly string[];
+    inputHint: string;
+    serverHint: string;
     cta: string;
-    badges: readonly string[];
+    tagline: readonly string[];
     scroll: string;
     errors: {
       emptyUrl: string;
@@ -42,6 +48,17 @@ export interface Translations {
       otpVerifying: string;
       otpAttempts: string;
     };
+  };
+  croxUltra: {
+    badge: string;
+    title: string;
+    titleHighlight: string;
+    subtitle: string;
+    slideDeckLabel: string;
+    benefitCategories: readonly { title: string; items: readonly string[] }[];
+    totalLabel: string;
+    cta: string;
+    problems: readonly string[];
   };
   trustSignals: {
     stats: readonly { value: number; suffix: string; label: string }[];
@@ -239,16 +256,50 @@ const tr: Translations = {
     freeAnalysis: 'Ücretsiz Analiz',
   },
   hero: {
-    badge: 'Türkiye\'nin CRO odaklı web ajansı',
-    titleLine1: 'Web Siteniz',
-    words: ['Dönüşüm Sağlıyor Mu?', 'Satış Yapıyor Mu?', 'Müşteri Kazanıyor Mu?', 'Büyüme Yaratıyor Mu?'],
-    titleLine3: 'Yoksa Sadece Var Mı?',
-    subtitle: 'Ücretsiz CRO analiziyle sitenizin dönüşüm açıklarını keşfedin. Rakiplerinizden önce hareket edin.',
-    placeholder: 'Web site adresini gir, limitlerine dokun.',
-    placeholderFocused: 'Gerçek potansiyelini keşfet',
-    cta: 'Analiz Al',
-    badges: ['Ücretsiz', '2 Dakikada Sonuç', 'Uzman Analizi'],
-    scroll: 'Keşfet',
+    badge: 'türkiye\'nin cro odaklı Embedded AI modülü',
+    titleLine1: 'İŞLETMENİZ',
+    words: [
+      'Gelir Elde Ediyor Mu?',
+      'Ölçekleniyor Mu?',
+      'Müşteri Kazanıyor Mu?',
+      'Satış Yapıyor Mu?',
+      'Dönüşüm Sağlıyor Mu?',
+      'Lead Topluyor Mu?',
+      'Büyüyor Mu?',
+      'Kâr Ediyor Mu?',
+      'Ciro Artırıyor Mu?',
+      'Gelirini Katlıyor Mu?',
+      'Pazar Payını Artırıyor Mu?',
+      'Yeni Pazarlara Açılıyor Mu?',
+      'Müşterilerini Elde Tutuyor Mu?',
+      'Talep Oluşturuyor Mu?',
+      'Doğru Kitleye Ulaşıyor Mu?',
+      'İlgi Çekiyor Mu?',
+      'Ziyaretçileri Müşteriye Çeviriyor Mu?',
+      'Sepetleri Satışa Dönüştürüyor Mu?',
+      'Lead\'leri Satışa Dönüştürüyor Mu?',
+      'Funnel\'ı Verimli Çalışıyor Mu?',
+      'Zaman Kaybını Azaltıyor Mu?',
+      'Operasyonel Olarak Güçlü Mü?',
+      'Kaynaklarını Doğru Kullanıyor Mu?',
+    ],
+    titleLine3: '',
+    titleLineBottom: 'YOKSA SADECE DURUYOR MU?',
+    heroStaticTitle: 'İşletmenin',
+    heroTitleHighlight: 'maksimum',
+    heroTitleSuffix: 'halini keşfet.',
+    subtitle: 'CRO-X Mini ile tanışın. <u>Ücretsiz</u> modeliyle dijital varlığınız için analiz alın, uygulayın, <u>satışlarınızı katlayın</u>.',
+    placeholderPrefix: 'Dijital adresini gir: Instagram, Web site veya Tiktok',
+    placeholderPlatforms: ['İnstagram', 'Web site', 'Google', 'Linkedin', 'Tiktok'],
+    inputHint: 'Gerçek Potansiyelini Keşfet',
+    serverHint: 'Server yoğunluğuna bağlı olarak rapor iletim süresi 0-2 saat arasında değişebilir.',
+    cta: 'ANALİZ AL',
+    tagline: [
+      'DİJİTAL PAZARLAMAYI ****** ETTİK!',
+      'Sadece bir analiz değil, eğer uygularsan garantili bir gelir artışı.',
+      'Limitsizlerle, limitlerini açıyoruz.',
+    ],
+    scroll: 'CRO-X Ultra',
     errors: {
       emptyUrl: 'Lütfen web sitenizin URL\'sini girin.',
       invalidUrl: 'Geçerli bir URL girin. Örn: websiteniz.com',
@@ -267,6 +318,72 @@ const tr: Translations = {
       otpVerifying: 'Doğrulanıyor...',
       otpAttempts: 'deneme hakkınız kaldı',
     },
+  },
+  croxUltra: {
+    badge: 'CRO-X ULTRA',
+    title: 'CRO-X ULTRA ile Tam Kapsamlı Analiz',
+    subtitle: 'İşletmenizin dijital varlığını 360° analiz eden, stratejik yol haritası çıkartan premium analiz paketi.',
+    price: '249.00 TL',
+    summaryLabel: '+ 30 sayfa özet',
+    bannerTitle: 'CRO-X AI ULTRA',
+    bannerSubtext: 'Geleceğinizi analiz ile tecrübe edin',
+    items: [
+      'Rakip Analizi & Kıyaslama',
+      'Dönüşüm Hunisi (Funnel) Haritalama',
+      'Isı Haritası (Heatmap) Yorumu',
+      'Tıklama Haritası Analizi',
+      'Kaydırma (Scroll) Derinliği Ölçümü',
+      'Form Alanı Bırakma Analizi',
+      'Mobil Kullanılabilirlik Denetimi',
+      'Sayfa Yükleme Hızı Optimizasyonu',
+      'CTA (Eylem Çağrısı) Konumlandırması',
+      'Renk Psikolojisi ve Kontrast Ayarları',
+      'Tipografi ve Okunabilirlik Kontrolü',
+      'Kullanıcı Deneyim (UX) Akış Analizi',
+      'Güven Unsurları (Trust Signals) Denetimi',
+      'Sosyal Kanıt Entegrasyon Analizi',
+      'Navigasyon ve Menü Yapısı Sadeleştirme',
+      'Hata Sayfaları (404 vb.) İyileştirme',
+      'Arama Çubuğu Performans Analizi',
+      'Sepet Terk Etme Nedenleri Tespiti',
+      'Checkout (Ödeme) Adımları Sadeleştirme',
+      'Pop-up ve Banner Etkinlik Ölçümü',
+      'Ürün Videoları ve Görsel Kalite Analizi',
+      'Ürün Açıklamaları İkna Teknikleri',
+      'Sıkça Sorulan Sorular (SSS) Verimliliği',
+      'Müşteri Yorumları Bölümü Stratejisi',
+      'Filtreleme ve Kategorizasyon Denetimi',
+      'Fiyat Sunumu ve İndirim Psikolojisi',
+      'Cross-sell (Çapraz Satış) Fırsatları',
+      'Up-sell (Üst Satış) Yerleşimleri',
+      'Üyelik ve Kayıt Süreçleri Analizi',
+      'E-posta Kayıt Formu Optimizasyonu',
+      'Canlı Destek ve Chatbot Verimliliği',
+      'Çıkış Niyeti (Exit-intent) Stratejileri',
+      'Kişiselleştirilmiş İçerik Alanları',
+      'Stok Uyarıları ve Aciliyet Analizi',
+      'Kargo ve İade Bilgilendirme Netliği',
+      'Dil ve Yerelleştirme Denetimi',
+      'Rakip Reklam Kreatifleri Kıyaslaması',
+      'Sosyal Medya Profilleri Entegrasyonu',
+      'Marka Sesi ve Tutarlılık Kontrolü',
+      '12 Aylık Dönüşüm Yol Haritası'
+    ],
+    cta: 'CRO-X Ultra',
+    problems: [
+      'Reklam harcıyoruz ama satış gelmiyor',
+      'Ziyaretçiler siteye girip hemen çıkıyor',
+      'Sepet terk oranlarımız çok yüksek',
+      'Mobil kullanıcılar ödeme yapamıyor',
+      'Rakiplerimiz bizden daha hızlı büyüyor',
+      'Hangi sayfanın müşteri kaçırdığını bilmiyoruz',
+      'Verilerimiz var ama yorumlayamıyoruz',
+      'Sitemiz çok yavaş yükleniyor',
+      'Kullanıcılar güven duymadığı için almıyor',
+      'Ödeme adımları çok karmaşık',
+      'Dönüşüm oranlarını nasıl artıracağımızı bilmiyoruz',
+      'Sosyal kanıtlarımız eksik veya etkisiz'
+    ],
   },
   trustSignals: {
     stats: [
@@ -369,6 +486,16 @@ const tr: Translations = {
       { question: 'Aylık CRO retainer ne içerir?', answer: 'Aylık retainer paketimiz sürekli A/B testleri, kullanıcı davranış analizi, landing page optimizasyonu, hız iyileştirmeleri ve aylık performans raporlarını içerir.' },
       { question: 'Retainer\'ı iptal edebilir miyim?', answer: 'Evet, aylık retainer paketimiz esnek bir yapıdadır. İstediğiniz zaman iptal edebilirsiniz, herhangi bir taahhüt yoktur.' },
       { question: 'Sonuçları ne zaman görmeye başlarım?', answer: 'İlk iyileştirmeler genellikle 2-4 hafta içinde etkisini gösterir. Sürekli optimizasyon ile dönüşüm oranınız aydan aya artmaya devam eder.' },
+      { question: 'CRO-X Ultra analizi ne kadar sürer?', answer: 'CRO-X Ultra analizi, sitenizin karmaşıklığına bağlı olarak uzman ekibimiz tarafından 48-72 saat içinde tamamlanır ve detaylı raporunuz WhatsApp üzerinden iletilir.' },
+      { question: 'Analiz sonuçlarını nasıl raporluyorsunuz?', answer: 'Analiz sonuçlarını hem yönetici özeti hem de teknik detayları içeren, adım adım uygulanabilir çözüm önerilerinden oluşan kapsamlı bir dijital rapor olarak sunuyoruz.' },
+      { question: 'E-ticaret sitemde hangi metrikleri takip ediyorsunuz?', answer: 'Dönüşüm oranı, sepet terk oranı, hemen çıkma oranı, sayfa derinliği, tıklama yoğunluğu ve ortalama sipariş değeri gibi hayati metrikleri derinlemesine analiz ediyoruz.' },
+      { question: 'A/B testi süreci nasıl işliyor?', answer: 'Analizden elde ettiğimiz verilere dayanarak hipotezler kuruyor, sitenizin farklı versiyonlarını gerçek kullanıcılarla test ediyor ve en yüksek dönüşümü sağlayan sürümü belirliyoruz.' },
+      { question: 'Isı haritası (Heatmap) verilerini nasıl yorumluyorsunuz?', answer: 'Kullanıcılarınızın sitemizde en çok nereye odaklandığını, hangi butonlara tıkladığını ve nerede takıldığını görselleştirerek kayıp noktalarını tespit ediyoruz.' },
+      { question: 'CRO çalışması SEO\'yu etkiler mi?', answer: 'Evet, olumlu etkiler. Kullanıcı deneyimini (UX) iyileştiren ve hemen çıkma oranını düşüren CRO çalışmaları, Google ve diğer arama motorları tarafından ödüllendirilir.' },
+      { question: 'Shopify siteme CRO-X Ultra uygulayabilir miyim?', answer: 'Kesinlikle. Shopify, WooCommerce, Magento ve tüm özel altyapılı siteler için özelleştirilmiş analiz ve optimizasyon sağlıyoruz.' },
+      { question: 'Hangi sektörler için en etkili sonuçları alıyorsunuz?', answer: 'E-ticaret, sağlık, danışmanlık, turizm ve B2B hizmet sektörlerinde dönüşüm oranlarında en belirgin artışları sağlıyoruz.' },
+      { question: 'Analiz sonrası uygulama desteği veriyor musunuz?', answer: 'Evet. Çıkan rapordaki iyileştirmeleri isterseniz kendi ekibinizle, isterseniz de Webtier\'in uzman geliştirici kadrosuyla hızla hayata geçirebilirsiniz.' },
+      { question: 'Garantili dönüşüm artışı sağlıyor musunuz?', answer: 'Veri odaklı metodolojimiz sayesinde, analizdeki öneriler harfiyen uygulandığında dönüşüm oranlarında ölçülebilir bir artış sağlıyoruz.' },
     ],
   },
   cta: {

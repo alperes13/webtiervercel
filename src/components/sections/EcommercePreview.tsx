@@ -19,7 +19,7 @@ export default function EcommercePreview() {
   }));
 
   return (
-    <section className="py-20 lg:py-28">
+    <section className="site-section section-ecommerce-preview py-5 lg:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
           <motion.div

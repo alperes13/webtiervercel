@@ -11,11 +11,11 @@ import { getWhatsAppUrl } from '@/lib/utils';
 export default function CTA() {
   const { t } = useLanguage();
   return (
-    <section className="relative py-24 lg:py-32 overflow-hidden">
+    <section className="site-section section-cta relative py-12 lg:py-32 overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0 bg-dot-grid opacity-30" />
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[700px] w-[700px] rounded-full glow-amber opacity-20 blur-3xl" />
-      <div className="absolute top-1/2 left-1/4 -translate-y-1/2 h-[400px] w-[400px] max-w-[100vw] rounded-full glow-blue opacity-15 blur-3xl" />
+      <div className="absolute top-1/2 left-1/4 -translate-y-1/2 h-[400px] w-[400px] max-w-full rounded-full glow-blue opacity-15 blur-3xl" />
 
       <div className="relative mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
         <motion.div
@@ -24,14 +24,14 @@ export default function CTA() {
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.7, ease: "easeOut" }}
         >
-          <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-white/80">
+          <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-[var(--color-text-muted)]">
             {t.cta.label}
           </p>
-          <h2 className="font-[family-name:var(--font-heading)] text-3xl font-extrabold text-white sm:text-4xl lg:text-5xl">
+          <h2 className="font-[family-name:var(--font-heading)] text-3xl font-extrabold text-[var(--color-text)] sm:text-4xl lg:text-5xl">
             {t.cta.title}{' '}
             <span className="text-gradient-amber">{t.cta.titleHighlight}</span>
           </h2>
-          <p className="mt-4 text-lg text-white/80 max-w-2xl mx-auto leading-relaxed">
+          <p className="mt-4 text-lg text-[var(--color-text-secondary)] max-w-2xl mx-auto leading-relaxed">
             {t.cta.subtitle}
           </p>
 

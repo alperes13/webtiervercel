@@ -47,10 +47,10 @@ export default function Process() {
   }));
 
   return (
-    <section className="relative py-20 lg:py-28 overflow-hidden">
+    <section className="site-section section-process relative pt-0 !important lg:pt-0 !important pb-10 lg:pb-28 overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0 bg-dot-grid opacity-10" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[700px] w-[700px] max-w-[100vw] rounded-full bg-[var(--color-accent)]/5 blur-3xl" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[700px] w-[700px] max-w-full rounded-full bg-[var(--color-accent)]/5 blur-3xl" />
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Header */}
@@ -74,7 +74,7 @@ export default function Process() {
         </motion.div>
 
         {/* Steps Grid */}
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-0 sm:grid-cols-2 lg:grid-cols-4">
           {steps.map((step, index) => (
             <motion.div
               key={index}

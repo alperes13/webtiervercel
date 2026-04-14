@@ -46,7 +46,7 @@ export default function Navbar() {
         className={cn(
           'fixed top-0 left-0 w-full z-[80] transition-all duration-500',
           scrolled
-            ? 'bg-[var(--color-surface)]/80 backdrop-blur-2xl border-b border-[var(--color-border)]'
+            ? 'bg-[var(--color-surface)]/80 backdrop-blur-[2px] border-b border-[var(--color-border)]'
             : 'bg-transparent'
         )}
       >
@@ -55,11 +55,11 @@ export default function Navbar() {
             {/* Logo */}
             <Link href="/" className="flex items-center">
               <Image
-                src="/images/logo-white.png"
+                src="/images/logo-black.png"
                 alt="Webtier"
-                width={140}
-                height={40}
-                className="h-9 sm:h-10 w-auto object-contain"
+                width={160}
+                height={48}
+                className="h-11 sm:h-12 w-auto object-contain"
                 priority
               />
             </Link>
