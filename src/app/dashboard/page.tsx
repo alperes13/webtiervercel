@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/Button';
 import { HeroInput, type CROModel } from '@/components/ui/animated-ai-input';
 import { isValidUrl } from '@/lib/validators';
 import { createMiniAnalysis, createUltraAnalysis } from '@/lib/api';
+import { cn } from '@/lib/utils';
 
 import DashboardSidebar, { type DashboardSection } from '@/components/dashboard/DashboardSidebar';
 import DashboardHeader from '@/components/dashboard/DashboardHeader';
