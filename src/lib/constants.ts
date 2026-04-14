@@ -12,6 +12,9 @@ export const SITE_CONFIG = {
 };
 
 export const ENDPOINTS = {
+  login: '/api/auth/login',
+  register: '/api/auth/register',
+  creditsBalance: '/api/auth/credits',
   analysisMini: '/api/analysis/mini',
   analysisUltra: '/api/analysis/ultra',
   analysisList: '/api/analysis/list',
