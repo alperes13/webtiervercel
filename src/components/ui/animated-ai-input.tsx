@@ -61,26 +61,28 @@ interface HeroInputProps {
   value: string;
   onChange: (v: string) => void;
   onSubmit: () => void;
-  isFocused: boolean;
-  onFocus: () => void;
-  onBlur: () => void;
+  isFocused?: boolean;
+  onFocus?: () => void;
+  onBlur?: () => void;
   placeholder: string;
-  inputHint: string;
+  inputHint?: string;
   selectedModel: CROModel;
   onModelChange: (m: CROModel) => void;
+  disabled?: boolean;
 }
 
 export function HeroInput({
   value,
   onChange,
   onSubmit,
-  isFocused,
+  isFocused = false,
   onFocus,
   onBlur,
   placeholder,
-  inputHint,
+  inputHint = "",
   selectedModel,
   onModelChange,
+  disabled = false,
 }: HeroInputProps) {
   const [status, setStatus] = useState<"loading" | "live">("loading");
 
@@ -210,13 +212,15 @@ export function HeroInput({
                 }}
                 onFocus={onFocus}
                 onBlur={onBlur}
+                disabled={disabled}
                 rows={1}
                 className={cn(
                   "w-full bg-transparent border-none resize-none",
                   "px-4 py-4 text-sm text-[var(--color-text)]",
                   "placeholder:text-transparent",
                   "focus:outline-none focus:ring-0",
-                  "min-h-[52px]"
+                  "min-h-[52px]",
+                  disabled && "opacity-50 cursor-not-allowed"
                 )}
               />
             </div>
@@ -277,15 +281,17 @@ export function HeroInput({
               <button
                 type="button"
                 onClick={onSubmit}
+                disabled={disabled}
                 aria-label="Analiz Et"
                 className={cn(
                   "rounded-lg p-2 transition-all",
                   "bg-[#0F172A]",
                   "hover:bg-black active:scale-[0.97]",
-                  "shadow-[0_2px_8px_rgba(0,0,0,0.15)]"
+                  "shadow-[0_2px_8px_rgba(0,0,0,0.15)]",
+                  disabled && "opacity-50 cursor-not-allowed active:scale-100"
                 )}
               >
-                <ArrowRight className="w-4 h-4 text-white" />
+                {disabled ? <Hourglass className="w-4 h-4 text-white animate-pulse" /> : <ArrowRight className="w-4 h-4 text-white" />}
               </button>
             </div>
           </div>
