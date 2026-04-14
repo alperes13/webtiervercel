@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { getAnalyses } from '@/lib/api';
 import { useAuth } from '@/contexts/AuthContext';
 import { Card } from '@/components/ui/Card';
-import { Badge } from '@/components/ui/Badge';
+import Badge from '@/components/ui/Badge';
 import { ExternalLink, Clock, CheckCircle2, AlertCircle, BarChart3, Search } from 'lucide-react';
 import { format } from 'date-fns';
 import { tr } from 'date-fns/locale';
