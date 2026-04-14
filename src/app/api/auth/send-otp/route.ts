@@ -12,17 +12,16 @@ function generateOtp(): string {
   return String(Math.floor(100000 + Math.random() * 900000));
 }
 
-async function sendNetgsmSMS(phone: string, code: string): Promise<boolean> {
+async function sendNetgsmSMS(phone: string, code: string): Promise<{ success: boolean; response?: string }> {
   const usercode = process.env.NETGSM_USERCODE;
   const password = process.env.NETGSM_PASSWORD;
   const header = process.env.NETGSM_HEADER;
 
   if (!usercode || !password || !header) {
     console.log(`[otp] DEV STUB (NETGSM) — phone=${phone} code=${code}`);
-    return true;
+    return { success: true };
   }
 
-  // Netgsm expects phone without +90 (e.g. 5xxxxxxxxx)
   const cleanPhone = phone.replace('+90', '').replace(/\s/g, '');
 
   try {
@@ -37,12 +36,16 @@ async function sendNetgsmSMS(phone: string, code: string): Promise<boolean> {
 
     const res = await fetch(`https://api.netgsm.com.tr/sms/send/get/?${params.toString()}`);
     const text = await res.text();
-
-    // Netgsm returns "00" or "01 32132" for success (00 means job started)
-    return text.startsWith('00') || text.startsWith('01');
-  } catch (err) {
+    
+    // Netgsm returns "00" or "01 32132" for success
+    if (text.startsWith('00') || text.startsWith('01')) {
+      return { success: true };
+    }
+    
+    return { success: false, response: text };
+  } catch (err: any) {
     console.error('[otp] netgsm send failed', err);
-    return false;
+    return { success: false, response: err.message };
   }
 }
 
@@ -57,7 +60,6 @@ export async function POST(request: Request) {
 
     const purpose: OtpPurpose = body.purpose === 'reset' ? 'reset' : 'register';
     
-    // Check if user exists
     const existing = await queryOne<{ id: string }>('SELECT id FROM users WHERE phone = $1', [normalized.phone]);
 
     if (purpose === 'register' && existing) {
@@ -70,7 +72,6 @@ export async function POST(request: Request) {
     const code = generateOtp();
     const expiresAt = new Date(Date.now() + OTP_TTL_MINUTES * 60_000);
 
-    // Save session
     const session = await queryOne<{ id: string }>(
       `INSERT INTO otp_sessions (phone, otp_code, expires_at)
        VALUES ($1, $2, $3) RETURNING id`,
@@ -81,9 +82,12 @@ export async function POST(request: Request) {
       return NextResponse.json({ success: false, error: 'OTP oturumu oluşturulamadı (DB hatası)' }, { status: 500 });
     }
 
-    const sent = await sendNetgsmSMS(normalized.phone, code);
-    if (!sent) {
-      return NextResponse.json({ success: false, error: 'SMS gönderim servisinden yanıt alınamadı' }, { status: 502 });
+    const { success, response } = await sendNetgsmSMS(normalized.phone, code);
+    if (!success) {
+      return NextResponse.json({ 
+        success: false, 
+        error: `SMS gönderilemedi (Netgsm Yanıtı: ${response})` 
+      }, { status: 502 });
     }
 
     return NextResponse.json({ 
@@ -96,8 +100,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ 
       success: false, 
       error: 'Sunucu hatası oluştu',
-      details: process.env.NODE_ENV === 'development' ? error.message : undefined,
-      code: error.code // PG provides error codes like '42P01' for missing tables
+      code: error.code
     }, { status: 500 });
   }
 }
