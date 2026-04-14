@@ -17,35 +17,33 @@ async function sendNetgsmSMS(phone: string, code: string): Promise<{ success: bo
   const password = process.env.NETGSM_PASSWORD;
   const header = process.env.NETGSM_HEADER;
 
-  if (!usercode || !password || !header) {
-    console.log(`[otp] DEV STUB (NETGSM) — phone=${phone} code=${code}`);
-    return { success: true };
-  }
-
-  // Netgsm expects phone with 90 (e.g. 905xxxxxxxxx) or 10 digits. Using 12-digit format for better compatibility.
-  const cleanPhone = phone.replace('+', '').replace(/\s/g, '');
+  // Netgsm REST v2 OTP expects 10-digit phone (e.g. 5xxxxxxxxx)
+  const cleanPhone = phone.replace('+90', '').replace(/\s/g, '');
 
   try {
     const rawMessage = `Webtier dogrulama kodunuz: ${code}. Bu kodu kimseyle paylasmayin.`;
     
-    // According to documentation for HTTP GET (/sms/send/get/):
-    // Required: usercode, password, msgheader, msg, no, type
-    const params = new URLSearchParams({
-      usercode,
-      password,
-      no: cleanPhone,    // Documentation says 'no'
-      msg: rawMessage,   // Documentation says 'msg'
-      msgheader: header,
-      dil: 'TR',
-      type: '1:n'
+    // Auth header: Basic base64(username:password)
+    const auth = Buffer.from(`${usercode}:${password}`).toString('base64');
+
+    const res = await fetch('https://api.netgsm.com.tr/sms/rest/v2/otp', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Basic ${auth}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        msgheader: header,
+        msg: rawMessage,
+        no: cleanPhone
+      })
     });
 
-    const url = `https://api.netgsm.com.tr/sms/send/get/?${params.toString()}`;
-    const res = await fetch(url);
-    const text = await res.text();
+    const data = await res.json().catch(() => ({}));
+    const text = typeof data === 'string' ? data : (data.code || JSON.stringify(data));
     
-    // Netgsm returns "00" or "01 32132" for success
-    if (text.startsWith('00') || text.startsWith('01')) {
+    // Netgsm REST v2 returns { code: "00", description: "success", ... }
+    if (data.code === '00') {
       return { success: true };
     }
     
