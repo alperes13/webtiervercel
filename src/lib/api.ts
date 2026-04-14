@@ -27,17 +27,16 @@ async function getJson<T>(url: string, token?: string): Promise<T> {
 
 export async function sendOTP(
   phone: string,
-  purpose: 'register' | 'reset' = 'register'
+  purpose: 'register' | 'reset' | 'verify' = 'register'
 ): Promise<{ success: boolean; sessionId?: string; expiresIn?: number }> {
   return postJson(ENDPOINTS.sendOTP, { phone, purpose });
 }
 
 export async function registerUser(
   phone: string,
-  password: string,
-  otpCode: string
+  password: string
 ): Promise<{ success: boolean; session: UserSession }> {
-  return postJson(ENDPOINTS.register, { phone, password, otp_code: otpCode });
+  return postJson(ENDPOINTS.register, { phone, password });
 }
 
 export async function loginUser(

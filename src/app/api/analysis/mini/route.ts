@@ -22,6 +22,24 @@ export async function POST(request: NextRequest) {
   const user = await getUserFromRequest(request);
   if (!user) return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
 
+  const account = await queryOne<{ phone_verified: boolean }>(
+    `SELECT CASE WHEN LOWER(COALESCE(metadata->>'phoneVerified', 'false')) = 'true' THEN true ELSE false END AS phone_verified
+     FROM users
+     WHERE id = $1`,
+    [user.sub]
+  );
+
+  if (!account) {
+    return NextResponse.json({ success: false, error: 'Kullanıcı bulunamadı' }, { status: 404 });
+  }
+
+  if (!account.phone_verified) {
+    return NextResponse.json(
+      { success: false, error: 'Analiz başlatmak için önce telefon numaranızı dashboard üzerinden doğrulayın.' },
+      { status: 403 }
+    );
+  }
+
   const body = (await request.json().catch(() => ({}))) as Body;
   if (!body.website_url || !isValidUrl(body.website_url)) {
     return NextResponse.json({ success: false, error: 'Geçerli bir website_url gerekli' }, { status: 400 });

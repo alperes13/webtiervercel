@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { motion, animate } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
@@ -15,6 +16,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { createMiniAnalysis, createUltraAnalysis } from '@/lib/api';
 
 export default function HeroSection() {
+  const router = useRouter();
   const [siteUrl, setSiteUrl] = useState('');
   const [urlError, setUrlError] = useState('');
   const [isFocused, setIsFocused] = useState(false);
@@ -39,6 +41,12 @@ export default function HeroSection() {
 
     if (!isAuthenticated || !session) {
       setLoginOpen(true);
+      return;
+    }
+
+    if (!session.phoneVerified) {
+      setUrlError('Analiz başlatmadan önce dashboard üzerinden telefon doğrulaması yapmalısınız.');
+      router.push('/dashboard');
       return;
     }
 

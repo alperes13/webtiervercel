@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Modal from '@/components/ui/Modal';
 import PhoneInput from '@/components/ui/PhoneInput';
 import OTPInput from '@/components/ui/OTPInput';
@@ -20,6 +21,7 @@ interface LoginModalProps {
 }
 
 export default function LoginModal({ open, onClose, initialMode = 'login' }: LoginModalProps) {
+  const router = useRouter();
   const [mode, setMode] = useState<Mode>(initialMode);
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
@@ -68,29 +70,16 @@ export default function LoginModal({ open, onClose, initialMode = 'login' }: Log
   };
 
   // ---------- REGISTER ----------
-  const handleSendRegisterOTP = async () => {
+  const handleRegister = async () => {
     if (!isValidPhone(phone)) return setError(t.hero.errors.invalidPhone);
     if (password.length < MIN_PASSWORD_LENGTH) return setError(`Şifre en az ${MIN_PASSWORD_LENGTH} karakter olmalı`);
     setError('');
     setLoading(true);
     try {
-      await sendOTP(phone, 'register');
-      setOtpSent(true);
-    } catch (e) {
-      setError(e instanceof Error ? e.message : 'Kod gönderilemedi');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleVerifyRegister = async (code: string) => {
-    setOtpCode(code);
-    setError('');
-    setLoading(true);
-    try {
-      const res = await registerUser(phone, password, code);
+      const res = await registerUser(phone, password);
       login(res.session);
       onClose();
+      router.push('/dashboard');
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Kayıt başarısız');
     } finally {
@@ -135,7 +124,7 @@ export default function LoginModal({ open, onClose, initialMode = 'login' }: Log
   // ---------- RENDER ----------
   const titles: Record<Mode, string> = {
     login: 'Giriş Yap',
-    register: otpSent ? 'Doğrulama Kodu' : 'Hesap Oluştur',
+    register: 'Hesap Oluştur',
     reset: otpSent ? 'Yeni Şifre Belirle' : 'Şifremi Unuttum',
   };
 
@@ -167,7 +156,7 @@ export default function LoginModal({ open, onClose, initialMode = 'login' }: Log
         </div>
       )}
 
-      {mode === 'register' && !otpSent && (
+      {mode === 'register' && (
         <div className="space-y-4">
           <PhoneInput value={phone} onChange={setPhone} disabled={loading} />
           <input
@@ -179,8 +168,8 @@ export default function LoginModal({ open, onClose, initialMode = 'login' }: Log
             className="w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-3 text-sm text-[var(--color-text)] placeholder:text-[var(--color-text-muted)] focus:border-[var(--color-accent)] focus:outline-none"
           />
           {error && <p className="text-sm text-[var(--color-error)]">{error}</p>}
-          <Button size="lg" className="w-full" onClick={handleSendRegisterOTP} disabled={loading}>
-            {loading ? 'Gönderiliyor...' : 'Doğrulama Kodu Gönder'}
+          <Button size="lg" className="w-full" onClick={handleRegister} disabled={loading}>
+            {loading ? 'Hesap oluşturuluyor...' : 'Hesap Oluştur'}
           </Button>
           <p className="text-xs text-center text-[var(--color-text-muted)]">
             Zaten hesabın var mı?{' '}
@@ -188,17 +177,6 @@ export default function LoginModal({ open, onClose, initialMode = 'login' }: Log
               Giriş yap
             </button>
           </p>
-        </div>
-      )}
-
-      {mode === 'register' && otpSent && (
-        <div className="space-y-4">
-          <p className="text-center text-sm text-[var(--color-text-secondary)]">
-            +90 {phone} numarasına gönderilen 6 haneli kodu girin
-          </p>
-          <OTPInput onComplete={handleVerifyRegister} disabled={loading} error={!!error} />
-          {error && <p className="text-center text-sm text-[var(--color-error)]">{error}</p>}
-          {loading && <p className="text-center text-sm text-[var(--color-text-muted)]">Doğrulanıyor...</p>}
         </div>
       )}
 

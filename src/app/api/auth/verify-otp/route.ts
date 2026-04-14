@@ -28,6 +28,7 @@ interface UserRow {
   mini_credits: number;
   ultra_credits: number;
   created_at: Date;
+  phone_verified: boolean;
 }
 
 export async function POST(request: Request) {
@@ -61,14 +62,16 @@ export async function POST(request: Request) {
     return NextResponse.json({ success: false, error: 'Yanlış kod' }, { status: 400 });
   }
 
-  await query(
-    'UPDATE otp_sessions SET verified = true, verified_at = NOW() WHERE id = $1',
-    [otp.id]
-  );
+  await query('UPDATE otp_sessions SET verified = true, verified_at = NOW() WHERE id = $1', [otp.id]);
 
   const user = await queryOne<UserRow>(
-    `UPDATE users SET last_login = NOW() WHERE phone = $1
-     RETURNING id, phone, phone_raw, email, mini_credits, ultra_credits, created_at`,
+    `UPDATE users
+     SET
+       last_login = NOW(),
+       metadata = jsonb_set(COALESCE(metadata, '{}'::jsonb), '{phoneVerified}', 'true'::jsonb, true)
+     WHERE phone = $1
+     RETURNING id, phone, phone_raw, email, mini_credits, ultra_credits, created_at,
+       CASE WHEN LOWER(COALESCE(metadata->>'phoneVerified', 'false')) = 'true' THEN true ELSE false END AS phone_verified`,
     [normalized.phone]
   );
 
@@ -84,11 +87,14 @@ export async function POST(request: Request) {
       token,
       phone: user.phone,
       phoneRaw: user.phone_raw,
+      phoneVerified: user.phone_verified,
       email: user.email,
       createdAt: user.created_at.getTime(),
       expiresAt,
       analysisStatus: 'none' as const,
       credits: user.mini_credits + user.ultra_credits,
+      creditsMini: user.mini_credits,
+      creditsUltra: user.ultra_credits,
       miniCredits: user.mini_credits,
       ultraCredits: user.ultra_credits,
     },

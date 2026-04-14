@@ -2,6 +2,7 @@ export interface UserSession {
   token: string;
   phone: string;
   phoneRaw: string;
+  phoneVerified: boolean;
   email?: string;
   createdAt: number;
   expiresAt: number;

@@ -21,6 +21,7 @@ interface UserRow {
   ultra_credits: number;
   created_at: Date;
   is_active: boolean;
+  phone_verified: boolean;
 }
 
 export async function POST(request: Request) {
@@ -33,7 +34,8 @@ export async function POST(request: Request) {
   }
 
   const user = await queryOne<UserRow>(
-    `SELECT id, phone, phone_raw, email, password_hash, mini_credits, ultra_credits, created_at, is_active
+    `SELECT id, phone, phone_raw, email, password_hash, mini_credits, ultra_credits, created_at, is_active,
+      CASE WHEN LOWER(COALESCE(metadata->>'phoneVerified', 'false')) = 'true' THEN true ELSE false END AS phone_verified
      FROM users WHERE phone = $1`,
     [normalized.phone]
   );
@@ -60,11 +62,14 @@ export async function POST(request: Request) {
       token,
       phone: user.phone,
       phoneRaw: user.phone_raw,
+      phoneVerified: user.phone_verified,
       email: user.email,
       createdAt: user.created_at.getTime(),
       expiresAt,
       analysisStatus: 'none' as const,
       credits: user.mini_credits + user.ultra_credits,
+      creditsMini: user.mini_credits,
+      creditsUltra: user.ultra_credits,
       miniCredits: user.mini_credits,
       ultraCredits: user.ultra_credits,
     },

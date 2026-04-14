@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { X, Phone, BarChart3, CreditCard, LogOut, Eye, EyeOff, MessageCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '@/contexts/AuthContext';
@@ -108,6 +109,19 @@ export default function ProfilePopup({ open, onClose }: ProfilePopupProps) {
                 </div>
               </div>
 
+              {/* Verification Status */}
+              <div className="mb-4 rounded-xl bg-[var(--color-surface-card)] p-4">
+                <div className="flex items-center gap-3">
+                  <Phone className="h-4 w-4 text-[var(--color-text-muted)]" />
+                  <div className="flex-1">
+                    <p className="text-xs text-[var(--color-text-muted)]">Telefon Doğrulama</p>
+                    <p className={`text-sm font-medium ${session.phoneVerified ? 'text-[var(--color-success)]' : 'text-[var(--color-warning)]'}`}>
+                      {session.phoneVerified ? 'Doğrulandı' : 'Doğrulanmadı'}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
               {/* Credits */}
               <div className="mb-6 space-y-3">
                 {/* Mini Credits */}
@@ -149,6 +163,12 @@ export default function ProfilePopup({ open, onClose }: ProfilePopupProps) {
               </div>
 
               {/* Logout */}
+              <Button asChild variant="outline" size="default" className="mb-3 w-full">
+                <Link href="/dashboard" onClick={onClose}>
+                  Dashboard
+                </Link>
+              </Button>
+
               <Button
                 variant="ghost"
                 size="default"
