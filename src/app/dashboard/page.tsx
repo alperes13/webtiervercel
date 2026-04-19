@@ -8,7 +8,7 @@ import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { HeroInput, type CROModel } from '@/components/ui/animated-ai-input';
 import { isValidUrl } from '@/lib/validators';
-import { createMiniAnalysis, createUltraAnalysis } from '@/lib/api';
+import { createMiniAnalysis, createUltraAnalysis, sendVerificationEmail, verifyEmailOTP } from '@/lib/api';
 import { cn } from '@/lib/utils';
 
 import DashboardSidebar, { type DashboardSection } from '@/components/dashboard/DashboardSidebar';
@@ -24,6 +24,13 @@ export default function DashboardPage() {
 
   const [activeSection, setActiveSection] = useState<DashboardSection>('overview');
   const [purchaseModalOpen, setPurchaseModalOpen] = useState(false);
+
+  // Email verification states
+  const [verificationSent, setVerificationSent] = useState(false);
+  const [otpCode, setOtpCode] = useState('');
+  const [verifying, setVerifying] = useState(false);
+  const [verificationError, setVerificationError] = useState('');
+  const [sendingOtp, setSendingOtp] = useState(false);
 
   // Analysis states for Mini
   const [miniUrl, setMiniUrl] = useState('');
@@ -101,17 +108,98 @@ export default function DashboardPage() {
             
             {/* Email Verification Banner */}
             {!session.emailVerified && (
-              <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 flex items-center justify-between gap-4 animate-in fade-in slide-in-from-top-2">
-                <div className="flex items-center gap-3">
-                  <div className="bg-amber-100 p-2 rounded-full">
-                    <Shield className="h-4 w-4 text-amber-600" />
+              <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 animate-in fade-in slide-in-from-top-2">
+                <div className="flex items-center justify-between gap-4">
+                  <div className="flex items-center gap-3">
+                    <div className="bg-amber-100 p-2 rounded-full">
+                      <Shield className="h-4 w-4 text-amber-600" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-bold text-amber-900">E-posta Adresinizi Doğrulayın</p>
+                      <p className="text-xs text-amber-700">Analiz alabilmek için e-posta adresinizi doğrulayın.</p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="text-sm font-bold text-amber-900">E-posta Adresinizi Doğrulayın</p>
-                    <p className="text-xs text-amber-700">Analiz alabilmek için e-posta adresinizi doğrulayın.</p>
-                  </div>
+                  {!verificationSent && (
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="text-xs border-amber-200 hover:bg-amber-100"
+                      disabled={sendingOtp}
+                      onClick={async () => {
+                        setSendingOtp(true);
+                        setVerificationError('');
+                        try {
+                          await sendVerificationEmail(session.token);
+                          setVerificationSent(true);
+                        } catch (e: any) {
+                          setVerificationError(e.message);
+                        } finally {
+                          setSendingOtp(false);
+                        }
+                      }}
+                    >
+                      {sendingOtp ? 'Gönderiliyor...' : 'Doğrulama Gönder'}
+                    </Button>
+                  )}
                 </div>
-                <Button size="sm" variant="outline" className="text-xs border-amber-200 hover:bg-amber-100">Doğrulama Gönder</Button>
+
+                {verificationSent && (
+                  <div className="mt-3 flex items-center gap-2">
+                    <input
+                      type="text"
+                      inputMode="numeric"
+                      maxLength={6}
+                      placeholder="6 haneli kod"
+                      value={otpCode}
+                      onChange={(e) => {
+                        setOtpCode(e.target.value.replace(/\D/g, '').slice(0, 6));
+                        setVerificationError('');
+                      }}
+                      className="w-32 px-3 py-1.5 text-sm border border-amber-200 rounded-md bg-white text-slate-900 focus:outline-none focus:ring-2 focus:ring-amber-300"
+                    />
+                    <Button
+                      size="sm"
+                      className="text-xs bg-amber-500 hover:bg-amber-600 text-white"
+                      disabled={verifying || otpCode.length !== 6}
+                      onClick={async () => {
+                        setVerifying(true);
+                        setVerificationError('');
+                        try {
+                          await verifyEmailOTP(session.token, otpCode);
+                          updateSession({ emailVerified: true });
+                        } catch (e: any) {
+                          setVerificationError(e.message);
+                        } finally {
+                          setVerifying(false);
+                        }
+                      }}
+                    >
+                      {verifying ? 'Doğrulanıyor...' : 'Doğrula'}
+                    </Button>
+                    <button
+                      type="button"
+                      className="text-xs text-amber-600 hover:text-amber-800 underline ml-1"
+                      disabled={sendingOtp}
+                      onClick={async () => {
+                        setSendingOtp(true);
+                        setVerificationError('');
+                        try {
+                          await sendVerificationEmail(session.token);
+                        } catch (e: any) {
+                          setVerificationError(e.message);
+                        } finally {
+                          setSendingOtp(false);
+                        }
+                      }}
+                    >
+                      Tekrar Gönder
+                    </button>
+                  </div>
+                )}
+
+                {verificationError && (
+                  <p className="mt-2 text-xs text-red-600 font-medium">{verificationError}</p>
+                )}
               </div>
             )}
 

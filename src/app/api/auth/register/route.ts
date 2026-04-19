@@ -40,8 +40,8 @@ export async function POST(request: Request) {
     const passwordHash = await hashPassword(body.password as string);
 
     const inserted = await queryOne<UserRow>(
-      `INSERT INTO users (email, password_hash, mini_credits, ultra_credits, last_login)
-       VALUES ($1, $2, 1, 0, CURRENT_TIMESTAMP)
+      `INSERT INTO users (email, password_hash, mini_credits, ultra_credits, last_login, email_verified)
+       VALUES ($1, $2, 1, 0, CURRENT_TIMESTAMP, FALSE)
        RETURNING id, email, mini_credits, ultra_credits, created_at`,
       [email, passwordHash]
     );

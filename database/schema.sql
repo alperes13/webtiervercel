@@ -13,27 +13,33 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 -- ============================================
 CREATE TABLE users (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    phone VARCHAR(20) UNIQUE NOT NULL,
-    phone_raw VARCHAR(20) NOT NULL,
+    phone VARCHAR(20),
+    phone_raw VARCHAR(20),
     email VARCHAR(255),
     password_hash VARCHAR(255),
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     last_login TIMESTAMP WITH TIME ZONE,
     is_active BOOLEAN DEFAULT true,
-    
+
     -- Kredi bilgileri
-    mini_credits INTEGER DEFAULT 2, -- Başlangıçta 2 ücretsiz
+    mini_credits INTEGER DEFAULT 1,
     ultra_credits INTEGER DEFAULT 0,
-    
+
+    -- OAuth
+    oauth_provider VARCHAR(50) DEFAULT NULL,
+    google_id VARCHAR(255) UNIQUE DEFAULT NULL,
+
+    -- Email verification
+    email_verified BOOLEAN DEFAULT FALSE,
+
     -- Metadata
-    metadata JSONB DEFAULT '{}'::jsonb,
-    
-    CONSTRAINT check_phone_format CHECK (phone ~ '^\+90[0-9]{10}$')
+    metadata JSONB DEFAULT '{}'::jsonb
 );
 
--- Index for faster phone lookups
-CREATE INDEX idx_users_phone ON users(phone);
+-- Indexes
 CREATE INDEX idx_users_email ON users(email);
+CREATE UNIQUE INDEX idx_users_email_unique ON users(email) WHERE email IS NOT NULL;
+CREATE INDEX idx_users_google_id ON users(google_id);
 CREATE INDEX idx_users_created_at ON users(created_at DESC);
 
 -- ============================================
@@ -41,7 +47,8 @@ CREATE INDEX idx_users_created_at ON users(created_at DESC);
 -- ============================================
 CREATE TABLE otp_sessions (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    phone VARCHAR(20) NOT NULL,
+    phone VARCHAR(20),
+    email VARCHAR(255),
     otp_code VARCHAR(6) NOT NULL,
     attempts INTEGER DEFAULT 0,
     max_attempts INTEGER DEFAULT 3,
@@ -50,12 +57,13 @@ CREATE TABLE otp_sessions (
     verified BOOLEAN DEFAULT false,
     verified_at TIMESTAMP WITH TIME ZONE,
     ip_address VARCHAR(50),
-    
+
     CONSTRAINT check_otp_format CHECK (otp_code ~ '^[0-9]{6}$')
 );
 
 -- Index for faster OTP lookups
 CREATE INDEX idx_otp_phone ON otp_sessions(phone);
+CREATE INDEX idx_otp_email ON otp_sessions(email);
 CREATE INDEX idx_otp_expires ON otp_sessions(expires_at);
 CREATE INDEX idx_otp_verified ON otp_sessions(verified);
 

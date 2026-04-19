@@ -1,9 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { motion, animate } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
 import { AuroraBackground } from '@/components/ui/aurora-background';
 import { GradientText } from '@/components/ui/gradient-text';
@@ -80,80 +80,6 @@ export default function HeroSection() {
     visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: 'easeOut' as const } },
   };
 
-  useEffect(() => {
-    let lastTransitionTime = 0;
-    let touchStartY = 0;
-    const COOLDOWN = 600;
-
-    const snappyScroll = (to: number) => {
-      animate(window.scrollY, to, {
-        type: "spring",
-        stiffness: 150,
-        damping: 25,
-        mass: 0.8,
-        onUpdate: (latest) => window.scrollTo(0, latest)
-      });
-    };
-
-    const performTransition = (direction: 'up' | 'down') => {
-      const now = Date.now();
-      if (now - lastTransitionTime < COOLDOWN) return false;
-
-      const scrollY = window.scrollY;
-      const target = document.querySelector('#crox-ultra');
-      if (!target) return false;
-
-      const navbarHeight = 80;
-      const targetTop = target.getBoundingClientRect().top + scrollY - navbarHeight;
-
-      if (direction === 'down' && scrollY < 50) {
-        lastTransitionTime = now;
-        snappyScroll(targetTop);
-        return true;
-      }
-
-      if (direction === 'up' && scrollY > 50 && scrollY < targetTop + 50) {
-        lastTransitionTime = now;
-        snappyScroll(0);
-        return true;
-      }
-
-      return false;
-    };
-
-    const handleWheel = (e: WheelEvent) => {
-      if (Math.abs(e.deltaY) < 10) return;
-      const direction = e.deltaY > 0 ? 'down' : 'up';
-      if (performTransition(direction)) {
-        e.preventDefault();
-      }
-    };
-
-    const handleTouchStart = (e: TouchEvent) => {
-      touchStartY = e.touches[0].clientY;
-    };
-
-    const handleTouchMove = (e: TouchEvent) => {
-      const touchEndY = e.touches[0].clientY;
-      const deltaY = touchStartY - touchEndY;
-      if (Math.abs(deltaY) < 30) return;
-
-      const direction = deltaY > 0 ? 'down' : 'up';
-      if (performTransition(direction)) {
-        if (e.cancelable) e.preventDefault();
-      }
-    };
-
-    window.addEventListener('wheel', handleWheel, { passive: false });
-    window.addEventListener('touchstart', handleTouchStart, { passive: true });
-    window.addEventListener('touchmove', handleTouchMove, { passive: false });
-
-    return () => {
-      window.removeEventListener('wheel', handleWheel);
-      window.removeEventListener('touchstart', handleTouchStart);
-      window.removeEventListener('touchmove', handleTouchMove);
-    };
-  }, []);
 
   return (
     <AuroraBackground

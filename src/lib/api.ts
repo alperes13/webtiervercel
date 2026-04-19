@@ -90,3 +90,11 @@ export async function createPayment(
 export async function getAnalyses(token: string): Promise<{ success: boolean; analyses: any[] }> {
   return getJson(ENDPOINTS.analysisList, token);
 }
+
+export async function sendVerificationEmail(token: string): Promise<{ success: boolean; message?: string; error?: string }> {
+  return postJson(ENDPOINTS.verifyEmailSend, {}, token);
+}
+
+export async function verifyEmailOTP(token: string, code: string): Promise<{ success: boolean; message?: string; error?: string }> {
+  return postJson(ENDPOINTS.verifyEmailVerify, { code }, token);
+}

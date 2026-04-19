@@ -60,30 +60,30 @@ function StickyCard({
 
   return (
     <motion.div
-      layout
       onClick={isTop ? undefined : onClick}
       initial={false}
+      animate={{
+        top: `${index * HEADER_OFFSET}px`,
+      }}
       transition={{
         type: "spring",
         stiffness: 200,
         damping: 30,
-        layout: { duration: 0.45 }
+        duration: 0.45,
       }}
       className={`absolute left-0 w-full max-w-full transform-gpu ${isTop ? 'cursor-default' : 'cursor-pointer'}`}
       style={{
         zIndex: index + 10,
-        top: `${index * HEADER_OFFSET}px`,
       }}
     >
       <motion.div
         animate={{
           scale: isTop ? 1 : 1 - (total - index) * 0.015,
-          filter: isTop ? "blur(0px)" : "blur(0.5px)",
           opacity: isTop ? 1 : 0.65 + (index / total) * 0.35,
         }}
-        className={`rounded-3xl border border-white/10 ${isTop ? 'bg-black/95' : 'bg-black/80'} p-6 md:p-10 shadow-2xl backdrop-blur-3xl min-h-[460px] md:min-h-[480px] flex flex-col justify-start relative overflow-hidden group hover:border-cyan-500/40 transition-all duration-300`}
+        className={`rounded-3xl border border-white/10 ${isTop ? 'bg-black/95' : 'bg-black/80'} p-6 md:p-10 shadow-2xl backdrop-blur-xl min-h-[460px] md:min-h-[480px] flex flex-col justify-start relative overflow-hidden group hover:border-cyan-500/40 transition-all duration-300`}
       >
-        <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-500/10 blur-[60px] rounded-full group-hover:bg-cyan-500/20 transition-colors duration-500 pointer-events-none" />
+        <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-500/10 blur-[40px] rounded-full group-hover:bg-cyan-500/20 transition-colors duration-500 pointer-events-none" />
 
         <div className="flex items-start justify-between mb-8 relative z-10">
           <div className="space-y-1">
@@ -191,7 +191,7 @@ export default function ServicesProcessStack() {
           <div className="relative mt-8 lg:mt-16 h-[1000px] md:h-[1100px] lg:h-[1100px] overflow-x-hidden md:overflow-visible max-w-full">
             <div className="lg:sticky lg:top-32 w-full h-full max-w-full">
               <div className="relative w-full h-full max-w-full overflow-hidden">
-                <AnimatePresence mode="popLayout">
+                <AnimatePresence mode="wait">
                   {stack.map((step, index) => (
                     <StickyCard
                       key={step.id}

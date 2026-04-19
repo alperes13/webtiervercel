@@ -19,6 +19,8 @@ export const ENDPOINTS = {
   analysisUltra: '/api/analysis/ultra',
   analysisList: '/api/analysis/list',
   paymentCreate: '/api/payment/create',
+  verifyEmailSend: '/api/auth/verify-email/send',
+  verifyEmailVerify: '/api/auth/verify-email/verify',
 };
 
 export const NAV_ITEMS: NavItem[] = [

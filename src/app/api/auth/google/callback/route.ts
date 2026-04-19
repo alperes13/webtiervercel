@@ -87,7 +87,7 @@ export async function GET(request: NextRequest) {
     );
 
     if (existingByGoogle) {
-      await query('UPDATE users SET last_login = NOW() WHERE id = $1', [existingByGoogle.id]);
+      await query('UPDATE users SET last_login = NOW(), email_verified = TRUE WHERE id = $1', [existingByGoogle.id]);
       user = { ...existingByGoogle, is_new: false };
     } else {
       // Check if email already exists (existing email/password user)
@@ -99,15 +99,15 @@ export async function GET(request: NextRequest) {
       if (existingByEmail) {
         // Link Google account to existing user
         await query(
-          'UPDATE users SET google_id = $1, oauth_provider = $2, last_login = NOW() WHERE id = $3',
+          'UPDATE users SET google_id = $1, oauth_provider = $2, email_verified = TRUE, last_login = NOW() WHERE id = $3',
           [googleId, 'google', existingByEmail.id]
         );
         user = { ...existingByEmail, is_new: false };
       } else {
         // Create new user
         const inserted = await queryOne<{ id: string; email: string; mini_credits: number; ultra_credits: number; created_at: Date }>(
-          `INSERT INTO users (email, google_id, oauth_provider, mini_credits, ultra_credits, last_login)
-           VALUES ($1, $2, 'google', 1, 0, NOW())
+          `INSERT INTO users (email, google_id, oauth_provider, mini_credits, ultra_credits, last_login, email_verified)
+           VALUES ($1, $2, 'google', 1, 0, NOW(), TRUE)
            RETURNING id, email, mini_credits, ultra_credits, created_at`,
           [email, googleId]
         );
@@ -143,6 +143,7 @@ export async function GET(request: NextRequest) {
     creditsMini: String(user.mini_credits),
     creditsUltra: String(user.ultra_credits),
     oauthProvider: 'google',
+    emailVerified: 'true',
     ...(isNew ? { isNew: '1' } : {}),
   });
 

@@ -24,6 +24,8 @@ function AuthCallbackInner() {
       return;
     }
 
+    const emailVerified = params.get('emailVerified') === 'true';
+
     const session: UserSession = {
       token,
       email,
@@ -32,7 +34,7 @@ function AuthCallbackInner() {
       analysisStatus: 'none',
       creditsMini,
       creditsUltra,
-      emailVerified: true,
+      emailVerified,
       ...(oauthProvider ? { oauthProvider } : {}),
     };
 

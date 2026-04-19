@@ -16,8 +16,8 @@ export default function CROXUltraSection() {
     >
       {/* Background Glows */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-7xl pointer-events-none">
-        <div className="absolute top-[20%] right-0 w-[500px] h-[500px] bg-cyan-500/10 blur-[120px] rounded-full" />
-        <div className="absolute bottom-[20%] left-0 w-[500px] h-[500px] bg-blue-600/5 blur-[120px] rounded-full" />
+        <div className="absolute top-[20%] right-0 w-[500px] h-[500px] bg-cyan-500/10 blur-[80px] rounded-full" />
+        <div className="absolute bottom-[20%] left-0 w-[500px] h-[500px] bg-blue-600/5 blur-[80px] rounded-full" />
       </div>
 
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
