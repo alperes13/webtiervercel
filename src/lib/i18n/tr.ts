@@ -720,7 +720,7 @@ const tr: Translations = {
     subtitle: 'Projeniz hakkında konuşalım. Size en uygun çözümü birlikte belirleyelim.',
     methods: {
       whatsapp: { title: 'WhatsApp', desc: 'En hızlı iletişim yolu' },
-      email: { title: 'Email', desc: 'Detaylı sorularınız için' },
+      email: { title: 'E-posta', desc: 'Detaylı sorularınız için' },
       phone: { title: 'Telefon', desc: 'Mesai saatlerinde arayın' },
     },
     fastResponseTitle: 'Hızlı Yanıt Alın',
