@@ -459,6 +459,23 @@ const en: Translations = {
     fastResponseSubtitle: 'We respond instantly via WhatsApp. Write to us to discuss your project.',
     whatsappButton: 'Write via WhatsApp',
   },
+  emailVerification: {
+    title: 'Enter Verification Code',
+    subtitle: 'We emailed a verification code to',
+    emailSentTo: '',
+    codePlaceholder: '------',
+    verifyButton: 'Verify',
+    verifying: 'Verifying...',
+    resend: 'Resend',
+    resending: 'Sending...',
+    didntGetCode: "Didn't get the code?",
+    successMessage: 'Email verified successfully!',
+    errorInvalidCode: 'Invalid code. Please try again.',
+    terms: 'By continuing, you agree to our',
+    termsLink: 'Terms of Service',
+    privacyLink: 'Privacy Policy',
+    and: '&',
+  },
 };
 
 export default en;

@@ -87,5 +87,23 @@ export async function ensureMigrations(): Promise<void> {
     `);
   } catch { /* already exists */ }
 
+  // Migration 006: password_reset_tokens
+  try {
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS password_reset_tokens (
+        id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+        user_id UUID NOT NULL,
+        token VARCHAR(64) NOT NULL UNIQUE,
+        expires_at TIMESTAMP WITH TIME ZONE NOT NULL,
+        used BOOLEAN DEFAULT FALSE,
+        created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
+  } catch { /* already exists */ }
+
+  try {
+    await pool.query(`CREATE INDEX IF NOT EXISTS idx_prt_token ON password_reset_tokens(token);`);
+  } catch { /* already exists */ }
+
   console.log('[migrate] ensureMigrations complete');
 }

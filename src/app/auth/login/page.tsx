@@ -1,10 +1,10 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { loginUser, redirectToGoogleOAuth } from '@/lib/api';
 import { SignInPage, type Testimonial } from "@/components/ui/sign-in";
-import { useState } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 
 const sampleTestimonials: Testimonial[] = [
   {
@@ -27,10 +27,24 @@ const sampleTestimonials: Testimonial[] = [
   },
 ];
 
-export default function LoginPage() {
+const OAUTH_ERRORS: Record<string, string> = {
+  oauth_failed: 'Google ile giriş başarısız oldu. Lütfen tekrar deneyin.',
+  oauth_cancelled: 'Google girişi iptal edildi.',
+  oauth_config: 'Sunucu yapılandırma hatası. Lütfen daha sonra tekrar deneyin.',
+};
+
+function LoginPageInner() {
   const router = useRouter();
   const { login } = useAuth();
   const [error, setError] = useState('');
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const code = searchParams.get('error');
+    if (code) {
+      setError(OAUTH_ERRORS[code] ?? 'Bir hata oluştu. Lütfen tekrar deneyin.');
+    }
+  }, []);
 
   const handleSignIn = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -58,7 +72,7 @@ export default function LoginPage() {
   };
   
   const handleResetPassword = () => {
-    alert("Şifre sıfırlama özelliği yakında aktif olacaktır. Lütfen destek ile iletişime geçin.");
+    router.push('/auth/forgot-password');
   };
 
   const handleCreateAccount = () => {
@@ -84,5 +98,13 @@ export default function LoginPage() {
         </div>
       )}
     </SignInPage>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={null}>
+      <LoginPageInner />
+    </Suspense>
   );
 }

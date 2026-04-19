@@ -98,3 +98,11 @@ export async function sendVerificationEmail(token: string): Promise<{ success: b
 export async function verifyEmailOTP(token: string, code: string): Promise<{ success: boolean; message?: string; error?: string }> {
   return postJson(ENDPOINTS.verifyEmailVerify, { code }, token);
 }
+
+export async function forgotPassword(email: string): Promise<{ success: boolean }> {
+  return postJson(ENDPOINTS.forgotPassword, { email });
+}
+
+export async function resetPassword(token: string, newPassword: string): Promise<{ success: boolean }> {
+  return postJson(ENDPOINTS.resetPassword, { token, newPassword });
+}

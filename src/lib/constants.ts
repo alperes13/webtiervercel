@@ -21,6 +21,8 @@ export const ENDPOINTS = {
   paymentCreate: '/api/payment/create',
   verifyEmailSend: '/api/auth/verify-email/send',
   verifyEmailVerify: '/api/auth/verify-email/verify',
+  forgotPassword: '/api/auth/forgot-password',
+  resetPassword: '/api/auth/reset-password',
 };
 
 export const NAV_ITEMS: NavItem[] = [

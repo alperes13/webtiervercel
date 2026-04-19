@@ -8,14 +8,15 @@ import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { HeroInput, type CROModel } from '@/components/ui/animated-ai-input';
 import { isValidUrl } from '@/lib/validators';
-import { createMiniAnalysis, createUltraAnalysis, sendVerificationEmail, verifyEmailOTP } from '@/lib/api';
+import { createMiniAnalysis, createUltraAnalysis } from '@/lib/api';
 import { cn } from '@/lib/utils';
 
 import DashboardSidebar, { type DashboardSection } from '@/components/dashboard/DashboardSidebar';
 import DashboardHeader from '@/components/dashboard/DashboardHeader';
 import AnalysisHistory from '@/components/dashboard/AnalysisHistory';
 import PurchaseModal from '@/components/ui/PurchaseModal';
-import { Zap, ShieldCheck, Mail, User, Shield } from 'lucide-react';
+import EmailVerificationModal from '@/components/ui/EmailVerificationModal';
+import { Zap, Mail, Shield } from 'lucide-react';
 
 export default function DashboardPage() {
   const { session, isAuthenticated, isHydrated, updateSession, logout } = useAuth();
@@ -24,13 +25,7 @@ export default function DashboardPage() {
 
   const [activeSection, setActiveSection] = useState<DashboardSection>('overview');
   const [purchaseModalOpen, setPurchaseModalOpen] = useState(false);
-
-  // Email verification states
-  const [verificationSent, setVerificationSent] = useState(false);
-  const [otpCode, setOtpCode] = useState('');
-  const [verifying, setVerifying] = useState(false);
-  const [verificationError, setVerificationError] = useState('');
-  const [sendingOtp, setSendingOtp] = useState(false);
+  const [verifyModalOpen, setVerifyModalOpen] = useState(false);
 
   // Analysis states for Mini
   const [miniUrl, setMiniUrl] = useState('');
@@ -119,87 +114,15 @@ export default function DashboardPage() {
                       <p className="text-xs text-amber-700">Analiz alabilmek için e-posta adresinizi doğrulayın.</p>
                     </div>
                   </div>
-                  {!verificationSent && (
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      className="text-xs border-amber-200 hover:bg-amber-100"
-                      disabled={sendingOtp}
-                      onClick={async () => {
-                        setSendingOtp(true);
-                        setVerificationError('');
-                        try {
-                          await sendVerificationEmail(session.token);
-                        } catch (e: any) {
-                          setVerificationError(e.message);
-                        } finally {
-                          setVerificationSent(true);
-                          setSendingOtp(false);
-                        }
-                      }}
-                    >
-                      {sendingOtp ? 'Gönderiliyor...' : 'Doğrulama Gönder'}
-                    </Button>
-                  )}
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="text-xs border-amber-200 hover:bg-amber-100 shrink-0"
+                    onClick={() => setVerifyModalOpen(true)}
+                  >
+                    Doğrulama Gönder
+                  </Button>
                 </div>
-
-                {verificationSent && (
-                  <div className="mt-3 flex items-center gap-2">
-                    <input
-                      type="text"
-                      inputMode="numeric"
-                      maxLength={6}
-                      placeholder="6 haneli kod"
-                      value={otpCode}
-                      onChange={(e) => {
-                        setOtpCode(e.target.value.replace(/\D/g, '').slice(0, 6));
-                        setVerificationError('');
-                      }}
-                      className="w-32 px-3 py-1.5 text-sm border border-amber-200 rounded-md bg-white text-slate-900 focus:outline-none focus:ring-2 focus:ring-amber-300"
-                    />
-                    <Button
-                      size="sm"
-                      className="text-xs bg-amber-500 hover:bg-amber-600 text-white"
-                      disabled={verifying || otpCode.length !== 6}
-                      onClick={async () => {
-                        setVerifying(true);
-                        setVerificationError('');
-                        try {
-                          await verifyEmailOTP(session.token, otpCode);
-                          updateSession({ emailVerified: true });
-                        } catch (e: any) {
-                          setVerificationError(e.message);
-                        } finally {
-                          setVerifying(false);
-                        }
-                      }}
-                    >
-                      {verifying ? 'Doğrulanıyor...' : 'Doğrula'}
-                    </Button>
-                    <button
-                      type="button"
-                      className="text-xs text-amber-600 hover:text-amber-800 underline ml-1"
-                      disabled={sendingOtp}
-                      onClick={async () => {
-                        setSendingOtp(true);
-                        setVerificationError('');
-                        try {
-                          await sendVerificationEmail(session.token);
-                        } catch (e: any) {
-                          setVerificationError(e.message);
-                        } finally {
-                          setSendingOtp(false);
-                        }
-                      }}
-                    >
-                      Tekrar Gönder
-                    </button>
-                  </div>
-                )}
-
-                {verificationError && (
-                  <p className="mt-2 text-xs text-red-600 font-medium">{verificationError}</p>
-                )}
               </div>
             )}
 
@@ -359,6 +282,13 @@ export default function DashboardPage() {
       </div>
 
       <PurchaseModal open={purchaseModalOpen} onClose={() => setPurchaseModalOpen(false)} />
+      <EmailVerificationModal
+        open={verifyModalOpen}
+        email={session.email}
+        token={session.token}
+        onVerified={() => updateSession({ emailVerified: true })}
+        onClose={() => setVerifyModalOpen(false)}
+      />
     </div>
   );
 }

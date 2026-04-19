@@ -459,6 +459,23 @@ const de: Translations = {
     fastResponseSubtitle: 'Wir antworten sofort über WhatsApp. Schreiben Sie uns, um Ihr Projekt zu besprechen.',
     whatsappButton: 'Über WhatsApp schreiben',
   },
+  emailVerification: {
+    title: 'Bestätigungscode eingeben',
+    subtitle: 'Wir haben einen Bestätigungscode gesendet an',
+    emailSentTo: '',
+    codePlaceholder: '------',
+    verifyButton: 'Bestätigen',
+    verifying: 'Wird bestätigt...',
+    resend: 'Erneut senden',
+    resending: 'Wird gesendet...',
+    didntGetCode: 'Keinen Code erhalten?',
+    successMessage: 'E-Mail erfolgreich bestätigt!',
+    errorInvalidCode: 'Ungültiger Code. Bitte versuchen Sie es erneut.',
+    terms: 'Mit dem Fortfahren stimmen Sie unseren',
+    termsLink: 'Nutzungsbedingungen',
+    privacyLink: 'Datenschutzrichtlinie',
+    and: 'und',
+  },
 };
 
 export default de;

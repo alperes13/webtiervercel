@@ -232,6 +232,23 @@ export interface Translations {
     fastResponseSubtitle: string;
     whatsappButton: string;
   };
+  emailVerification: {
+    title: string;
+    subtitle: string;
+    emailSentTo: string;
+    codePlaceholder: string;
+    verifyButton: string;
+    verifying: string;
+    resend: string;
+    resending: string;
+    didntGetCode: string;
+    successMessage: string;
+    errorInvalidCode: string;
+    terms: string;
+    termsLink: string;
+    privacyLink: string;
+    and: string;
+  };
 }
 
 const tr: Translations = {
@@ -726,6 +743,23 @@ const tr: Translations = {
     fastResponseTitle: 'Hızlı Yanıt Alın',
     fastResponseSubtitle: 'WhatsApp üzerinden anında dönüş yapıyoruz. Projenizi tartışmak için bize yazın.',
     whatsappButton: 'WhatsApp ile Yazın',
+  },
+  emailVerification: {
+    title: 'Doğrulama Kodunu Girin',
+    subtitle: 'E-posta adresinize doğrulama kodu gönderdik',
+    emailSentTo: 'adresine gönderildi',
+    codePlaceholder: '------',
+    verifyButton: 'Doğrula',
+    verifying: 'Doğrulanıyor...',
+    resend: 'Tekrar Gönder',
+    resending: 'Gönderiliyor...',
+    didntGetCode: 'Kod gelmedi mi?',
+    successMessage: 'E-posta başarıyla doğrulandı!',
+    errorInvalidCode: 'Geçersiz kod. Lütfen tekrar deneyin.',
+    terms: 'Devam ederek',
+    termsLink: 'Kullanım Şartları',
+    privacyLink: 'Gizlilik Politikası',
+    and: 've',
   },
 };
 
