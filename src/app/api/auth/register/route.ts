@@ -3,6 +3,7 @@ import { query, queryOne } from '@/lib/db';
 import { hashPassword, isValidPassword } from '@/lib/password';
 import { signSession } from '@/lib/auth';
 import { isValidEmail } from '@/lib/validators';
+import { ensureMigrations } from '@/lib/migrate';
 
 export const runtime = 'nodejs';
 
@@ -21,6 +22,8 @@ interface UserRow {
 
 export async function POST(request: Request) {
   try {
+    await ensureMigrations();
+
     const body = (await request.json().catch(() => ({}))) as Body;
     const email = (body.email ?? '').trim().toLowerCase();
 

@@ -2,6 +2,7 @@ import { NextResponse, type NextRequest } from 'next/server';
 import { decodeJwt } from 'jose';
 import { query, queryOne } from '@/lib/db';
 import { signSession } from '@/lib/auth';
+import { ensureMigrations } from '@/lib/migrate';
 
 export const runtime = 'nodejs';
 
@@ -15,6 +16,8 @@ interface UserRow {
 }
 
 export async function GET(request: NextRequest) {
+  await ensureMigrations();
+
   const { searchParams } = request.nextUrl;
   const code = searchParams.get('code');
   const error = searchParams.get('error');

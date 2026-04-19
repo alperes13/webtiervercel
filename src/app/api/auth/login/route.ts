@@ -3,6 +3,7 @@ import { query, queryOne } from '@/lib/db';
 import { verifyPassword } from '@/lib/password';
 import { signSession } from '@/lib/auth';
 import { isValidEmail } from '@/lib/validators';
+import { ensureMigrations } from '@/lib/migrate';
 
 export const runtime = 'nodejs';
 
@@ -24,6 +25,8 @@ interface UserRow {
 
 export async function POST(request: Request) {
   try {
+    await ensureMigrations();
+
     const body = (await request.json().catch(() => ({}))) as Body;
     const email = (body.email ?? '').trim().toLowerCase();
     const password = body.password ?? '';
@@ -33,7 +36,8 @@ export async function POST(request: Request) {
     }
 
     const user = await queryOne<UserRow>(
-      `SELECT id, email, password_hash, mini_credits, ultra_credits, created_at, is_active, email_verified
+      `SELECT id, email, password_hash, mini_credits, ultra_credits, created_at, is_active,
+              COALESCE(email_verified, FALSE) AS email_verified
        FROM users WHERE LOWER(email) = $1`,
       [email]
     );
@@ -73,11 +77,11 @@ export async function POST(request: Request) {
     });
   } catch (err: any) {
     console.error('[auth] login error:', err);
-    return NextResponse.json({ 
-      success: false, 
+    return NextResponse.json({
+      success: false,
       error: 'Giriş sırasında sunucu hatası oluştu',
       details: err.message,
-      code: err.code 
+      code: err.code,
     }, { status: 500 });
   }
 }

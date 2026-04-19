@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { query, queryOne } from '@/lib/db';
 import { getUserFromRequest } from '@/lib/auth';
+import { ensureMigrations } from '@/lib/migrate';
 
 export const runtime = 'nodejs';
 
@@ -13,6 +14,8 @@ interface OTPRow {
 
 export async function POST(request: Request) {
   try {
+    await ensureMigrations();
+
     const user = await getUserFromRequest(request);
     if (!user) {
       return NextResponse.json({ success: false, error: 'Yetkilendirme gerekli' }, { status: 401 });
