@@ -47,7 +47,15 @@ export async function POST(request: Request) {
     // Send email
     const sent = await sendOTPEmail(user.email, otpCode);
     if (!sent) {
-      return NextResponse.json({ success: false, error: 'E-posta gönderilemedi. Lütfen tekrar deneyin.' }, { status: 500 });
+      // Clean up the OTP we just inserted so it doesn't count toward rate limit
+      await query('DELETE FROM otp_sessions WHERE email = $1 AND otp_code = $2', [user.email, otpCode]).catch(() => {});
+      const providerMissing = !process.env.SMTP_HOST && !process.env.RESEND_API_KEY;
+      return NextResponse.json({
+        success: false,
+        error: providerMissing
+          ? 'E-posta servisi yapılandırılmamış. Lütfen yönetici ile iletişime geçin.'
+          : 'E-posta gönderilemedi. Lütfen tekrar deneyin.',
+      }, { status: 500 });
     }
 
     return NextResponse.json({ success: true, message: 'Doğrulama kodu gönderildi' });
