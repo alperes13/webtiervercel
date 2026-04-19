@@ -130,10 +130,10 @@ export default function DashboardPage() {
                         setVerificationError('');
                         try {
                           await sendVerificationEmail(session.token);
-                          setVerificationSent(true);
                         } catch (e: any) {
                           setVerificationError(e.message);
                         } finally {
+                          setVerificationSent(true);
                           setSendingOtp(false);
                         }
                       }}

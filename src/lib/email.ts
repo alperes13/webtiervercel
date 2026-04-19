@@ -1,17 +1,5 @@
 import { Resend } from 'resend';
 
-/**
- * Email sending via Resend HTTP API.
- * Works on Vercel serverless (no TCP port restrictions).
- *
- * Required env var: RESEND_API_KEY
- * Optional:        FROM_EMAIL (defaults to onboarding@resend.dev for testing,
- *                  use a verified domain address in production)
- *
- * Free tier: 100 emails/day, 3000/month — no domain verification needed
- * to send to your own address during testing.
- */
-
 function buildHtml(otpCode: string): string {
   return `<!DOCTYPE html>
 <html>
@@ -37,15 +25,15 @@ function buildHtml(otpCode: string): string {
 </html>`;
 }
 
-export async function sendOTPEmail(to: string, otpCode: string): Promise<boolean> {
+export async function sendOTPEmail(to: string, otpCode: string): Promise<{ ok: boolean; error?: string }> {
   const apiKey = process.env.RESEND_API_KEY;
 
   if (!apiKey) {
-    console.error('[email] RESEND_API_KEY is not set');
-    return false;
+    const msg = 'RESEND_API_KEY ortam değişkeni tanımlanmamış';
+    console.error('[email]', msg);
+    return { ok: false, error: msg };
   }
 
-  // Use verified domain address if set, otherwise Resend's test address
   const from = process.env.FROM_EMAIL
     ? `Webtier <${process.env.FROM_EMAIL}>`
     : 'Webtier <onboarding@resend.dev>';
@@ -61,14 +49,16 @@ export async function sendOTPEmail(to: string, otpCode: string): Promise<boolean
     });
 
     if (error) {
-      console.error('[email] Resend error:', JSON.stringify(error));
-      return false;
+      const msg = (error as any).message ?? JSON.stringify(error);
+      console.error('[email] Resend error:', msg);
+      return { ok: false, error: msg };
     }
 
-    console.log('[email] OTP sent via Resend, id:', data?.id);
-    return true;
+    console.log('[email] OTP sent, id:', data?.id);
+    return { ok: true };
   } catch (err: any) {
-    console.error('[email] Resend exception:', err?.message ?? err);
-    return false;
+    const msg = err?.message ?? String(err);
+    console.error('[email] Resend exception:', msg);
+    return { ok: false, error: msg };
   }
 }
