@@ -1,25 +1,16 @@
-import nodemailer from 'nodemailer';
+import { Resend } from 'resend';
 
 /**
- * Email sending utility.
+ * Email sending via Resend HTTP API.
+ * Works on Vercel serverless (no TCP port restrictions).
  *
- * Supports two providers — whichever env vars are set will be used:
+ * Required env var: RESEND_API_KEY
+ * Optional:        FROM_EMAIL (defaults to onboarding@resend.dev for testing,
+ *                  use a verified domain address in production)
  *
- * 1. SMTP (recommended):
- *    SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS
- *    e.g. Gmail: host=smtp.gmail.com, port=465, user=you@gmail.com, pass=<App Password>
- *         Yandex: host=smtp.yandex.com, port=465
- *         Custom: any SMTP provider
- *
- * 2. Resend (alternative):
- *    RESEND_API_KEY
- *    Domain must be verified in Resend dashboard.
- *
- * FROM_EMAIL defaults to the SMTP_USER or noreply@webtier.com.tr
+ * Free tier: 100 emails/day, 3000/month — no domain verification needed
+ * to send to your own address during testing.
  */
-
-const FROM_NAME = 'Webtier';
-const FROM_EMAIL = process.env.FROM_EMAIL ?? process.env.SMTP_USER ?? 'noreply@webtier.com.tr';
 
 function buildHtml(otpCode: string): string {
   return `<!DOCTYPE html>
@@ -46,90 +37,38 @@ function buildHtml(otpCode: string): string {
 </html>`;
 }
 
-async function sendViaSMTP(to: string, otpCode: string): Promise<boolean> {
-  const host = process.env.SMTP_HOST;
-  const port = parseInt(process.env.SMTP_PORT ?? '465', 10);
-  const user = process.env.SMTP_USER;
-  const pass = process.env.SMTP_PASS;
-
-  if (!host || !user || !pass) {
-    console.error('[email] SMTP env vars missing: SMTP_HOST, SMTP_USER, SMTP_PASS required');
-    return false;
-  }
-
-  try {
-    const transporter = nodemailer.createTransport({
-      host,
-      port,
-      secure: port === 465,
-      auth: { user, pass },
-      tls: { rejectUnauthorized: false },
-    });
-
-    await transporter.sendMail({
-      from: `"${FROM_NAME}" <${FROM_EMAIL}>`,
-      to,
-      subject: `Webtier Doğrulama Kodu: ${otpCode}`,
-      html: buildHtml(otpCode),
-    });
-
-    console.log(`[email] OTP sent via SMTP to ${to}`);
-    return true;
-  } catch (err: any) {
-    console.error('[email] SMTP send error:', err?.message ?? err);
-    return false;
-  }
-}
-
-async function sendViaResend(to: string, otpCode: string): Promise<boolean> {
+export async function sendOTPEmail(to: string, otpCode: string): Promise<boolean> {
   const apiKey = process.env.RESEND_API_KEY;
+
   if (!apiKey) {
     console.error('[email] RESEND_API_KEY is not set');
     return false;
   }
 
+  // Use verified domain address if set, otherwise Resend's test address
+  const from = process.env.FROM_EMAIL
+    ? `Webtier <${process.env.FROM_EMAIL}>`
+    : 'Webtier <onboarding@resend.dev>';
+
   try {
-    const res = await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({
-        from: `${FROM_NAME} <${FROM_EMAIL}>`,
-        to: [to],
-        subject: `Webtier Doğrulama Kodu: ${otpCode}`,
-        html: buildHtml(otpCode),
-      }),
+    const resend = new Resend(apiKey);
+
+    const { data, error } = await resend.emails.send({
+      from,
+      to: [to],
+      subject: `Webtier Doğrulama Kodu: ${otpCode}`,
+      html: buildHtml(otpCode),
     });
 
-    if (!res.ok) {
-      const body = await res.text();
-      console.error('[email] Resend API error:', res.status, body);
+    if (error) {
+      console.error('[email] Resend error:', JSON.stringify(error));
       return false;
     }
 
-    console.log(`[email] OTP sent via Resend to ${to}`);
+    console.log('[email] OTP sent via Resend, id:', data?.id);
     return true;
   } catch (err: any) {
-    console.error('[email] Resend send error:', err?.message ?? err);
+    console.error('[email] Resend exception:', err?.message ?? err);
     return false;
   }
-}
-
-export async function sendOTPEmail(to: string, otpCode: string): Promise<boolean> {
-  // Prefer SMTP if configured, fall back to Resend
-  if (process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS) {
-    return sendViaSMTP(to, otpCode);
-  }
-
-  if (process.env.RESEND_API_KEY) {
-    return sendViaResend(to, otpCode);
-  }
-
-  console.error(
-    '[email] No email provider configured. ' +
-    'Set SMTP_HOST + SMTP_USER + SMTP_PASS, or RESEND_API_KEY in your environment.'
-  );
-  return false;
 }

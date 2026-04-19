@@ -8,21 +8,21 @@ import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function RuixenStats() {
   const { t } = useLanguage();
-  
+
   return (
     <section
       id="crox-ultra"
       className="crox-ultra-container relative w-full bg-transparent py-6 lg:pt-24 lg:pb-0 overflow-hidden scroll-mt-20"
     >
-      
+
       {/* 1. TOP: 12 Problems Section */}
       <div className="space-y-6">
         <div className="text-center space-y-4 max-w-3xl mx-auto">
-          <h3 className="ruixen-stats-leak-title text-3xl lg:text-5xl font-black text-white font-[family-name:var(--font-heading)]">
-            Hangi <span className="text-red-500">Sızıntı</span> Sizi zarara (red-500) uğratan sebepler ney?
+          <h3 className="ruixen-stats-leak-title text-3xl lg:text-5xl font-black text-white font-[family-name:var(--font-heading)] p-[20px]">
+            Sizi <span className="text-red-500">zarara</span> uğratan sebepler ney?
           </h3>
-          <p className="text-white text-lg font-medium opacity-90">
-            İşletmelerin %92'si aşağıdaki 12 temel sorundan en az 5 tanesini paylaşıyor. 
+          <p className="text-white text-lg font-medium opacity-90 px-5">
+            İşletmelerin %92'si aşağıdaki 12 temel sorundan en az 5 tanesini paylaşıyor.
             Sizin sitenizdeki engel hangisi?
           </p>
         </div>
@@ -35,7 +35,7 @@ export default function RuixenStats() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: idx * 0.05 }}
-              className="flex items-center gap-3 p-5 rounded-2xl border border-white/5 bg-white/[0.02] hover:bg-red-500/5 hover:border-red-500/20 transition-all group"
+              className="flex items-center gap-3 p-5 rounded-2xl border border-white/5 bg-white/[0.02] hover:bg-red-500/5 hover:border-red-500/20 transition-all group m-[3px_10px]"
             >
               <AlertCircle className="w-5 h-5 text-red-500/50 group-hover:text-red-500 transition-colors shrink-0" />
               <span className="text-zinc-400 text-sm font-semibold group-hover:text-white transition-colors">
@@ -46,20 +46,23 @@ export default function RuixenStats() {
         </div>
       </div>
 
-      <div className="h-px w-full bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+
 
       {/* 2. BOTTOM: Why CRO-X */}
       <div className="flex flex-col items-center text-center gap-10">
-        
+
 
 
         <div className="space-y-6 max-w-5xl mx-auto">
-          <h3 className="ruixen-stats-why-title text-4xl lg:text-7xl font-black text-white leading-tight font-[family-name:var(--font-heading)]">
+          <h3 className="ruixen-stats-why-title text-4xl lg:text-7xl font-black text-white leading-tight font-[family-name:var(--font-heading)] pt-[50px] !text-[2.5em]">
             <span className="text-cyan-400">CRO-X Ultra</span>
           </h3>
-          <p className="text-zinc-400 text-xl lg:text-2xl leading-relaxed w-full">
-            Yukarıdaki tüm sızıntıları gerçek zamanlı verilerle kapatıyoruz. 
+          <p className="text-zinc-400 leading-relaxed w-full p-[0px_20px_50px_20px] !text-[1.2em]">
+            Yukarıdaki tüm sızıntıları gerçek zamanlı verilerle kapatıyoruz.
             Sadece analiz etmiyor, dönüşüm oranlarınızı katlayacak bir yol haritası sunuyoruz.
+            <br />
+            <br />
+            Tek yapmanız gereken dijital bir adres girmek.
           </p>
         </div>
       </div>

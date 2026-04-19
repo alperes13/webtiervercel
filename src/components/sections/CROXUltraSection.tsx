@@ -23,21 +23,21 @@ export default function CROXUltraSection() {
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* --- PART 1: Paket Kapsamı GRID --- */}
         <div id="crox-ultra" className="crox-ultra-content-grid space-y-12 lg:space-y-20 mb-20 lg:mb-32">
-          <div className="flex flex-col lg:flex-row gap-12 lg:gap-20">
+          <div className="flex flex-col lg:flex-row gap-[10px]">
 
             {/* Left: Title Area */}
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="crox-ultra-title-area lg:w-1/3 flex flex-col justify-center"
+              className="crox-ultra-title-area lg:w-1/3 flex flex-col justify-center pt-[20px]"
             >
               <h2 className="crox-ultra-section-title text-4xl sm:text-5xl lg:text-7xl font-black text-white leading-[0.9] font-[family-name:var(--font-heading)] mb-6">
-                {t.croxUltra.title}
+                CRO-X Ultra Listenin Hepsi!
               </h2>
 
               <p className="text-zinc-400 text-lg leading-relaxed max-w-md">
-                {t.croxUltra.subtitle}
+                İşletmenizin dijital varlığını 360° analiz eden, stratejik yol haritası çıkartan premium analiz motoru.
               </p>
             </motion.div>
 
@@ -50,7 +50,7 @@ export default function CROXUltraSection() {
               className="crox-ultra-items-grid lg:w-2/3"
             >
               <div className="relative rounded-[32px] border border-white/10 bg-zinc-900/40 backdrop-blur-lg p-8 lg:p-10 shadow-2xl">
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-x-6 gap-y-3">
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-[4px]">
                   {(t.croxUltra.items ?? []).map((item, idx) => (
                     <motion.div
                       key={idx}
@@ -71,7 +71,7 @@ export default function CROXUltraSection() {
             </motion.div>
           </div>
 
-          {/* --- PART 2: RuixenStats (Now in the middle) --- */}
+          <h3 className="text-3xl font-black text-white text-center mb-8">Daha Fazlası</h3>
           <motion.div
             initial={{ opacity: 0, scale: 0.98 }}
             whileInView={{ opacity: 1, scale: 1 }}
@@ -86,31 +86,47 @@ export default function CROXUltraSection() {
           </motion.div>
 
           {/* Pricing & Summary (Side-by-side Below Stats) */}
-          {/* Pricing Wrap (Two Cards Side-by-side) */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             className="crox-ultra-pricing-wrap flex flex-col lg:flex-row items-stretch justify-center gap-8 lg:gap-12"
           >
-            {/* Card 1: ULTRA (Existing, now first) */}
+            {/* Card 1: ULTRA */}
             <div className="w-full max-w-lg">
               <Box
                 title="CRO-X AI ULTRA"
-                subtitle="Geleceğinizi analiz ile tecrübe edin"
+                subtitle="Geleceğinizi analiz ile tecrübe edin."
                 price="249 TL"
                 ctaText={t.croxUltra.cta}
+                creditText="2 Kredi Hakkı."
+                href="/dashboard"
               />
             </div>
 
-            {/* Card 2: MINI (New, now second) */}
+            {/* Card 2: RETRAINER */}
+            <div className="w-full max-w-lg">
+              <Box
+                title="Webtier Retrainer"
+                subtitle="KOBI'lere uygun yaklaşımlar, markalara çığır açtıracak temaslar."
+                price="Önce bir planlayalım"
+                priceClassName="!text-[23px]"
+                ctaText="BİLGİ AL"
+                creditText=""
+                showTotalLabel={false}
+                href="/retrainer"
+              />
+            </div>
+
+            {/* Card 3: MINI */}
             <div className="w-full max-w-lg">
               <Box
                 title="CRO-X AI MINI"
-                subtitle="Dijital varlığınızı analiz edin, farkı görün"
+                subtitle="Dijital varlığınızı analiz edin, farkı görün."
                 price="Ücretsiz"
-                priceNote="Kart bilgisi gerekmez"
                 ctaText="ANALİZ AL"
+                creditText="1 Kredi Hakkı."
+                href="/"
               />
             </div>
           </motion.div>

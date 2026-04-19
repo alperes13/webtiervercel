@@ -141,13 +141,13 @@ export default function ServicesProcessStack() {
   return (
     <section
       id="workflow"
-      className="relative w-full max-w-full overflow-x-clip bg-transparent py-10 lg:py-16"
+      className="relative w-full max-w-full overflow-x-clip bg-transparent pt-0 lg:pt-16 pb-10 lg:pb-16"
     >
 
       <div className="relative z-20 mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-20">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 lg:gap-20">
 
-          <div className="pt-4 lg:pt-16">
+          <div className="pt-0 lg:pt-16">
             <div className="lg:sticky lg:top-32 space-y-8">
               <div className="space-y-4">
                 <motion.h2
@@ -188,7 +188,7 @@ export default function ServicesProcessStack() {
             </div>
           </div>
 
-          <div className="relative mt-8 lg:mt-16 h-[1000px] md:h-[1100px] lg:h-[1100px] overflow-x-hidden md:overflow-visible max-w-full">
+          <div className="relative mt-0 lg:mt-16 h-[1000px] md:h-[1100px] lg:h-[1100px] overflow-x-hidden md:overflow-visible max-w-full">
             <div className="lg:sticky lg:top-32 w-full h-full max-w-full">
               <div className="relative w-full h-full max-w-full overflow-hidden">
                 <AnimatePresence mode="wait">

@@ -309,7 +309,7 @@ const tr: Translations = {
     price: '249.00 TL',
     summaryLabel: '+ 30 sayfa özet',
     bannerTitle: 'CRO-X AI ULTRA',
-    bannerSubtext: 'Geleceğinizi analiz ile tecrübe edin',
+    bannerSubtext: 'Geleceğinizi analiz ile tecrübe edin.',
     items: [
       'Rakip Analizi & Kıyaslama',
       'Dönüşüm Hunisi (Funnel) Haritalama',
