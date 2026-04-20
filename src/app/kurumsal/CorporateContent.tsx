@@ -1,163 +1,281 @@
 'use client';
 
 import Link from 'next/link';
-import { ArrowUpRight, MessageCircle, CheckCircle2, Shield, Layers, Users, Globe, FileText, Phone as PhoneIcon } from 'lucide-react';
+import { ArrowUpRight, MessageCircle, CheckCircle2, Shield, Layers, Users, Globe, FileText, Phone as PhoneIcon, Building2, TrendingUp } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/Button';
-import Card from '@/components/ui/Card';
+import { BentoGrid, type BentoItem } from '@/components/ui/bento-grid';
 import Accordion from '@/components/ui/Accordion';
+import { Sparkles } from '@/components/ui/sparkles';
+import { VerticalCutReveal } from '@/components/ui/vertical-cut-reveal';
+import { TextScramble } from '@/components/ui/text-scramble';
 import { SITE_CONFIG } from '@/lib/constants';
 import { getWhatsAppUrl } from '@/lib/utils';
 
 import { useLanguage } from '@/contexts/LanguageContext';
 
+const fadeUp = {
+  hidden: { opacity: 0, y: 20 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: i * 0.1, duration: 0.6, ease: 'easeOut' as const },
+  }),
+};
+
 export default function CorporateContent() {
   const { t } = useLanguage();
 
-  const targetAudience = [
-    { icon: <Shield className="h-5 w-5" />, ...t.corporate.audience[0] },
-    { icon: <FileText className="h-5 w-5" />, ...t.corporate.audience[1] },
-    { icon: <Globe className="h-5 w-5" />, ...t.corporate.audience[2] },
-    { icon: <Layers className="h-5 w-5" />, ...t.corporate.audience[3] },
-    { icon: <Users className="h-5 w-5" />, ...t.corporate.audience[4] },
-    { icon: <PhoneIcon className="h-5 w-5" />, ...t.corporate.audience[5] },
+  const whatsappUrl = getWhatsAppUrl(SITE_CONFIG.whatsapp, 'Merhaba, kurumsal web tasarım hakkında bilgi almak istiyorum.');
+
+  const audienceIcons = [
+    <Shield key="sh" className="w-4 h-4 text-cyan-500" />,
+    <FileText key="ft" className="w-4 h-4 text-blue-500" />,
+    <Globe key="gl" className="w-4 h-4 text-purple-500" />,
+    <Layers key="la" className="w-4 h-4 text-emerald-500" />,
+    <Users key="us" className="w-4 h-4 text-amber-500" />,
+    <PhoneIcon key="ph" className="w-4 h-4 text-sky-500" />,
   ];
 
+  const audienceBentoItems: BentoItem[] = t.corporate.audience.map((item, i) => ({
+    title: item.title,
+    description: item.desc,
+    icon: audienceIcons[i],
+    tags: [],
+    colSpan: i < 2 ? 2 : 1,
+    hasPersistentHover: i === 0,
+  }));
+
   return (
-    <div className="pt-24 lg:pt-32">
-      {/* Hero */}
-      <section className="relative py-16 lg:py-24 overflow-hidden">
-        <div className="absolute inset-0">
-          <div className="absolute top-1/4 right-1/4 h-[500px] w-[500px] rounded-full bg-[var(--color-accent-secondary)]/10 blur-[130px]" />
-        </div>
-        <div className="relative mx-auto max-w-5xl px-4 text-center sm:px-6 lg:px-8">
-          <motion.div initial={false} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-            <span className="inline-block rounded-full bg-[var(--color-accent-secondary)]/10 px-4 py-1.5 text-xs font-semibold text-[var(--color-accent-secondary)]">
-              {t.corporate.tag}
-            </span>
-            <h1 className="mt-6 font-[family-name:var(--font-clash-display)] text-4xl font-bold text-[var(--color-text)] sm:text-5xl">
-              {t.corporate.title}{' '}
-              <span className="bg-gradient-to-r from-[var(--color-accent-secondary)] to-[var(--color-accent)] bg-clip-text text-transparent">
+    <div className="min-h-screen bg-[#030303] text-white selection:bg-cyan-500/30">
+
+      {/* ═══ HERO ═══ */}
+      <section className="relative pt-32 pb-24 lg:pb-32 overflow-hidden">
+        {/* Sparkles Background */}
+        <Sparkles
+          className="absolute inset-0 pointer-events-none"
+          density={400}
+          speed={0.3}
+          size={1.2}
+          color="#06b6d4"
+          opacity={0.35}
+          direction="top"
+        />
+        {/* Gradient Orb */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-cyan-500/10 blur-[120px] rounded-full opacity-40 pointer-events-none" />
+
+        <div className="container mx-auto px-6 relative z-10">
+          <div className="max-w-4xl mx-auto text-center space-y-8">
+            {/* Title with VerticalCutReveal */}
+            {/* Title with VerticalCutReveal */}
+            <div className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight font-[family-name:var(--font-heading)]">
+              <VerticalCutReveal
+                splitBy="characters"
+                staggerDuration={0.03}
+                containerClassName="justify-center"
+                elementLevelClassName="bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60"
+              >
+                {t.corporate.title}
+              </VerticalCutReveal>
+              <VerticalCutReveal
+                splitBy="characters"
+                staggerDuration={0.03}
+                transition={{ type: 'spring', stiffness: 190, damping: 22, delay: 0.3 }}
+                containerClassName="justify-center mt-2"
+                elementLevelClassName="text-cyan-400"
+              >
                 {t.corporate.titleHighlight}
-              </span>
-            </h1>
-            <p className="mt-4 text-lg text-[var(--color-text-secondary)]">
+              </VerticalCutReveal>
+            </div>
+
+            {/* Subtitle */}
+            <motion.p
+              custom={3}
+              variants={fadeUp}
+              initial="hidden"
+              animate="visible"
+              className="text-lg md:text-xl text-zinc-400 max-w-2xl mx-auto leading-relaxed"
+            >
               {t.corporate.subtitle}
-            </p>
-            <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-              <Link href="/#hero" className="w-full sm:w-auto">
-                <Button size="lg" className="w-full sm:w-auto px-8">
-                  {t.corporate.ctaAnalysis} <ArrowUpRight className="ml-2 h-4 w-4" />
+            </motion.p>
+
+            {/* CTA */}
+            <motion.div
+              custom={4}
+              variants={fadeUp}
+              initial="hidden"
+              animate="visible"
+              className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2"
+            >
+              <Link href="/#hero">
+                <Button size="lg" className="bg-cyan-500 hover:bg-cyan-600 text-white px-8 rounded-full h-12 text-base font-bold">
+                  {t.corporate.ctaAnalysis}
+                  <ArrowUpRight className="ml-2 w-4 h-4" />
                 </Button>
               </Link>
-              <a href={getWhatsAppUrl(SITE_CONFIG.whatsapp, 'Merhaba, kurumsal web tasarım hakkında bilgi almak istiyorum.')} target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto">
-                <Button variant="outline" size="lg" className="w-full sm:w-auto px-8 text-white border-white/20">
-                  <MessageCircle className="mr-2 h-4 w-4" /> {t.corporate.ctaWhatsApp}
+              <Link href="/iletisim">
+                <Button size="lg" variant="outline" className="border-white/10 hover:bg-white/5 text-white px-8 rounded-full h-12 text-base font-medium">
+                  <MessageCircle className="mr-2 w-4 h-4" />
+                  {t.corporate.ctaWhatsApp}
                 </Button>
-              </a>
-            </div>
-          </motion.div>
+              </Link>
+            </motion.div>
+          </div>
         </div>
       </section>
 
-      {/* Problem */}
-      <section className="py-12 bg-white/5 border-y border-white/5">
-        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
-          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-            <h2 className="font-[family-name:var(--font-clash-display)] text-2xl font-bold text-[var(--color-text)] sm:text-3xl text-center">
+      {/* ═══ PROBLEMS ═══ */}
+      <section className="py-24 border-t border-white/5">
+        <div className="container mx-auto px-6">
+          <div className="max-w-4xl mx-auto">
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-3xl md:text-5xl font-bold tracking-tight text-center font-[family-name:var(--font-heading)] mb-16"
+            >
               {t.corporate.problemsTitle}
-            </h2>
-            <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
-              {t.corporate.problems.map((problem) => (
-                <div key={problem} className="flex items-center gap-4 rounded-xl border border-[var(--color-error)]/20 bg-[var(--color-error)]/5 p-5">
-                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[var(--color-error)]/10">
-                    <Shield className="h-4 w-4 text-[var(--color-error)]" />
+            </motion.h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {t.corporate.problems.map((problem, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 15 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.08 }}
+                  className="group flex items-start gap-4 p-5 rounded-2xl bg-white/[0.02] border border-white/5 hover:border-red-500/20 transition-all duration-300"
+                >
+                  <div className="w-8 h-8 rounded-lg bg-red-500/10 flex items-center justify-center shrink-0 mt-0.5">
+                    <TrendingUp className="w-4 h-4 text-red-400" />
                   </div>
-                  <span className="text-base text-[var(--color-text-secondary)]">{problem}</span>
-                </div>
+                  <span className="text-zinc-400 group-hover:text-zinc-200 transition-colors leading-relaxed">{problem}</span>
+                </motion.div>
               ))}
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Features */}
-      <section className="py-20">
-        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
-          <h2 className="font-[family-name:var(--font-clash-display)] text-2xl font-bold text-[var(--color-text)] sm:text-3xl text-center">
-            {t.corporate.featuresTitle}
-          </h2>
-          <div className="mt-10 rounded-2xl border border-[var(--color-accent-secondary)]/20 bg-[var(--color-surface-card)] p-5 sm:p-8">
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-              {t.corporate.features.map((feature) => (
-                <div key={feature} className="flex items-center gap-2 text-sm text-[var(--color-text-secondary)]">
-                  <CheckCircle2 className="h-4 w-4 shrink-0 text-[var(--color-accent-secondary)]" />
-                  {feature}
-                </div>
-              ))}
-            </div>
-            <div className="mt-8 text-center">
-              <a href={getWhatsAppUrl(SITE_CONFIG.whatsapp, 'Merhaba, Kurumsal Web Tasarım paketi hakkında teklif almak istiyorum.')} target="_blank" rel="noopener noreferrer">
-                <Button size="lg">
-                  {t.corporate.ctaOffer} <ArrowUpRight className="h-4 w-4" />
-                </Button>
-              </a>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Target Audience */}
-      <section className="py-16 lg:py-20 bg-white/5 border-y border-white/5">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-12">
-            <h2 className="font-[family-name:var(--font-clash-display)] text-3xl font-bold text-[var(--color-text)] sm:text-4xl text-gradient-blue">
+      {/* ═══ FEATURES ═══ */}
+      <section className="py-24 bg-white/[0.01]">
+        <div className="container mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-4"
+          >
+            <h2 className="text-3xl md:text-5xl font-bold tracking-tight font-[family-name:var(--font-heading)]">
+              {t.corporate.featuresTitle}
+            </h2>
+          </motion.div>
+
+          <div className="max-w-4xl mx-auto">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 p-4">
+              {t.corporate.features.map((feature, i) => (
+                <motion.div
+                  key={feature}
+                  initial={{ opacity: 0, x: i % 2 === 0 ? -10 : 10 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.05 }}
+                  className="group relative flex items-center gap-3 p-4 rounded-xl overflow-hidden transition-all duration-300 border border-gray-100/80 dark:border-white/10 bg-white dark:bg-black hover:shadow-[0_2px_12px_rgba(0,0,0,0.03)] dark:hover:shadow-[0_2px_12px_rgba(255,255,255,0.03)] hover:-translate-y-0.5 will-change-transform"
+                >
+                  <CheckCircle2 className="h-4 w-4 shrink-0 text-cyan-400" />
+                  <span className="text-sm text-gray-600 dark:text-gray-300 leading-snug font-[425]">{feature}</span>
+                </motion.div>
+              ))}
+            </div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="mt-8 text-center"
+            >
+              <Link href="/iletisim">
+                <Button size="lg" className="bg-cyan-500 hover:bg-cyan-600 text-white px-8 rounded-full h-12 font-bold">
+                  {t.corporate.ctaOffer} <ArrowUpRight className="ml-2 h-4 w-4" />
+                </Button>
+              </Link>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ TARGET AUDIENCE — BentoGrid ═══ */}
+      <section className="py-24 border-t border-white/5">
+        <div className="container mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-4"
+          >
+            <h2 className="text-3xl md:text-5xl font-bold tracking-tight font-[family-name:var(--font-heading)]">
               {t.corporate.audienceTitle}
             </h2>
-            <p className="mt-3 text-[var(--color-text-secondary)]">{t.corporate.audienceSubtitle}</p>
-          </div>
-          <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {targetAudience.map((item, i) => (
-              <motion.div key={item.title} initial={{ opacity: 0, y: 15 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ delay: i * 0.05 }}>
-                <Card className="p-8 flex flex-col items-start border-white/5 hover:border-[var(--color-accent-secondary)]/30 transition-all duration-300 hover:shadow-2xl hover:shadow-[var(--color-accent-secondary)]/5">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--color-accent-secondary)]/10 text-[var(--color-accent-secondary)] ring-1 ring-[var(--color-accent-secondary)]/20 mb-6">
-                    {item.icon}
-                  </div>
-                  <h3 className="text-xl font-bold text-[var(--color-text)] mb-3">{item.title}</h3>
-                  <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">{item.desc}</p>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
+            <p className="mt-4 text-zinc-500 text-lg">{t.corporate.audienceSubtitle}</p>
+          </motion.div>
+          <BentoGrid items={audienceBentoItems} />
         </div>
       </section>
 
-      {/* FAQ */}
-      <section className="py-16">
-        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="font-[family-name:var(--font-clash-display)] text-2xl font-bold text-[var(--color-text)] sm:text-3xl">
+      {/* ═══ FAQ ═══ */}
+      <section className="py-24 bg-white/[0.01]">
+        <div className="container mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="max-w-3xl mx-auto"
+          >
+            <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 font-[family-name:var(--font-heading)]">
               {t.corporate.faqTitle}
             </h2>
-          </div>
-          <Accordion items={[...t.corporate.faqItems]} />
+            <Accordion items={[...t.corporate.faqItems]} variant="dark" />
+          </motion.div>
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="py-20 bg-gradient-to-b from-white/5 to-transparent border-t border-white/5">
-        <div className="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
-          <h2 className="font-[family-name:var(--font-clash-display)] text-3xl font-bold text-[var(--color-text)] sm:text-5xl leading-tight">
-            {t.corporate.ctaTitle} <br className="hidden sm:block" />
-            <span className="text-[var(--color-accent-secondary)]">{t.corporate.ctaTitleHighlight}</span>
-          </h2>
-          <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <Link href="/#hero" className="w-full sm:w-auto">
-              <Button size="lg" className="w-full sm:w-auto px-10">{t.corporate.ctaAnalysis} <ArrowUpRight className="ml-2 h-4 w-4" /></Button>
-            </Link>
-            <a href={getWhatsAppUrl(SITE_CONFIG.whatsapp, SITE_CONFIG.whatsappMessage)} target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto">
-              <Button variant="outline" size="lg" className="w-full sm:w-auto px-10 text-white border-white/20"><MessageCircle className="mr-2 h-4 w-4" /> {t.corporate.ctaWhatsApp}</Button>
-            </a>
+      {/* ═══ FINAL CTA ═══ */}
+      <section className="py-24">
+        <div className="container mx-auto px-6">
+          <div className="relative p-12 md:p-20 rounded-[40px] bg-gradient-to-br from-[#111] to-[#050505] border border-white/5 overflow-hidden text-center">
+            <div className="absolute top-0 left-0 w-[400px] h-[400px] bg-cyan-500/5 blur-[80px] rounded-full pointer-events-none" />
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="relative z-10 space-y-8"
+            >
+              <h2 className="text-4xl md:text-6xl font-bold tracking-tight font-[family-name:var(--font-heading)]">
+                {t.corporate.ctaTitle}{' '}
+                <span className="text-cyan-400">{t.corporate.ctaTitleHighlight}</span>
+              </h2>
+              <p className="text-zinc-500 text-lg md:text-xl max-w-xl mx-auto">
+                Ücretsiz CRO analizi ile başlayın. Kurumsal sitenizin lead üretme potansiyelini keşfedin.
+              </p>
+              <div className="flex flex-col md:flex-row items-center justify-center gap-4 pt-4">
+                <Link href="/#hero">
+                  <Button size="lg" className="bg-white text-black hover:bg-zinc-200 px-10 rounded-full h-14 text-base font-bold w-full md:w-auto">
+                    {t.corporate.ctaAnalysis}
+                    <ArrowUpRight className="ml-2 w-4 h-4" />
+                  </Button>
+                </Link>
+                <Link href="/iletisim">
+                  <Button size="lg" variant="ghost" className="text-white hover:bg-white/5 px-10 rounded-full h-14 text-base font-medium w-full md:w-auto">
+                    {t.corporate.ctaWhatsApp}
+                    <MessageCircle className="ml-2 w-4 h-4" />
+                  </Button>
+                </Link>
+              </div>
+              <p className="text-xs text-zinc-600 font-medium">
+                Kredi kartı gerekmez • 2 dakikada sonuç • Uzman analizi
+              </p>
+            </motion.div>
           </div>
         </div>
       </section>

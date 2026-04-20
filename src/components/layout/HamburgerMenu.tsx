@@ -186,22 +186,22 @@ export default function HamburgerMenu({ open, onClose }: HamburgerMenuProps) {
                 transition={{ delay: 0.5 }}
                 className="grid grid-cols-2 gap-3"
               >
-                <a
-                  href={getWhatsAppUrl(SITE_CONFIG.whatsapp, SITE_CONFIG.whatsappMessage)}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <Link
+                  href="/iletisim"
+                  onClick={onClose}
                   className="flex flex-col items-center justify-center gap-2 rounded-2xl bg-[#25D366]/10 p-4 text-[#25D366] transition-all hover:bg-[#25D366]/20 border border-[#25D366]/20 group active:scale-95"
                 >
                   <MessageCircle className="h-6 w-6 group-hover:animate-bounce" />
                   <span className="text-[10px] font-black uppercase tracking-tighter">WhatsApp</span>
-                </a>
-                <a
-                  href={`mailto:${SITE_CONFIG.email}`}
+                </Link>
+                <Link
+                  href="/iletisim"
+                  onClick={onClose}
                   className="flex flex-col items-center justify-center gap-2 rounded-2xl bg-cyan-500/10 p-4 text-cyan-600 transition-all hover:bg-cyan-500/20 border border-cyan-500/20 group active:scale-95"
                 >
                   <Mail className="h-6 w-6 group-hover:scale-110 transition-transform" />
                   <span className="text-[10px] font-black uppercase tracking-tighter">E-posta</span>
-                </a>
+                </Link>
               </motion.div>
             </div>
           </motion.div>

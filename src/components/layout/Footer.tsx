@@ -86,33 +86,31 @@ export default function Footer() {
             </h3>
             <ul className="mt-4 space-y-3">
               <li>
-                <a
-                  href={getWhatsAppUrl(SITE_CONFIG.whatsapp, SITE_CONFIG.whatsappMessage)}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <Link
+                  href="/iletisim"
                   className={cn("flex items-center gap-2 text-sm font-medium transition-colors hover:text-[#25D366]", linkClass)}
                 >
                   <MessageCircle className="h-4 w-4" />
                   WhatsApp
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href={`mailto:${SITE_CONFIG.email}`}
+                <Link
+                  href="/iletisim"
                   className={cn("flex items-center gap-2 text-sm font-medium transition-colors hover:text-cyan-600", linkClass)}
                 >
                   <Mail className="h-4 w-4" />
                   {SITE_CONFIG.email}
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href={`tel:${SITE_CONFIG.phone}`}
+                <Link
+                  href="/iletisim"
                   className={cn("flex items-center gap-2 text-sm font-medium transition-colors hover:text-cyan-600", linkClass)}
                 >
                   <Phone className="h-4 w-4" />
                   {SITE_CONFIG.phone}
-                </a>
+                </Link>
               </li>
             </ul>
           </div>

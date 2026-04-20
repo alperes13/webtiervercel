@@ -74,7 +74,7 @@ export function TextScramble({ text, className = "" }: TextScrambleProps) {
           <span
             key={i}
             className={`inline-block transition-all duration-150 ${
-              isScrambling && char !== text[i] ? "text-primary scale-110" : "text-foreground"
+              isScrambling && char !== text[i] ? "text-primary scale-110" : "text-inherit"
             }`}
             style={{
               transitionDelay: `${i * 10}ms`,

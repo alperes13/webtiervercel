@@ -28,9 +28,7 @@ export default function EcommercePreview() {
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            <span className="inline-block rounded-full bg-[var(--color-accent)]/10 px-4 py-1.5 text-xs font-semibold text-[var(--color-accent)]">
-              {t.ecommercePreview.tag}
-            </span>
+
             <h2 className="mt-4 font-[family-name:var(--font-heading)] text-3xl font-bold text-[var(--color-text)] sm:text-4xl">
               {t.ecommercePreview.title}{' '}
               <span className="text-[var(--color-accent)]">{t.ecommercePreview.titleHighlight}</span>

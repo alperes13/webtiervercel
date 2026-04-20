@@ -46,9 +46,7 @@ export default function CorporatePreview() {
             transition={{ duration: 0.5, delay: 0.1 }}
             className="order-1 lg:order-2"
           >
-            <span className="inline-block rounded-full bg-[var(--color-accent-secondary)]/10 px-4 py-1.5 text-xs font-semibold text-[var(--color-accent-secondary)]">
-              {t.corporatePreview.tag}
-            </span>
+
             <h2 className="mt-4 font-[family-name:var(--font-heading)] text-3xl font-bold text-[var(--color-text)] sm:text-4xl">
               {t.corporatePreview.title}{' '}
               <span className="text-[var(--color-accent-secondary)]">{t.corporatePreview.titleHighlight}</span>

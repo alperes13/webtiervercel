@@ -220,6 +220,26 @@ export interface Translations {
     ctaTitle: string;
     ctaTitleHighlight: string;
   };
+  retrainer: {
+    tag: string;
+    title: string;
+    titleHighlight: string;
+    subtitle: string;
+    ctaPrimary: string;
+    ctaSecondary: string;
+    features: readonly { title: string; description: string }[];
+    processTitle: string;
+    processTitleHighlight: string;
+    processSubtitle: string;
+    processItems: readonly string[];
+    ctaTitle: string;
+    ctaTitleHighlight: string;
+    ctaSubtitle: string;
+    ctaPrimaryButton: string;
+    ctaSecondaryButton: string;
+    faqTitle: string;
+    faqItems: readonly { question: string; answer: string }[];
+  };
   contact: {
     title: string;
     subtitle: string;
@@ -731,6 +751,50 @@ const tr: Translations = {
     ],
     ctaTitle: 'Kurumsal Sitenizi',
     ctaTitleHighlight: 'Dönüştürmeye',
+  },
+  retrainer: {
+    tag: 'CRO-X Uygulama Hizmeti',
+    title: 'Webtier',
+    titleHighlight: 'Retrainer',
+    subtitle: 'CRO-X AI analiz sonuçlarını dijital varlıklarınıza uyguluyoruz. Abonelik bazlı aylık optimizasyon hizmeti ile dönüşüm oranlarınızı sürekli artırın.',
+    ctaPrimary: 'Hemen Başvur',
+    ctaSecondary: 'Detaylı Bilgi Al',
+    features: [
+      {
+        title: 'CRO-X Uygulama',
+        description: 'CRO-X AI raporundaki tüm önerileri web sitenize, e-ticaret altyapınıza ve dijital varlıklarınıza profesyonel ekibimizle uyguluyoruz.',
+      },
+      {
+        title: 'Aylık Optimizasyon',
+        description: 'Her ay düzenli olarak performans takibi yapar, yeni iyileştirme fırsatlarını tespit eder ve dijital varlıklarınıza uygularız.',
+      },
+      {
+        title: 'Sürekli Büyüme',
+        description: 'Abonelik süresi boyunca dijital varlıklarınız sürekli güncellenir, dönüşüm oranlarınız aydan aya artar.',
+      },
+    ],
+    processTitle: 'Sonuçlarınız,',
+    processTitleHighlight: 'Bizim Eylemimiz.',
+    processSubtitle: 'CRO-X AI analiz sonuçlarınızı alır, gerekli tüm teknik ve tasarım güncellemelerini yapar, aylık abonelik ile sürekli optimizasyon sağlarız. Siz işletmenize odaklanın, dijital dönüşümü biz yönetelim.',
+    processItems: [
+      'CRO-X raporundaki tüm aksiyonların uygulanması',
+      'Web sitesi ve dijital varlıklarda teknik güncellemeler',
+      'Aylık performans raporu ve yeni optimizasyonlar',
+      'Abonelik bazlı esnek çalışma modeli',
+    ],
+    ctaTitle: 'Dönüşümü',
+    ctaTitleHighlight: 'Hayata Geçirin',
+    ctaSubtitle: 'Webtier Retrainer ile CRO-X AI sonuçlarınızı dijital varlıklarınıza uygulatın. Aylık abonelik ile sürekli büyüme sağlayın.',
+    ctaPrimaryButton: 'Ücretsiz Görüş Talep Et',
+    ctaSecondaryButton: 'Satış Ekibiyle Görüşün',
+    faqTitle: 'Retrainer Hakkında Merak Edilenler',
+    faqItems: [
+      { question: 'Retrainer hizmeti tam olarak nedir?', answer: 'Retrainer, CRO-X AI analizinden çıkan raporu web sitenize bizzat bizim uyguladığımız ve her ay sitenizi optimize etmeye devam ettiğimiz bir abonelik hizmetidir.' },
+      { question: 'Hangi web sitesi altyapılarını destekliyorsunuz?', answer: 'Shopify, WooCommerce, Magento ve özel React/Next.js projeleri dahil tüm modern altyapıları destekliyoruz.' },
+      { question: 'Dönüşüm artışı ne kadar sürede görülür?', answer: 'İlk uygulamalardan sonra 2-4 hafta içinde verilerde iyileşme gözlemlenmeye başlar.' },
+      { question: 'Aylık retainer ücreti neye göre belirleniyor?', answer: 'Sitenizin trafiği, sayfa sayısı ve optimizasyon derinliğine göre size özel bir plan sunuyoruz.' },
+      { question: 'İstediğim zaman iptal edebilir miyim?', answer: 'Evet, Retrainer hizmeti taahhütsüzdür. Bir sonraki ayın ödemesi yapılmadığında hizmet durdurulur.' },
+    ],
   },
   contact: {
     title: 'İletişime Geçin',

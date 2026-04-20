@@ -72,17 +72,17 @@ export default function DashboardSidebar({ activeSection, onSectionChange }: Sid
     <>
       {/* Mobile Header / Toggle */}
       <div className="lg:hidden fixed top-0 left-0 w-full h-16 bg-white border-b border-slate-200 flex items-center justify-between px-4 z-[60]">
-        <Link href="/">
-          <Image src="/images/logo-black.png" alt="Logo" width={100} height={30} className="h-7 w-auto object-contain" />
-        </Link>
         <button 
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           className="flex items-center gap-2 p-1.5 hover:bg-slate-50 transition-colors z-[130]"
           aria-label="Menü"
         >
-          <span className="text-[10px] font-black text-slate-500 uppercase tracking-[0.1em]">PANEL</span>
           <MenuToggleIcon open={isMobileMenuOpen} className="h-6 w-6 text-slate-600" duration={350} />
+          <span className="text-[10px] font-black text-slate-500 uppercase tracking-[0.1em]">PANEL</span>
         </button>
+        <Link href="/">
+          <Image src="/images/logo-black.png" alt="Logo" width={100} height={30} className="h-7 w-auto object-contain" />
+        </Link>
       </div>
 
       {/* Mobile Sidebar Overlay */}

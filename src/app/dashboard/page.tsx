@@ -163,7 +163,7 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-zinc-50 pt-16 lg:pt-0">
+    <div className="min-h-[120vh] lg:min-h-screen bg-zinc-50 pt-16 lg:pt-0">
       <div className="flex w-full">
         {/* Sidebar */}
         <DashboardSidebar activeSection={activeSection} onSectionChange={setActiveSection} />
