@@ -1,6 +1,8 @@
 export interface UserSession {
   token: string;
   email: string;
+  firstName?: string;
+  lastName?: string;
   phone?: string;
   phoneRaw?: string;
   createdAt: number;

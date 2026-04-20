@@ -48,7 +48,7 @@ export default function Footer() {
             </h3>
             <ul className="mt-4 space-y-3">
               {t.footer.services.map((link) => (
-                <li key={link.href}>
+                <li key={link.label}>
                   <Link
                     href={link.href}
                     className={cn("text-sm font-medium transition-colors hover:text-cyan-600", linkClass)}
@@ -67,7 +67,7 @@ export default function Footer() {
             </h3>
             <ul className="mt-4 space-y-3">
               {t.footer.legal.map((link) => (
-                <li key={link.href}>
+                <li key={link.label}>
                   <Link
                     href={link.href}
                     className={cn("text-sm font-medium transition-colors hover:text-cyan-600", linkClass)}
@@ -123,9 +123,6 @@ export default function Footer() {
           <p className={cn("text-xs font-medium", textClass)}>
             &copy; {new Date().getFullYear()} {SITE_CONFIG.name}. {t.footer.rights}
           </p>
-          <Link href="/iletisim" className={cn("text-xs font-medium transition-colors hover:text-cyan-600", textClass)}>
-            {t.footer.contact}
-          </Link>
         </div>
       </div>
     </footer>

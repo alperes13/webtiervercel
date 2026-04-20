@@ -11,8 +11,8 @@ import Footer from './Footer';
 export default function DynamicFooter() {
   const pathname = usePathname();
   
-  // Hide global footer on Home page only
-  if (pathname === '/' || pathname === '/tr' || pathname === '/en') {
+  // Hide global footer on Home page and Dashboard
+  if (pathname === '/' || pathname === '/tr' || pathname === '/en' || pathname?.startsWith('/dashboard')) {
     return null;
   }
   

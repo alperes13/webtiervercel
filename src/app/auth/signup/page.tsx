@@ -8,22 +8,52 @@ import { useState } from 'react';
 
 const sampleTestimonials: Testimonial[] = [
   {
-    avatarSrc: "https://randomuser.me/api/portraits/women/57.jpg",
-    name: "Sarah Chen",
-    handle: "@sarahdigital",
-    text: "Mükemmel bir platform! Kullanıcı deneyimi sorunsuz ve özellikler tam ihtiyacım olan şey."
+    avatarSrc: "https://randomuser.me/api/portraits/men/1.jpg",
+    name: "Burak Yılmaz",
+    handle: "@burak_ecommerce",
+    text: "CRO-X Ultra analizi sonrası sepet terk oranımız %40 düştü. İnanılmaz sonuçlar."
   },
   {
-    avatarSrc: "https://randomuser.me/api/portraits/men/64.jpg",
-    name: "Marcus Johnson",
-    handle: "@marcustech",
-    text: "Bu servis çalışma şeklimi değiştirdi. Temiz tasarım, güçlü özellikler ve mükemmel destek."
+    avatarSrc: "https://randomuser.me/api/portraits/women/2.jpg",
+    name: "Ayşe Kaya",
+    handle: "@aysekaya_design",
+    text: "Webtier ile sitemiz sadece güzel değil, aynı zamanda gerçek bir satış makinesi haline geldi."
   },
   {
-    avatarSrc: "https://randomuser.me/api/portraits/men/32.jpg",
-    name: "David Martinez",
-    handle: "@davidcreates",
-    text: "Birçok platform denedim ama bu gerçekten öne çıkıyor. Sezgisel, güvenilir ve üretkenlik için gerçekten yardımcı."
+    avatarSrc: "https://randomuser.me/api/portraits/men/3.jpg",
+    name: "Can Demir",
+    handle: "@candemir_saas",
+    text: "A/B testleri sayesinde lead kazanım maliyetimizi tam yarıya indirmeyi başardık."
+  },
+  {
+    avatarSrc: "https://randomuser.me/api/portraits/women/4.jpg",
+    name: "Merve Aras",
+    handle: "@mervepazarlama",
+    text: "Dönüşüm odaklı tasarım yaklaşımı gerçekten fark yaratıyor. Teşekkürler Webtier!"
+  },
+  {
+    avatarSrc: "https://randomuser.me/api/portraits/men/5.jpg",
+    name: "Emre Koç",
+    handle: "@emrekoc_agency",
+    text: "Müşterilerimize artık Webtier Retrainer ile sürdürülebilir büyüme vaat edebiliyoruz."
+  },
+  {
+    avatarSrc: "https://randomuser.me/api/portraits/women/6.jpg",
+    name: "Selin Deniz",
+    handle: "@selindeniz_corp",
+    text: "Kurumsal sitemiz artık sadece bir kartvizit değil, gerçek bir lead jeneratörü."
+  },
+  {
+    avatarSrc: "https://randomuser.me/api/portraits/men/7.jpg",
+    name: "Kerem Öztürk",
+    handle: "@keremozturk_vc",
+    text: "Dönüşüm oranlarındaki artış doğrudan ROI'mize yansıdı. Her kuruşuna kesinlikle değer."
+  },
+  {
+    avatarSrc: "https://randomuser.me/api/portraits/women/8.jpg",
+    name: "Deniz Yıldız",
+    handle: "@denizyildiz_shop",
+    text: "Shopify optimizasyonları sonrası sayfa hızımız ve dönüşümümüz inanılmaz arttı."
   },
 ];
 

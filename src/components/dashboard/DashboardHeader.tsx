@@ -1,28 +1,38 @@
 'use client';
 
+import { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Card } from '@/components/ui/Card';
+import { cn } from '@/lib/utils';
 import { Zap, Target, LayoutDashboard } from 'lucide-react';
 
 export default function DashboardHeader() {
-  const { session } = useAuth();
+  const { session, isHydrated } = useAuth();
+  const [isVerifyModalOpen, setVerifyModalOpen] = useState(false);
   const { t } = useLanguage();
 
-  if (!session) return null;
+  // Hydration and safety guard
+  if (!isHydrated || !session) {
+    return <div className="h-20 animate-pulse bg-slate-100 rounded-2xl" />;
+  }
+
+  const firstName = session.firstName;
+  const lastName = session.lastName;
+  const displayName = firstName ? (lastName ? `${firstName} ${lastName}` : firstName) : session.email.split('@')[0];
 
   return (
     <div className="space-y-4">
       <div className="flex flex-col">
         <h1 className="text-xl font-bold tracking-tight text-slate-900">
-          Merhaba, {session.email.split('@')[0]}
+          Merhaba, {displayName}
         </h1>
         <p className="text-xs text-slate-500">
-          Webtier Dashboard'a hoş geldiniz.
+          CRO-X AI Panel
         </p>
       </div>
 
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+      <div className={cn("grid gap-3 sm:grid-cols-3", session.emailVerified ? "sm:grid-cols-2" : "sm:grid-cols-3")}>
         <Card className="p-4 relative overflow-hidden group border-zinc-200 bg-white">
           <div className="absolute top-0 right-0 p-2 opacity-5">
             <LayoutDashboard className="h-10 w-10" />
@@ -45,17 +55,19 @@ export default function DashboardHeader() {
           </div>
         </Card>
 
-        <Card className="p-4 relative overflow-hidden group border-zinc-200 bg-white">
-          <div className="absolute top-0 right-0 p-2 opacity-5">
-            <Target className="h-10 w-10" />
-          </div>
-          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">E-posta Doğrulama</p>
-          <div className="mt-1 flex items-baseline gap-1.5">
-            <span className={`text-sm font-bold capitalize ${session.emailVerified ? 'text-green-600' : 'text-amber-600'}`}>
-              {session.emailVerified ? 'E-posta Doğrulandı' : 'Doğrulama Bekliyor'}
-            </span>
-          </div>
-        </Card>
+        {!session.emailVerified && (
+          <Card className="p-4 relative overflow-hidden group border-zinc-200 bg-white text-amber-700 border-amber-100 bg-amber-50/30">
+            <div className="absolute top-0 right-0 p-2 opacity-5">
+              <Target className="h-10 w-10" />
+            </div>
+            <p className="text-[10px] font-bold uppercase tracking-wider">Doğrulama Durumu</p>
+            <div className="mt-1 flex items-baseline gap-1.5">
+              <span className="text-sm font-bold capitalize">
+                Doğrulama Bekliyor
+              </span>
+            </div>
+          </Card>
+        )}
       </div>
     </div>
   );

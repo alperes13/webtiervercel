@@ -21,6 +21,8 @@ interface UserRow {
   created_at: Date;
   is_active: boolean;
   email_verified: boolean;
+  first_name: string | null;
+  last_name: string | null;
 }
 
 export async function POST(request: Request) {
@@ -37,7 +39,8 @@ export async function POST(request: Request) {
 
     const user = await queryOne<UserRow>(
       `SELECT id, email, password_hash, mini_credits, ultra_credits, created_at, is_active,
-              COALESCE(email_verified, FALSE) AS email_verified
+              COALESCE(email_verified, FALSE) AS email_verified,
+              first_name, last_name
        FROM users WHERE LOWER(email) = $1`,
       [email]
     );
@@ -73,6 +76,8 @@ export async function POST(request: Request) {
         creditsMini: user.mini_credits,
         creditsUltra: user.ultra_credits,
         emailVerified: user.email_verified,
+        firstName: user.first_name,
+        lastName: user.last_name,
       },
     });
   } catch (err: any) {

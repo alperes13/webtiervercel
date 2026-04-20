@@ -3,7 +3,7 @@ import { Plus_Jakarta_Sans, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { LanguageProvider } from "@/contexts/LanguageContext";
-import Navbar from "@/components/layout/Navbar";
+import DynamicNavbar from "@/components/layout/DynamicNavbar";
 import DynamicFooter from "@/components/layout/DynamicFooter";
 import MainWrapper from "@/components/layout/MainWrapper";
 import ScrollToTop from "@/components/shared/ScrollToTop";
@@ -92,7 +92,7 @@ export default function RootLayout({
       <body className="min-h-full p-0 m-0">
         <LanguageProvider>
           <AuthProvider>
-            <Navbar />
+            <DynamicNavbar />
             <MainWrapper>{children}</MainWrapper>
             <DynamicFooter />
             <CookieConsent />

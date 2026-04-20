@@ -4,32 +4,30 @@ import { getUserFromRequest } from '@/lib/auth';
 
 export const runtime = 'nodejs';
 
-export async function GET(request: NextRequest) {
+export async function PATCH(request: NextRequest) {
   try {
     const user = await getUserFromRequest(request);
     if (!user) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
     }
 
-    const analyses = await query(
-      `SELECT *
-       FROM analyses 
-       WHERE user_id = $1 
-       ORDER BY created_at DESC`,
-      [user.sub]
+    const { firstName, lastName } = await request.json();
+
+    await query(
+      `UPDATE users SET first_name = $1, last_name = $2 WHERE id = $3`,
+      [firstName, lastName, user.sub]
     );
 
     return NextResponse.json({
       success: true,
-      analyses: analyses?.rows || []
+      message: 'Profil güncellendi'
     });
   } catch (err: any) {
-    console.error('[analysis-list] error:', err);
+    console.error('[profile-update] error:', err);
     return NextResponse.json({ 
       success: false, 
-      error: 'Analizler listelenirken bir hata oluştu',
-      details: err.message,
-      stack: process.env.NODE_ENV === 'development' ? err.stack : undefined
+      error: 'Profil güncellenirken bir hata oluştu',
+      details: err.message 
     }, { status: 500 });
   }
 }

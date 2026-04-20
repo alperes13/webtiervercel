@@ -106,3 +106,15 @@ export async function forgotPassword(email: string): Promise<{ success: boolean 
 export async function resetPassword(token: string, newPassword: string): Promise<{ success: boolean }> {
   return postJson(ENDPOINTS.resetPassword, { token, newPassword });
 }
+
+export async function updateProfile(token: string, firstName: string, lastName: string): Promise<{ success: boolean }> {
+  const res = await fetch('/api/auth/profile', {
+    method: 'PATCH',
+    headers: { 
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify({ firstName, lastName }),
+  });
+  return res.json();
+}

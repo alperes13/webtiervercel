@@ -105,5 +105,14 @@ export async function ensureMigrations(): Promise<void> {
     await pool.query(`CREATE INDEX IF NOT EXISTS idx_prt_token ON password_reset_tokens(token);`);
   } catch { /* already exists */ }
 
+  // Migration 007: user names
+  try {
+    await pool.query(`
+      ALTER TABLE users 
+      ADD COLUMN IF NOT EXISTS first_name VARCHAR(100),
+      ADD COLUMN IF NOT EXISTS last_name VARCHAR(100);
+    `);
+  } catch { /* already exists */ }
+
   console.log('[migrate] ensureMigrations complete');
 }

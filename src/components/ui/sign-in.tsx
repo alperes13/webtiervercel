@@ -50,7 +50,6 @@ const TestimonialCard = ({ testimonial, delay }: { testimonial: Testimonial, del
     <img src={testimonial.avatarSrc} className="h-10 w-10 object-cover rounded-2xl" alt="avatar" />
     <div className="text-sm leading-snug">
       <p className="flex items-center gap-1 font-medium text-white">{testimonial.name}</p>
-      <p className="text-white/60">{testimonial.handle}</p>
       <p className="mt-1 text-white/80">{testimonial.text}</p>
     </div>
   </div>
@@ -194,22 +193,29 @@ export const SignInPage: React.FC<SignInPageProps> = ({
               <span className="font-medium">Google ile devam et</span>
             </button>
 
-            <p className={cn(
-              "animate-element animate-delay-900 text-center text-sm",
-              isLight ? "text-zinc-500" : "text-[var(--color-text-muted)]"
+            <div className={cn(
+              "animate-element animate-delay-900 mt-6 p-6 rounded-3xl transition-all group",
+              isLight 
+                ? "bg-zinc-50 hover:bg-zinc-100/50" 
+                : "bg-white/5 hover:bg-white/[0.07]"
             )}>
-              {submitButtonText === "Giriş Yap" ? "Hesabınız yok mu?" : "Zaten hesabınız var mı?"}{" "}
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.preventDefault();
-                  onCreateAccount?.();
-                }}
-                className="text-[#a78bfa] font-bold hover:underline transition-colors ml-1"
-              >
-                {submitButtonText === "Giriş Yap" ? "Hesap Oluştur" : "Giriş Yap"}
-              </button>
-            </p>
+              <p className={cn(
+                "text-center text-base md:text-lg font-medium",
+                isLight ? "text-zinc-600" : "text-zinc-400"
+              )}>
+                {submitButtonText === "Giriş Yap" ? "Henüz bir hesabınız yok mu?" : "Zaten üye misiniz?"}{" "}
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onCreateAccount?.();
+                  }}
+                  className="text-[#a78bfa] font-black hover:scale-105 transition-all inline-block ml-1 underline decoration-2 underline-offset-4 hover:text-[#9061f9] animate-pulse-slow"
+                >
+                  {submitButtonText === "Giriş Yap" ? "Ücretsiz Hesap Oluştur" : "Hemen Giriş Yap"}
+                </button>
+              </p>
+            </div>
             {children}
           </div>
         </div>
@@ -299,6 +305,15 @@ export const SignInPage: React.FC<SignInPageProps> = ({
         @keyframes testimonialIn {
           from { opacity: 0; transform: scale(0.95) translateY(20px); }
           to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .animate-pulse-slow {
+          animation: pulse-slow 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        @keyframes pulse-slow {
+          0%, 100% { opacity: 1; transform: scale(1); }
+          50% { opacity: 0.8; transform: scale(1.02); }
         }
       `}</style>
     </div>

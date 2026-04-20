@@ -157,7 +157,7 @@ export default function ServicesProcessStack() {
                   className="text-4xl md:text-6xl font-extrabold text-white font-[family-name:var(--font-heading)] leading-tight"
                 >
                   <span className="text-red-500">Webtier</span> <br />
-                  Dönüşüm Metodolojisi
+                  Retrainer
                 </motion.h2>
 
                 <motion.div

@@ -85,8 +85,10 @@ export function HeroInput({
   disabled = false,
 }: HeroInputProps) {
   const [status, setStatus] = useState<"loading" | "live">("loading");
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
+    setIsMounted(true);
     setStatus("loading");
     // Random delay between 3 and 7 seconds
     const delay = Math.floor(Math.random() * 4000) + 3000;
@@ -108,19 +110,12 @@ export function HeroInput({
     }
   };
 
+  if (!isMounted) return null;
+
   return (
     <div className="relative w-full max-w-2xl mx-auto">
 
-      {/* Model label — top left, uppercase */}
-      <motion.div 
-        animate={{ opacity: [0.6, 1, 0.6] }} 
-        transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
-        className="absolute -top-[40px] left-1 pointer-events-none select-none"
-      >
-        <span className="text-[10px] font-mono tracking-widest uppercase text-black/40">
-          {selectedModel}
-        </span>
-      </motion.div>
+      {/* Model label removed to prevent overlap with dashboard Card headers */}
 
 
       <motion.div 

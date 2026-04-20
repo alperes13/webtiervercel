@@ -7,17 +7,19 @@ import { Menu, UserRound, ChevronDown, Globe } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import HamburgerMenu from './HamburgerMenu';
 import { Button } from '@/components/ui/Button';
-import ProfilePopup from '@/components/ui/ProfilePopup';
+import { MenuToggleIcon } from '@/components/ui/MenuToggleIcon';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { usePathname } from 'next/navigation';
 
 export default function Navbar() {
+  const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
+  
   const [menuOpen, setMenuOpen] = useState(false);
-  const [profileOpen, setProfileOpen] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
   const langRef = useRef<HTMLDivElement>(null);
-  const { isAuthenticated, isHydrated } = useAuth();
+  const { session, isAuthenticated, isHydrated } = useAuth();
   const { t, language, setLanguage, languages } = useLanguage();
 
   useEffect(() => {
@@ -51,22 +53,10 @@ export default function Navbar() {
       >
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 items-center justify-between lg:h-20">
-            {/* Logo */}
-            <Link href="/" className="flex items-center">
-              <Image
-                src="/images/logo-black.png"
-                alt="Webtier"
-                width={160}
-                height={48}
-                className="h-11 sm:h-12 w-auto object-contain"
-                priority
-              />
-            </Link>
-
-            {/* Desktop Nav */}
-            <div className="hidden items-center gap-8 md:flex">
+            {/* Links - Left (Desktop Only) */}
+            <div className="hidden md:flex items-center gap-8 md:flex-1">
                 <Link
-                  href="/#hero"
+                  href="/dashboard"
                   className="text-sm font-semibold text-[var(--color-text-secondary)] transition-colors duration-200 hover:text-[var(--color-text)]"
                 >
                   {t.nav.cro}
@@ -77,16 +67,24 @@ export default function Navbar() {
                 >
                   {t.nav.retrainer}
                 </Link>
-                <Link
-                  href="/iletisim"
-                  className="text-sm font-semibold text-[var(--color-text-secondary)] transition-colors duration-200 hover:text-[var(--color-text)]"
-                >
-                  {t.nav.contact}
-                </Link>
             </div>
 
-            {/* Right side */}
-            <div className="flex items-center gap-3">
+            {/* Logo - Center on Desktop, Left on Mobile */}
+            <div className="flex md:flex-1 md:justify-center">
+              <Link href="/" className="flex items-center">
+                <Image
+                  src="/images/logo-black.png"
+                  alt="Webtier"
+                  width={160}
+                  height={48}
+                  className="h-11 sm:h-12 w-auto object-contain"
+                  priority
+                />
+              </Link>
+            </div>
+
+            {/* Right side - Right (Always) */}
+            <div className="flex items-center gap-3 md:flex-1 justify-end">
               {/* Simplified Language Selector */}
               <div ref={langRef} className="relative hidden sm:block">
                 <button
@@ -120,17 +118,19 @@ export default function Navbar() {
                 )}
               </div>
 
-              {/* Profile/Login Button */}
               {isHydrated && isAuthenticated ? (
-                <Button
-                  size="sm"
-                  variant="secondary"
-                  onClick={() => setProfileOpen(true)}
-                  className="rounded-xl border border-[var(--color-border-light)] bg-[var(--color-surface-card)]/80 px-3 text-[var(--color-text)] sm:px-4 font-bold"
-                >
-                  <UserRound className="h-4 w-4" />
-                  <span className="hidden sm:inline">Profilim</span>
-                </Button>
+                <Link href="/dashboard">
+                  <Button
+                    size="sm"
+                    variant="secondary"
+                    className="rounded-xl border border-[var(--color-border-light)] bg-[var(--color-surface-card)]/80 px-3 text-[var(--color-text)] sm:px-4 font-bold"
+                  >
+                    <UserRound className="h-4 w-4" />
+                    <span className="hidden sm:inline">
+                      {session?.firstName || session?.email.split('@')[0]}
+                    </span>
+                  </Button>
+                </Link>
               ) : (
                 <Link href="/auth/login">
                   <Button
@@ -139,17 +139,17 @@ export default function Navbar() {
                     className="rounded-xl border border-[var(--color-border-light)] bg-[var(--color-surface-card)]/80 px-3 text-[var(--color-text)] sm:px-4 font-bold"
                   >
                     <UserRound className="h-4 w-4" />
-                    <span className="hidden sm:inline">Profilim</span>
+                    <span className="hidden sm:inline">Giriş Yap</span>
                   </Button>
                 </Link>
               )}
 
               <button
-                onClick={() => setMenuOpen(true)}
-                className="flex h-9 w-9 items-center justify-center rounded-lg border border-[var(--color-border)] text-[var(--color-text-secondary)] transition-all hover:border-[var(--color-border-light)] hover:bg-[var(--color-surface-light)] hover:text-[var(--color-text)]"
-                aria-label="Open Menu"
+                onClick={() => setMenuOpen(!menuOpen)}
+                className="flex h-9 w-9 items-center justify-center rounded-lg border border-[var(--color-border)] text-[var(--color-text-secondary)] transition-all hover:border-[var(--color-border-light)] hover:bg-[var(--color-surface-light)] hover:text-[var(--color-text)] z-[130]"
+                aria-label="Toggle Menu"
               >
-                <Menu className="h-4 w-4" />
+                <MenuToggleIcon open={menuOpen} className="h-5 w-5" duration={350} />
               </button>
             </div>
           </div>
@@ -157,7 +157,6 @@ export default function Navbar() {
       </nav>
 
       <HamburgerMenu open={menuOpen} onClose={() => setMenuOpen(false)} />
-      <ProfilePopup open={profileOpen} onClose={() => setProfileOpen(false)} />
     </>
   );
 }
