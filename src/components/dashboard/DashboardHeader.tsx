@@ -28,19 +28,19 @@ export default function DashboardHeader() {
           Merhaba, {displayName}
         </h1>
         <p className="text-xs text-slate-500">
-          CRO-X AI Panel
+          CRO-X AI Dashboard
         </p>
       </div>
 
-      <div className={cn("grid gap-3 sm:grid-cols-3", session.emailVerified ? "sm:grid-cols-2" : "sm:grid-cols-3")}>
+      <div className={cn("grid gap-3", session.emailVerified ? "grid-cols-2" : "grid-cols-2 md:grid-cols-3")}>
         <Card className="p-4 relative overflow-hidden group border-zinc-200 bg-white">
           <div className="absolute top-0 right-0 p-2 opacity-5">
             <LayoutDashboard className="h-10 w-10" />
           </div>
-          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Mini Krediler</p>
+          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Mini</p>
           <div className="mt-1 flex items-baseline gap-1.5">
             <span className="text-2xl font-black text-slate-900">{session.creditsMini}</span>
-            <span className="text-[10px] text-slate-400 font-bold">HAK</span>
+            <span className="text-[10px] text-slate-400 font-bold">KREDİ</span>
           </div>
         </Card>
 
@@ -48,10 +48,10 @@ export default function DashboardHeader() {
           <div className="absolute top-0 right-0 p-2 opacity-10 text-cyan-500">
             <Zap className="h-10 w-10" />
           </div>
-          <p className="text-[10px] font-bold text-cyan-600 uppercase tracking-wider">Ultra Krediler</p>
+          <p className="text-[10px] font-bold text-cyan-600 uppercase tracking-wider">Ultra</p>
           <div className="mt-1 flex items-baseline gap-1.5">
             <span className="text-2xl font-black text-slate-900">{session.creditsUltra}</span>
-            <span className="text-[10px] text-cyan-600/60 font-bold">PREMİUM</span>
+            <span className="text-[10px] text-cyan-600/60 font-bold">KREDİ</span>
           </div>
         </Card>
 

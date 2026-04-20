@@ -14,9 +14,11 @@ import { cn } from '@/lib/utils';
 import DashboardSidebar, { type DashboardSection } from '@/components/dashboard/DashboardSidebar';
 import DashboardHeader from '@/components/dashboard/DashboardHeader';
 import AnalysisHistory from '@/components/dashboard/AnalysisHistory';
+import BacklogTasks from '@/components/dashboard/BacklogTasks';
+import UserDocuments from '@/components/dashboard/UserDocuments';
 import PurchaseModal from '@/components/ui/PurchaseModal';
 import EmailVerificationModal from '@/components/ui/EmailVerificationModal';
-import { Zap, Mail, Shield, ListTodo, Bell } from 'lucide-react';
+import { Zap, Mail, Shield, Bell } from 'lucide-react';
 
 export default function DashboardPage() {
   const { session, isAuthenticated, isHydrated, updateSession, logout } = useAuth();
@@ -42,6 +44,22 @@ export default function DashboardPage() {
   const [lastName, setLastName] = useState('');
   const [resetLoading, setResetLoading] = useState(false);
   const [resetSuccess, setResetSuccess] = useState(false);
+
+  // AI input enabled states (from app settings)
+  const [isMiniEnabled, setIsMiniEnabled] = useState(true);
+  const [isUltraEnabled, setIsUltraEnabled] = useState(true);
+
+  useEffect(() => {
+    fetch('/api/settings/public')
+      .then(r => r.json())
+      .then(data => {
+        if (data.success) {
+          setIsMiniEnabled(data.cro_mini_enabled);
+          setIsUltraEnabled(data.cro_ultra_enabled);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   // Sync profile fields when session hydrates
   useEffect(() => {
@@ -201,6 +219,9 @@ export default function DashboardPage() {
                       onModelChange={() => {}}
                       inputHint=""
                       disabled={miniLoading || !session.emailVerified}
+                      showModelSelector={false}
+                      isEnabled={isMiniEnabled}
+                      className="dashboard-crox-mini"
                     />
                     {miniError && <p className="text-[10px] text-red-500 font-medium">{miniError}</p>}
                   </Card>
@@ -219,6 +240,9 @@ export default function DashboardPage() {
                       onModelChange={() => {}}
                       inputHint=""
                       disabled={ultraLoading || !session.emailVerified}
+                      showModelSelector={false}
+                      isEnabled={isUltraEnabled}
+                      className="dashboard-crox-ultra"
                     />
                     {ultraError && <p className="text-[10px] text-red-500 font-medium">{ultraError}</p>}
                   </Card>
@@ -240,7 +264,12 @@ export default function DashboardPage() {
             )}
 
             {/* 3. Analysis Section */}
-            {activeSection === 'analysis' && <AnalysisHistory />}
+            {activeSection === 'analysis' && (
+              <div className="space-y-4">
+                <AnalysisHistory />
+                <UserDocuments token={session.token} />
+              </div>
+            )}
 
             {/* 4. Backlog Section */}
             {activeSection === 'backlog' && (
@@ -249,12 +278,7 @@ export default function DashboardPage() {
                   <h2 className="text-xl font-bold text-slate-900">Backlog</h2>
                   <p className="text-xs text-slate-500 font-medium">Planlanan ve devam eden geliştirme süreçleri.</p>
                 </div>
-                <Card className="p-8 border-dashed border-2 flex flex-col items-center justify-center text-center space-y-3 bg-white">
-                  <div className="p-3 bg-slate-50 rounded-full">
-                    <ListTodo className="h-6 w-6 text-slate-400" />
-                  </div>
-                  <p className="text-sm font-medium text-slate-600">Henüz backlog öğesi bulunmuyor.</p>
-                </Card>
+                <BacklogTasks token={session.token} />
               </div>
             )}
 

@@ -35,8 +35,7 @@ interface SidebarProps {
 }
 
 const MENU_ITEMS = [
-  { id: 'home' as any, label: 'Anasayfa', icon: Home, href: '/' },
-  { id: 'overview' as const, label: 'Panel', icon: LayoutDashboard },
+  { id: 'overview' as const, label: 'CRO-X AI Dashboard', icon: LayoutDashboard },
   { id: 'analysis' as const, label: 'Analizler & Dökümanlar', icon: FileText },
   { id: 'backlog' as const, label: 'Backlog', icon: ListTodo },
   { id: 'credits' as const, label: 'Kredi Yükleme', icon: CreditCard },
@@ -78,9 +77,10 @@ export default function DashboardSidebar({ activeSection, onSectionChange }: Sid
         </Link>
         <button 
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          className="p-1.5 hover:bg-slate-50 transition-colors z-[130]"
+          className="flex items-center gap-2 p-1.5 hover:bg-slate-50 transition-colors z-[130]"
           aria-label="Menü"
         >
+          <span className="text-[10px] font-black text-slate-500 uppercase tracking-[0.1em]">PANEL</span>
           <MenuToggleIcon open={isMobileMenuOpen} className="h-6 w-6 text-slate-600" duration={350} />
         </button>
       </div>
@@ -183,6 +183,36 @@ export default function DashboardSidebar({ activeSection, onSectionChange }: Sid
               </button>
             );
           })}
+
+          <div className="pt-2 mt-2 border-t border-slate-50">
+            <button
+              onClick={() => handleSectionChange('home')}
+              className={cn(
+                "w-full flex items-center gap-3 rounded-xl transition-all duration-200 group relative",
+                isCollapsed ? "justify-center px-2 py-3" : "px-3 py-2.5",
+                "text-slate-500 hover:bg-slate-50 hover:text-slate-900"
+              )}
+            >
+              <Home className={cn(
+                "shrink-0 transition-colors duration-200",
+                isCollapsed ? "h-6 w-6" : "h-5 w-5",
+                "text-slate-400 group-hover:text-slate-900"
+              )} />
+              
+              {!isCollapsed && (
+                <span className="text-sm font-semibold transition-all duration-200 truncate opacity-80 group-hover:opacity-100">
+                  Anasayfa
+                </span>
+              )}
+
+              {isCollapsed && (
+                <div className="absolute left-[calc(100%+12px)] top-1/2 -translate-y-1/2 px-3 py-1.5 bg-slate-900 text-white text-[11px] rounded-lg opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-300 whitespace-nowrap z-50 font-bold shadow-xl">
+                  Anasayfa
+                  <div className="absolute top-1/2 -left-1 -translate-y-1/2 border-y-4 border-y-transparent border-r-4 border-r-slate-900" />
+                </div>
+              )}
+            </button>
+          </div>
         </div>
 
         {/* Footer Section */}

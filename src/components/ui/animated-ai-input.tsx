@@ -69,13 +69,16 @@ interface HeroInputProps {
   selectedModel: CROModel;
   onModelChange: (m: CROModel) => void;
   disabled?: boolean;
+  showModelSelector?: boolean;
+  className?: string;
+  isEnabled?: boolean;
 }
 
 export function HeroInput({
   value,
   onChange,
   onSubmit,
-  isFocused = false,
+  isFocused: externalIsFocused,
   onFocus,
   onBlur,
   placeholder,
@@ -83,12 +86,23 @@ export function HeroInput({
   selectedModel,
   onModelChange,
   disabled = false,
+  showModelSelector = true,
+  className = "",
+  isEnabled = true,
 }: HeroInputProps) {
-  const [status, setStatus] = useState<"loading" | "live">("loading");
+  const [status, setStatus] = useState<"loading" | "live" | "maintenance">("loading");
   const [isMounted, setIsMounted] = useState(false);
+  const [internalIsFocused, setInternalIsFocused] = useState(false);
+
+  // Combine external and internal focus state
+  const isFocused = externalIsFocused ?? internalIsFocused;
 
   useEffect(() => {
     setIsMounted(true);
+    if (!isEnabled) {
+      setStatus("maintenance");
+      return;
+    }
     setStatus("loading");
     // Random delay between 3 and 7 seconds
     const delay = Math.floor(Math.random() * 4000) + 3000;
@@ -96,7 +110,7 @@ export function HeroInput({
       setStatus("live");
     }, delay);
     return () => clearTimeout(timer);
-  }, [selectedModel]);
+  }, [selectedModel, isEnabled]);
 
   const { textareaRef, adjustHeight } = useAutoResizeTextarea({
     minHeight: 52,
@@ -113,20 +127,22 @@ export function HeroInput({
   if (!isMounted) return null;
 
   return (
-    <div className="relative w-full max-w-2xl mx-auto">
+    <div className={cn("relative w-full max-w-2xl mx-auto", className)}>
 
       {/* Model label removed to prevent overlap with dashboard Card headers */}
 
 
-      <motion.div 
+      <motion.div
         key={status}
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.9 }}
         className={cn(
           "hero-input-status-indicator absolute -top-[40px] right-1 pointer-events-none select-none flex items-center gap-1.5 px-2 py-0.5 rounded-full backdrop-blur-sm mt-[5px] transition-colors duration-500",
-          status === "live" 
-            ? "bg-emerald-500/10 border border-emerald-500/20" 
+          status === "live"
+            ? "bg-emerald-500/10 border border-emerald-500/20"
+            : status === "maintenance"
+            ? "bg-amber-500/10 border border-amber-500/20"
             : "bg-amber-500/10 border border-amber-500/20"
         )}
       >
@@ -138,6 +154,15 @@ export function HeroInput({
             </div>
             <span className="text-[9px] font-black text-emerald-600/90 tracking-widest uppercase flex items-center gap-1">
               CANLI
+            </span>
+          </>
+        ) : status === "maintenance" ? (
+          <>
+            <div className="relative flex h-1.5 w-1.5">
+              <div className="relative inline-flex rounded-full h-1.5 w-1.5 bg-amber-500"></div>
+            </div>
+            <span className="text-[9px] font-black text-amber-600/90 tracking-widest uppercase flex items-center gap-1">
+              BAKIMDA
             </span>
           </>
         ) : (
@@ -169,32 +194,25 @@ export function HeroInput({
           {/* Textarea area */}
           <div className="overflow-y-auto" style={{ maxHeight: "200px" }}>
             <div className="relative">
-              {/* Metallic placeholder when empty and not focused */}
-              {!value && !isFocused && (
+              {!value && (
                 <div
                   className="pointer-events-none absolute inset-0 z-10 flex items-center px-4 text-[11px]"
                   aria-hidden="true"
                 >
-                  <span className="hero-metallic-placeholder whitespace-nowrap">{placeholder}</span>
-                  <motion.span
-                    animate={{ opacity: [1, 0] }}
-                    transition={{ repeat: Infinity, duration: 0.8, ease: "linear" }}
-                    className="inline-block w-[1.5px] h-3.5 bg-black ml-1 translate-y-[0.5px]"
-                  />
-                </div>
-              )}
-              {/* Hint when focused and empty */}
-              {!value && isFocused && (
-                <div
-                  className="pointer-events-none absolute inset-0 z-10 flex items-center px-4 text-[11px] text-black/30"
-                  aria-hidden="true"
-                >
-                  {inputHint}
-                  <motion.span
-                    animate={{ opacity: [1, 0] }}
-                    transition={{ repeat: Infinity, duration: 0.8, ease: "linear" }}
-                    className="inline-block w-[1.5px] h-3.5 bg-black ml-1 translate-y-[0.5px]"
-                  />
+                  {/* Show simulated cursor only when NOT focused */}
+                  {!isFocused && (
+                    <motion.span
+                      animate={{ opacity: [1, 0] }}
+                      transition={{ repeat: Infinity, duration: 0.8, ease: "linear" }}
+                      className="inline-block w-[1px] h-4.5 bg-black/80 mr-1.5 translate-y-[0.5px]"
+                    />
+                  )}
+                  <span className={cn(
+                    "hero-metallic-placeholder whitespace-nowrap transition-colors duration-200",
+                    isFocused && inputHint ? "text-black/30" : ""
+                  )}>
+                    {(isFocused && inputHint) ? inputHint : placeholder}
+                  </span>
                 </div>
               )}
               <textarea
@@ -205,9 +223,15 @@ export function HeroInput({
                   onChange(e.target.value);
                   adjustHeight();
                 }}
-                onFocus={onFocus}
-                onBlur={onBlur}
-                disabled={disabled}
+                onFocus={(e) => {
+                  setInternalIsFocused(true);
+                  onFocus?.();
+                }}
+                onBlur={(e) => {
+                  setInternalIsFocused(false);
+                  onBlur?.();
+                }}
+                disabled={disabled || !isEnabled}
                 rows={1}
                 className={cn(
                   "w-full bg-transparent border-none resize-none",
@@ -215,7 +239,7 @@ export function HeroInput({
                   "placeholder:text-transparent",
                   "focus:outline-none focus:ring-0",
                   "min-h-[52px]",
-                  disabled && "opacity-50 cursor-not-allowed"
+                  (disabled || !isEnabled) && "opacity-50 cursor-not-allowed"
                 )}
               />
             </div>
@@ -226,67 +250,73 @@ export function HeroInput({
             <div className="absolute left-3 right-3 bottom-[6px] flex items-center justify-between w-[calc(100%-24px)]">
               {/* Left: model dropdown */}
               <div className="flex items-center gap-2">
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <button
-                      type="button"
-                      className="flex items-center gap-1.5 h-8 pl-1.5 pr-2 text-[11px] font-semibold rounded-md text-black/50 hover:text-black hover:bg-black/5 transition-all focus:outline-none"
-                    >
-                      <AnimatePresence mode="wait">
-                        <motion.span
-                          key={selectedModel}
-                          initial={{ opacity: 0, y: -4 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: 4 }}
-                          transition={{ duration: 0.15 }}
-                          className="flex items-center gap-1.5"
-                        >
-                          <ArrowLeftRight className="w-3 h-3 opacity-40" />
-                          <span className="tracking-wider uppercase">{selectedModel}</span>
-                          <ChevronDown className="w-3 h-3 opacity-40" />
-                        </motion.span>
-                      </AnimatePresence>
-                    </button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent
-                    align="start"
-                    className={cn(
-                      "min-w-[10rem] z-50",
-                      "border-black/10",
-                      "bg-white/95 backdrop-blur-xl"
-                    )}
-                  >
-                    {CRO_MODELS.map((model) => (
-                      <DropdownMenuItem
-                        key={model}
-                        onSelect={() => onModelChange(model)}
-                        className="flex items-center justify-between gap-2 cursor-pointer text-black/60 hover:text-black focus:text-black focus:bg-black/5"
+                {showModelSelector ? (
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <button
+                        type="button"
+                        className="flex items-center gap-1.5 h-8 pl-1.5 pr-2 text-[11px] font-semibold rounded-md text-black/50 hover:text-black hover:bg-black/5 transition-all focus:outline-none"
                       >
-                        <span className="text-[11px] font-semibold tracking-wider uppercase">{model}</span>
-                        {selectedModel === model && (
-                          <Check className="w-3.5 h-3.5 text-[var(--color-accent)]" />
-                        )}
-                      </DropdownMenuItem>
-                    ))}
-                  </DropdownMenuContent>
-                </DropdownMenu>
+                        <AnimatePresence mode="wait">
+                          <motion.span
+                            key={selectedModel}
+                            initial={{ opacity: 0, y: -4 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: 4 }}
+                            transition={{ duration: 0.15 }}
+                            className="flex items-center gap-1.5"
+                          >
+                            <ArrowLeftRight className="w-3 h-3 opacity-40" />
+                            <span className="tracking-wider uppercase">{selectedModel}</span>
+                            <ChevronDown className="w-3 h-3 opacity-40" />
+                          </motion.span>
+                        </AnimatePresence>
+                      </button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent
+                      align="start"
+                      className={cn(
+                        "min-w-[10rem] z-50",
+                        "border-black/10",
+                        "bg-white/95 backdrop-blur-xl"
+                      )}
+                    >
+                      {CRO_MODELS.map((model) => (
+                        <DropdownMenuItem
+                          key={model}
+                          onSelect={() => onModelChange(model)}
+                          className="flex items-center justify-between gap-2 cursor-pointer text-black/60 hover:text-black focus:text-black focus:bg-black/5"
+                        >
+                          <span className="text-[11px] font-semibold tracking-wider uppercase">{model}</span>
+                          {selectedModel === model && (
+                            <Check className="w-3.5 h-3.5 text-[var(--color-accent)]" />
+                          )}
+                        </DropdownMenuItem>
+                      ))}
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                ) : (
+                  <div className="flex items-center gap-1.5 h-8 px-2 text-[10px] font-black tracking-widest text-black/30 uppercase opacity-60">
+                    {selectedModel}
+                  </div>
+                )}
               </div>
 
               {/* Right: send button — black bg, white arrow */}
               <button
                 type="button"
                 onClick={onSubmit}
-                disabled={disabled}
+                disabled={disabled || !isEnabled}
                 aria-label="Analiz Et"
                 className={cn(
                   "rounded-lg p-2 transition-all",
                   "bg-[#0F172A]",
                   "hover:bg-black active:scale-[0.97]",
                   "shadow-[0_2px_8px_rgba(0,0,0,0.15)]",
-                  disabled && "opacity-50 cursor-not-allowed active:scale-100"
+                  (disabled || !isEnabled) && "opacity-50 cursor-not-allowed active:scale-100"
                 )}
               >
-                {disabled ? <Hourglass className="w-4 h-4 text-white animate-pulse" /> : <ArrowRight className="w-4 h-4 text-white" />}
+                {(disabled || !isEnabled) ? <Hourglass className="w-4 h-4 text-white animate-pulse" /> : <ArrowRight className="w-4 h-4 text-white" />}
               </button>
             </div>
           </div>

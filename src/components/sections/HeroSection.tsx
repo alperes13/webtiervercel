@@ -14,7 +14,12 @@ import { useLanguage } from '@/contexts/LanguageContext';
 
 import { createMiniAnalysis, createUltraAnalysis } from '@/lib/api';
 
-export default function HeroSection() {
+interface HeroSectionProps {
+  isMiniEnabled?: boolean;
+  isUltraEnabled?: boolean;
+}
+
+export default function HeroSection({ isMiniEnabled = true, isUltraEnabled = true }: HeroSectionProps) {
   const router = useRouter();
   const [siteUrl, setSiteUrl] = useState('');
   const [urlError, setUrlError] = useState('');
@@ -157,6 +162,8 @@ export default function HeroSection() {
                   inputHint={t.hero.inputHint}
                   selectedModel={selectedModel}
                   onModelChange={setSelectedModel}
+                  isEnabled={selectedModel === 'CRO-X MINI' ? isMiniEnabled : isUltraEnabled}
+                  className="anasayfa-crox"
                 />
               </motion.div>
 

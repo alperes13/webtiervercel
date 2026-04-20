@@ -3,9 +3,7 @@ import { Plus_Jakarta_Sans, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { LanguageProvider } from "@/contexts/LanguageContext";
-import DynamicNavbar from "@/components/layout/DynamicNavbar";
-import DynamicFooter from "@/components/layout/DynamicFooter";
-import MainWrapper from "@/components/layout/MainWrapper";
+import ConditionalShell from "@/components/layout/ConditionalShell";
 import ScrollToTop from "@/components/shared/ScrollToTop";
 import CookieConsent from "@/components/shared/CookieConsent";
 import StructuredData from "@/components/shared/StructuredData";
@@ -92,9 +90,9 @@ export default function RootLayout({
       <body className="min-h-full p-0 m-0">
         <LanguageProvider>
           <AuthProvider>
-            <DynamicNavbar />
-            <MainWrapper>{children}</MainWrapper>
-            <DynamicFooter />
+            <ConditionalShell>
+              {children}
+            </ConditionalShell>
             <CookieConsent />
             <ScrollToTop />
           </AuthProvider>
