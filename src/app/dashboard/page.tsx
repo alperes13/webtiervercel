@@ -77,7 +77,7 @@ export default function DashboardPage() {
       updateSession({ creditsMini: session.creditsMini - 1 });
       setMiniUrl('');
       alert('Mini analiz talebiniz alındı!');
-      setActiveSection('history');
+      setActiveSection('analysis');
     } catch (e: any) {
       setMiniError(e.message);
     } finally {
@@ -97,7 +97,7 @@ export default function DashboardPage() {
       updateSession({ creditsUltra: session.creditsUltra - 1 });
       setUltraUrl('');
       alert('Ultra analiz talebiniz alındı! Uzmanlarımız incelemeye başlıyor.');
-      setActiveSection('history');
+      setActiveSection('analysis');
     } catch (e: any) {
       setUltraError(e.message);
     } finally {
