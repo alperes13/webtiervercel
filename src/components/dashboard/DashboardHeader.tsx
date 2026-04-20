@@ -32,8 +32,11 @@ export default function DashboardHeader() {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-        <Card className="p-4 relative overflow-hidden group border-zinc-200 bg-white">
+      <div className={cn(
+        "grid gap-3",
+        session.emailVerified ? "grid-cols-2" : "grid-cols-2 lg:grid-cols-3"
+      )}>
+        <Card className="p-4 relative overflow-hidden group border-zinc-200 bg-white col-span-1">
           <div className="absolute top-0 right-0 p-2 opacity-5">
             <LayoutDashboard className="h-10 w-10" />
           </div>
@@ -44,7 +47,7 @@ export default function DashboardHeader() {
           </div>
         </Card>
 
-        <Card className="p-4 border-cyan-100 bg-cyan-50/20 relative overflow-hidden group">
+        <Card className="p-4 border-cyan-100 bg-cyan-50/20 relative overflow-hidden group col-span-1">
           <div className="absolute top-0 right-0 p-2 opacity-10 text-cyan-500">
             <Zap className="h-10 w-10" />
           </div>
@@ -56,7 +59,7 @@ export default function DashboardHeader() {
         </Card>
 
         {!session.emailVerified && (
-          <Card className="p-4 relative overflow-hidden group border-zinc-200 bg-white text-amber-700 border-amber-100 bg-amber-50/30 col-span-1 md:col-span-2 lg:col-span-3">
+          <Card className="p-4 relative overflow-hidden group border-zinc-200 bg-white text-amber-700 border-amber-100 bg-amber-50/30 col-span-2 lg:col-span-1">
             <div className="absolute top-0 right-0 p-2 opacity-5">
               <Target className="h-10 w-10" />
             </div>
