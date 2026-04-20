@@ -240,7 +240,16 @@ export default function UserDetailPanel({ user, onClose }: Props) {
                   <h4 className="text-sm font-medium text-white mb-4">{editingTask ? 'Task Düzenle' : 'Yeni Task Oluştur'}</h4>
                   <TaskForm
                     userId={user.id}
-                    initial={editingTask || undefined}
+                    initial={editingTask ? {
+                      id: editingTask.id,
+                      title: editingTask.title,
+                      description: editingTask.description ?? undefined,
+                      priority: editingTask.priority,
+                      status: editingTask.status,
+                      labels: editingTask.labels ?? undefined,
+                      image_url: editingTask.image_url ?? undefined,
+                      due_date: editingTask.due_date ?? undefined,
+                    } : undefined}
                     onSuccess={() => { setShowTaskForm(false); setEditingTask(null); fetchTasks(); }}
                     onCancel={() => { setShowTaskForm(false); setEditingTask(null); }}
                   />
