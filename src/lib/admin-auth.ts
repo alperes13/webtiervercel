@@ -51,7 +51,7 @@ export function makeAdminCookieOptions(token: string) {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax' as const,
-    path: '/adminpanel',
+    path: '/',
     maxAge: ADMIN_TTL,
   };
 }
