@@ -1,241 +1,309 @@
 'use client';
 
 import Link from 'next/link';
-import { ArrowUpRight, MessageCircle, CheckCircle2, Shield, Layers, Users, Globe, FileText, Phone as PhoneIcon, Building2, TrendingUp } from 'lucide-react';
+import {
+  ArrowUpRight,
+  MessageCircle,
+  CheckCircle2,
+  Shield,
+  Layers,
+  Users,
+  Globe,
+  FileText,
+  Phone as PhoneIcon,
+  TrendingUp,
+  Palette,
+  BarChart3,
+  Search,
+  Sparkles as SparklesIcon,
+} from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/Button';
-import { BentoGrid, type BentoItem } from '@/components/ui/bento-grid';
-import Accordion from '@/components/ui/Accordion';
 import { Sparkles } from '@/components/ui/sparkles';
-import { VerticalCutReveal } from '@/components/ui/vertical-cut-reveal';
-import { TextScramble } from '@/components/ui/text-scramble';
-import { SITE_CONFIG } from '@/lib/constants';
-import { getWhatsAppUrl } from '@/lib/utils';
-
+import ShimmerText from '@/components/ui/shimmer-text-animated';
+import GlassCard from '@/components/ui/glass-card';
+import FeatureCarousel from '@/components/ui/feature-carousel';
+import {
+  InterfacesAccordion,
+  InterfacesAccordionItem,
+  InterfacesAccordionTrigger,
+  InterfacesAccordionContent,
+} from '@/components/ui/interfaces-accordion';
 import { useLanguage } from '@/contexts/LanguageContext';
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 20 },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: { delay: i * 0.1, duration: 0.6, ease: 'easeOut' as const },
-  }),
-};
 
 export default function CorporateContent() {
   const { t } = useLanguage();
 
-  const whatsappUrl = getWhatsAppUrl(SITE_CONFIG.whatsapp, 'Merhaba, kurumsal web tasarım hakkında bilgi almak istiyorum.');
-
-  const audienceIcons = [
-    <Shield key="sh" className="w-4 h-4 text-cyan-500" />,
-    <FileText key="ft" className="w-4 h-4 text-blue-500" />,
-    <Globe key="gl" className="w-4 h-4 text-purple-500" />,
-    <Layers key="la" className="w-4 h-4 text-emerald-500" />,
-    <Users key="us" className="w-4 h-4 text-amber-500" />,
-    <PhoneIcon key="ph" className="w-4 h-4 text-sky-500" />,
+  const glassCardIcons = [
+    <Shield key="sh" className="w-5 h-5" />,
+    <FileText key="ft" className="w-5 h-5" />,
+    <Globe key="gl" className="w-5 h-5" />,
+    <Layers key="la" className="w-5 h-5" />,
+    <Users key="us" className="w-5 h-5" />,
+    <PhoneIcon key="ph" className="w-5 h-5" />,
   ];
 
-  const audienceBentoItems: BentoItem[] = t.corporate.audience.map((item, i) => ({
-    title: item.title,
-    description: item.desc,
-    icon: audienceIcons[i],
-    tags: [],
-    colSpan: i < 2 ? 2 : 1,
-    hasPersistentHover: i === 0,
-  }));
+  const glassCardColors = ['#06b6d4', '#3b82f6', '#8b5cf6', '#10b981', '#f59e0b', '#0ea5e9'];
+
+  const carouselSlides = [
+    {
+      id: 'design',
+      icon: <Palette className="w-6 h-6" />,
+      title: 'Premium Tasarım',
+      description:
+        'Marka kimliğinizi yansıtan, benzersiz ve modern kurumsal web tasarımı. İlk izlenim her şeydir.',
+      features: [
+        'Özel UI/UX tasarım süreci',
+        'Marka odaklı renk paleti',
+        'Profesyonel tipografi',
+        'Animasyonlu etkileşimler',
+        'Responsive tasarım',
+      ],
+    },
+    {
+      id: 'seo',
+      icon: <Search className="w-6 h-6" />,
+      title: 'SEO & Performans',
+      description:
+        "Google'da üst sıralarda yer almanız için teknik SEO ve sayfa performansı optimizasyonu.",
+      features: [
+        'On-page SEO optimizasyonu',
+        'Core Web Vitals uyumu',
+        'Schema markup entegrasyonu',
+        'Sitemap ve robots.txt',
+        'Sayfa hızı optimizasyonu',
+      ],
+    },
+    {
+      id: 'conversion',
+      icon: <BarChart3 className="w-6 h-6" />,
+      title: 'Dönüşüm Odaklı',
+      description:
+        'Ziyaretçileri müşteriye dönüştüren stratejik tasarım ve CTA optimizasyonu.',
+      features: [
+        'CTA stratejik yerleşimi',
+        'Lead yakalama formları',
+        'Güven sinyalleri entegrasyonu',
+        'Kullanıcı yolculuğu planlaması',
+        'A/B test altyapısı',
+      ],
+    },
+    {
+      id: 'tech',
+      icon: <SparklesIcon className="w-6 h-6" />,
+      title: 'Modern Teknoloji',
+      description:
+        'En güncel web teknolojileri ile hızlı, güvenli ve ölçeklenebilir altyapı.',
+      features: [
+        'Next.js / React altyapısı',
+        'Headless CMS entegrasyonu',
+        'SSL sertifikası',
+        'CDN üzerinden hızlı dağıtım',
+        'Otomatik yedekleme',
+      ],
+    },
+  ];
 
   return (
     <div className="min-h-screen bg-[#030303] text-white selection:bg-cyan-500/30">
-
-      {/* ═══ HERO ═══ */}
-      <section className="relative pt-32 pb-24 lg:pb-32 overflow-hidden">
-        {/* Sparkles Background */}
+      {/* ═══ HERO — Sparkles (Aceternity) ═══ */}
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
         <Sparkles
           className="absolute inset-0 pointer-events-none"
-          density={400}
-          speed={0.3}
-          size={1.2}
+          density={600}
+          speed={0.4}
+          size={1.4}
           color="#06b6d4"
           opacity={0.35}
           direction="top"
         />
-        {/* Gradient Orb */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-cyan-500/10 blur-[120px] rounded-full opacity-40 pointer-events-none" />
+        <div className="absolute top-[-10%] left-1/2 -translate-x-1/2 w-[700px] h-[500px] bg-cyan-500/8 blur-[120px] rounded-full pointer-events-none" />
+        <div className="absolute bottom-[-10%] right-[-5%] w-[400px] h-[400px] bg-blue-500/5 blur-[100px] rounded-full pointer-events-none" />
 
-        <div className="container mx-auto px-6 relative z-10">
-          <div className="max-w-4xl mx-auto text-center space-y-8">
-            {/* Title with VerticalCutReveal */}
-            {/* Title with VerticalCutReveal */}
-            <div className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight font-[family-name:var(--font-heading)]">
-              <VerticalCutReveal
-                splitBy="characters"
-                staggerDuration={0.03}
-                containerClassName="justify-center"
-                elementLevelClassName="bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60"
-              >
-                {t.corporate.title}
-              </VerticalCutReveal>
-              <VerticalCutReveal
-                splitBy="characters"
-                staggerDuration={0.03}
-                transition={{ type: 'spring', stiffness: 190, damping: 22, delay: 0.3 }}
-                containerClassName="justify-center mt-2"
-                elementLevelClassName="text-cyan-400"
-              >
-                {t.corporate.titleHighlight}
-              </VerticalCutReveal>
-            </div>
+        <div className="relative z-10 container mx-auto px-6">
+          <div className="max-w-5xl mx-auto text-center space-y-8">
+            <motion.h1
+              initial={{ opacity: 0, y: 30, scale: 0.96 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 1, ease: [0.25, 0.1, 0.25, 1] }}
+              className="text-6xl md:text-8xl lg:text-9xl font-bold tracking-tighter font-[family-name:var(--font-heading)]"
+            >
+              <span className="bg-clip-text text-transparent bg-gradient-to-b from-white via-white to-white/40">
+                Marka Olmak Mı?
+              </span>
+            </motion.h1>
 
-            {/* Subtitle */}
             <motion.p
-              custom={3}
-              variants={fadeUp}
-              initial="hidden"
-              animate="visible"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5, duration: 0.8 }}
               className="text-lg md:text-xl text-zinc-400 max-w-2xl mx-auto leading-relaxed"
             >
               {t.corporate.subtitle}
             </motion.p>
+          </div>
+        </div>
 
-            {/* CTA */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.5 }}
+          className="absolute bottom-10 left-1/2 -translate-x-1/2"
+        >
+          <div className="w-5 h-8 rounded-full border border-white/20 flex items-start justify-center p-1.5">
             <motion.div
-              custom={4}
-              variants={fadeUp}
-              initial="hidden"
-              animate="visible"
-              className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2"
-            >
-              <Link href="/#hero">
-                <Button size="lg" className="bg-cyan-500 hover:bg-cyan-600 text-white px-8 rounded-full h-12 text-base font-bold">
-                  {t.corporate.ctaAnalysis}
+              className="w-1 h-1.5 rounded-full bg-cyan-400/60"
+              animate={{ y: [0, 10, 0] }}
+              transition={{ duration: 2, repeat: Infinity }}
+            />
+          </div>
+        </motion.div>
+      </section>
+
+      {/* ═══ SHIMMER TEXT SECTION (100vh) ═══ */}
+      <section className="min-h-screen flex items-center justify-center bg-[#030303] border-t border-white/5">
+        <div className="container mx-auto px-6">
+          <div className="max-w-4xl mx-auto text-center space-y-8">
+            <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight font-[family-name:var(--font-heading)] leading-tight">
+              <ShimmerText
+                text="Dijital dünyada fark yaratın."
+                shimmerColor="rgba(6,182,212,0.75)"
+                duration={2.5}
+              />
+            </h2>
+            <p className="text-lg md:text-xl text-zinc-500 max-w-2xl mx-auto leading-relaxed">
+              Profesyonel kurumsal web tasarımı ile markanızı dijitalde güçlü bir şekilde konumlandırın.
+              İlk izlenim, kalıcı etki.
+            </p>
+            <div className="flex items-center justify-center gap-4 pt-4">
+              <Link href="/iletisim">
+                <Button
+                  size="lg"
+                  className="bg-cyan-500 hover:bg-cyan-600 text-white px-10 rounded-full h-14 text-base font-bold"
+                >
+                  Teklif Al
                   <ArrowUpRight className="ml-2 w-4 h-4" />
                 </Button>
               </Link>
-              <Link href="/iletisim">
-                <Button size="lg" variant="outline" className="border-white/10 hover:bg-white/5 text-white px-8 rounded-full h-12 text-base font-medium">
-                  <MessageCircle className="mr-2 w-4 h-4" />
-                  {t.corporate.ctaWhatsApp}
-                </Button>
-              </Link>
-            </motion.div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* ═══ PROBLEMS ═══ */}
+      {/* ═══ GLASS CARDS — Audience/Features ═══ */}
+      <section className="py-24 bg-white/[0.01]">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-5xl font-bold tracking-tight font-[family-name:var(--font-heading)]">
+              {t.corporate.audienceTitle}
+            </h2>
+            <p className="mt-4 text-zinc-500 text-lg">{t.corporate.audienceSubtitle}</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 max-w-5xl mx-auto">
+            {t.corporate.audience.map((item, i) => (
+              <GlassCard
+                key={i}
+                icon={glassCardIcons[i]}
+                title={item.title}
+                description={item.desc}
+                accentColor={glassCardColors[i]}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ FEATURE CAROUSEL ═══ */}
       <section className="py-24 border-t border-white/5">
         <div className="container mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-5xl font-bold tracking-tight font-[family-name:var(--font-heading)]">
+              {t.corporate.featuresTitle}
+            </h2>
+            <p className="mt-4 text-zinc-500 text-lg">
+              Kurumsal web sitenizde sunduğumuz kapsamlı hizmetler
+            </p>
+          </div>
+
+          <FeatureCarousel slides={carouselSlides} accentColor="#06b6d4" />
+        </div>
+      </section>
+
+      {/* ═══ PROBLEMS ═══ */}
+      <section className="py-24 bg-white/[0.01]">
+        <div className="container mx-auto px-6">
           <div className="max-w-4xl mx-auto">
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="text-3xl md:text-5xl font-bold tracking-tight text-center font-[family-name:var(--font-heading)] mb-16"
-            >
+            <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-center font-[family-name:var(--font-heading)] mb-16">
               {t.corporate.problemsTitle}
-            </motion.h2>
+            </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {t.corporate.problems.map((problem, i) => (
-                <motion.div
+                <div
                   key={i}
-                  initial={{ opacity: 0, y: 15 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.08 }}
                   className="group flex items-start gap-4 p-5 rounded-2xl bg-white/[0.02] border border-white/5 hover:border-red-500/20 transition-all duration-300"
                 >
                   <div className="w-8 h-8 rounded-lg bg-red-500/10 flex items-center justify-center shrink-0 mt-0.5">
                     <TrendingUp className="w-4 h-4 text-red-400" />
                   </div>
-                  <span className="text-zinc-400 group-hover:text-zinc-200 transition-colors leading-relaxed">{problem}</span>
-                </motion.div>
+                  <span className="text-zinc-400 group-hover:text-zinc-200 transition-colors leading-relaxed">
+                    {problem}
+                  </span>
+                </div>
               ))}
             </div>
           </div>
         </div>
       </section>
 
-      {/* ═══ FEATURES ═══ */}
-      <section className="py-24 bg-white/[0.01]">
-        <div className="container mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-4"
-          >
-            <h2 className="text-3xl md:text-5xl font-bold tracking-tight font-[family-name:var(--font-heading)]">
-              {t.corporate.featuresTitle}
-            </h2>
-          </motion.div>
-
-          <div className="max-w-4xl mx-auto">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 p-4">
-              {t.corporate.features.map((feature, i) => (
-                <motion.div
-                  key={feature}
-                  initial={{ opacity: 0, x: i % 2 === 0 ? -10 : 10 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.05 }}
-                  className="group relative flex items-center gap-3 p-4 rounded-xl overflow-hidden transition-all duration-300 border border-gray-100/80 dark:border-white/10 bg-white dark:bg-black hover:shadow-[0_2px_12px_rgba(0,0,0,0.03)] dark:hover:shadow-[0_2px_12px_rgba(255,255,255,0.03)] hover:-translate-y-0.5 will-change-transform"
-                >
-                  <CheckCircle2 className="h-4 w-4 shrink-0 text-cyan-400" />
-                  <span className="text-sm text-gray-600 dark:text-gray-300 leading-snug font-[425]">{feature}</span>
-                </motion.div>
-              ))}
-            </div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 15 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="mt-8 text-center"
-            >
-              <Link href="/iletisim">
-                <Button size="lg" className="bg-cyan-500 hover:bg-cyan-600 text-white px-8 rounded-full h-12 font-bold">
-                  {t.corporate.ctaOffer} <ArrowUpRight className="ml-2 h-4 w-4" />
-                </Button>
-              </Link>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* ═══ TARGET AUDIENCE — BentoGrid ═══ */}
+      {/* ═══ FEATURES CHECKLIST ═══ */}
       <section className="py-24 border-t border-white/5">
         <div className="container mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-4"
-          >
+          <div className="text-center mb-12">
             <h2 className="text-3xl md:text-5xl font-bold tracking-tight font-[family-name:var(--font-heading)]">
-              {t.corporate.audienceTitle}
+              Her Paketin <span className="text-cyan-400">İçeriği</span>
             </h2>
-            <p className="mt-4 text-zinc-500 text-lg">{t.corporate.audienceSubtitle}</p>
-          </motion.div>
-          <BentoGrid items={audienceBentoItems} />
+          </div>
+
+          <div className="max-w-3xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {t.corporate.features.map((feature, i) => (
+              <div
+                key={feature}
+                className="flex items-center gap-3 p-4 rounded-xl bg-white/[0.02] border border-white/5 hover:border-cyan-500/20 transition-all"
+              >
+                <CheckCircle2 className="h-4 w-4 shrink-0 text-cyan-400" />
+                <span className="text-sm text-zinc-300 font-medium">{feature}</span>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-10 text-center">
+            <Link href="/iletisim">
+              <Button size="lg" className="bg-cyan-500 hover:bg-cyan-600 text-white px-8 rounded-full h-12 font-bold">
+                {t.corporate.ctaOffer} <ArrowUpRight className="ml-2 h-4 w-4" />
+              </Button>
+            </Link>
+          </div>
         </div>
       </section>
 
       {/* ═══ FAQ ═══ */}
       <section className="py-24 bg-white/[0.01]">
         <div className="container mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="max-w-3xl mx-auto"
-          >
+          <div className="max-w-3xl mx-auto">
             <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 font-[family-name:var(--font-heading)]">
               {t.corporate.faqTitle}
             </h2>
-            <Accordion items={[...t.corporate.faqItems]} variant="dark" />
-          </motion.div>
+
+            <InterfacesAccordion type="single" collapsible>
+              {t.corporate.faqItems.map((item, i) => (
+                <InterfacesAccordionItem key={i} value={`faq-${i}`}>
+                  <InterfacesAccordionTrigger>{item.question}</InterfacesAccordionTrigger>
+                  <InterfacesAccordionContent>{item.answer}</InterfacesAccordionContent>
+                </InterfacesAccordionItem>
+              ))}
+            </InterfacesAccordion>
+          </div>
         </div>
       </section>
 
@@ -248,7 +316,7 @@ export default function CorporateContent() {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: true, amount: 0.1 }}
               className="relative z-10 space-y-8"
             >
               <h2 className="text-4xl md:text-6xl font-bold tracking-tight font-[family-name:var(--font-heading)]">
@@ -256,7 +324,8 @@ export default function CorporateContent() {
                 <span className="text-cyan-400">{t.corporate.ctaTitleHighlight}</span>
               </h2>
               <p className="text-zinc-500 text-lg md:text-xl max-w-xl mx-auto">
-                Ücretsiz CRO analizi ile başlayın. Kurumsal sitenizin lead üretme potansiyelini keşfedin.
+                Ücretsiz CRO analizi ile başlayın. Kurumsal sitenizin lead üretme potansiyelini
+                keşfedin.
               </p>
               <div className="flex flex-col md:flex-row items-center justify-center gap-4 pt-4">
                 <Link href="/#hero">
