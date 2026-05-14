@@ -118,3 +118,35 @@ export async function updateProfile(token: string, firstName: string, lastName: 
   });
   return res.json();
 }
+
+export async function getNotifications(token: string): Promise<{
+  success: boolean;
+  notifications: Array<{
+    id: string;
+    type: string;
+    title: string;
+    body: string;
+    is_read: boolean;
+    metadata: Record<string, unknown>;
+    created_at: string;
+  }>;
+  unreadCount: number;
+}> {
+  return getJson(ENDPOINTS.notifications, token);
+}
+
+export async function markNotificationsRead(
+  token: string,
+  id?: string,
+  all?: boolean
+): Promise<{ success: boolean }> {
+  const res = await fetch(ENDPOINTS.notifications, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(all ? { all: true } : { id }),
+  });
+  return res.json();
+}

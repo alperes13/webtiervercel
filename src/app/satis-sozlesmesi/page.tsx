@@ -3,6 +3,13 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Mesafeli Satış Sözleşmesi',
   description: 'Webtier Mesafeli Satış Sözleşmesi - Hizmet alımına ilişkin koşullar ve şartlar.',
+  keywords: [
+    'mesafeli satış sözleşmesi',
+    'satış sözleşmesi',
+    'webtier satış sözleşmesi',
+    'hizmet şartları',
+    'kullanım koşulları',
+  ],
 };
 
 export default function SaleContractPage() {

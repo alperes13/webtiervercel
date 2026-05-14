@@ -87,6 +87,16 @@ export async function PATCH(request: NextRequest) {
 
   await ensureMigrations();
 
+  // Fetch analysis + user before update (to get user_id and website_url)
+  const analysis = await queryOne<{ id: string; user_id: string; website_url: string; analysis_type: string }>(
+    `SELECT id, user_id, website_url, analysis_type FROM analyses WHERE id = $1`,
+    [body.id]
+  );
+
+  if (!analysis) {
+    return NextResponse.json({ success: false, error: 'Analiz bulunamadı.' }, { status: 404 });
+  }
+
   const updated = await queryOne<{ id: string }>(
     `UPDATE analyses SET status = $1, updated_at = NOW() WHERE id = $2 RETURNING id`,
     [body.status, body.id]
@@ -96,5 +106,42 @@ export async function PATCH(request: NextRequest) {
     return NextResponse.json({ success: false, error: 'Analiz bulunamadı.' }, { status: 404 });
   }
 
+  // Insert notification for terminal statuses
+  if (['completed', 'failed', 'rejected'].includes(body.status)) {
+    try {
+      const typeMap: Record<string, string> = {
+        completed: 'analysis_completed',
+        failed: 'analysis_failed',
+        rejected: 'analysis_rejected',
+      };
+      const titleMap: Record<string, string> = {
+        completed: 'Analiziniz Tamamlandı',
+        failed: 'Analiz Başarısız Oldu',
+        rejected: 'Analiz Reddedildi',
+      };
+      const bodyMap: Record<string, string> = {
+        completed: `${analysis.website_url} adresine ait ${analysis.analysis_type.toUpperCase()} analiziniz hazır.`,
+        failed: `${analysis.website_url} adresine ait analiz işlenirken bir hata oluştu.`,
+        rejected: `${analysis.website_url} adresine ait analiz reddedildi. Krediniz iade edilmiştir.`,
+      };
+
+      await query(
+        `INSERT INTO notifications (user_id, type, title, body, metadata)
+         VALUES ($1, $2, $3, $4, $5)`,
+        [
+          analysis.user_id,
+          typeMap[body.status],
+          titleMap[body.status],
+          bodyMap[body.status],
+          JSON.stringify({ analysis_id: analysis.id, analysis_type: analysis.analysis_type, website_url: analysis.website_url }),
+        ]
+      );
+    } catch (notifErr) {
+      // Non-fatal: log and continue
+      console.error('[notifications] Failed to insert analysis notification:', notifErr);
+    }
+  }
+
   return NextResponse.json({ success: true });
 }
+

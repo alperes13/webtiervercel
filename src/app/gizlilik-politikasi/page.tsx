@@ -3,6 +3,13 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Gizlilik ve Çerez Politikası',
   description: 'Webtier Gizlilik ve Çerez Politikası - Verilerinizin nasıl toplandığı ve kullanıldığı hakkında bilgi.',
+  keywords: [
+    'gizlilik politikası',
+    'çerez politikası',
+    'cookie politikası',
+    'webtier gizlilik',
+    'veri güvenliği',
+  ],
 };
 
 export default function PrivacyPage() {

@@ -23,6 +23,7 @@ export const ENDPOINTS = {
   verifyEmailVerify: '/api/auth/verify-email/verify',
   forgotPassword: '/api/auth/forgot-password',
   resetPassword: '/api/auth/reset-password',
+  notifications: '/api/notifications',
 };
 
 export const NAV_ITEMS: NavItem[] = [

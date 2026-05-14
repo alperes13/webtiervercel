@@ -521,6 +521,15 @@ export interface Translations {
       title: string;
       subtitle: string;
       empty: string;
+      emptyHint: string;
+      markAllRead: string;
+      unreadCount: string;
+      types: {
+        analysis_completed: string;
+        analysis_failed: string;
+        analysis_rejected: string;
+        task_assigned: string;
+      };
     };
     settings: {
       title: string;
@@ -1537,6 +1546,15 @@ const tr: Translations = {
       title: 'Bildirimler',
       subtitle: 'Önemli güncellemeler ve analiz sonuçları.',
       empty: 'Henüz bildiriminiz bulunmuyor.',
+      emptyHint: 'Analiz tamamlandığında veya yeni bir görev atandığında burada bildirim alacaksınız.',
+      markAllRead: 'Tümünü Okundu İşaretle',
+      unreadCount: '{count} okunmamış bildirim',
+      types: {
+        analysis_completed: 'Analiz Tamamlandı',
+        analysis_failed: 'Analiz Başarısız',
+        analysis_rejected: 'Analiz Reddedildi',
+        task_assigned: 'Yeni Görev Atandı',
+      },
     },
     settings: {
       title: 'Hesap Ayarları',

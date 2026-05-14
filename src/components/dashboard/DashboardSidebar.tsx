@@ -1,10 +1,11 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { getNotifications } from '@/lib/api';
 import { 
   LayoutDashboard, 
   FileText, 
@@ -40,14 +41,35 @@ export default function DashboardSidebar({ activeSection, onSectionChange }: Sid
   const { t } = useLanguage();
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
+
+  // Poll for unread notification count every 30 seconds
+  const fetchUnreadCount = useCallback(async () => {
+    if (!session?.token) return;
+    try {
+      const res = await getNotifications(session.token);
+      if (res.success) setUnreadCount(res.unreadCount);
+    } catch { /* ignore */ }
+  }, [session?.token]);
+
+  useEffect(() => {
+    fetchUnreadCount();
+    const interval = setInterval(fetchUnreadCount, 30_000);
+    return () => clearInterval(interval);
+  }, [fetchUnreadCount]);
+
+  // Reset badge when user opens notifications tab
+  useEffect(() => {
+    if (activeSection === 'notifications') setUnreadCount(0);
+  }, [activeSection]);
 
   const MENU_ITEMS = [
-    { id: 'overview' as const, label: t.dashboard.sidebar.dashboard, icon: LayoutDashboard },
-    { id: 'analysis' as const, label: t.dashboard.sidebar.analysis, icon: FileText },
-    { id: 'backlog' as const, label: t.dashboard.sidebar.backlog, icon: ListTodo },
-    { id: 'credits' as const, label: t.dashboard.sidebar.credits, icon: CreditCard },
-    { id: 'notifications' as const, label: t.dashboard.sidebar.notifications, icon: Bell },
-    { id: 'settings' as const, label: t.dashboard.sidebar.profile, icon: Settings },
+    { id: 'overview' as const, label: t.dashboard.sidebar.dashboard, icon: LayoutDashboard, badge: 0 },
+    { id: 'analysis' as const, label: t.dashboard.sidebar.analysis, icon: FileText, badge: 0 },
+    { id: 'backlog' as const, label: t.dashboard.sidebar.backlog, icon: ListTodo, badge: 0 },
+    { id: 'credits' as const, label: t.dashboard.sidebar.credits, icon: CreditCard, badge: 0 },
+    { id: 'notifications' as const, label: t.dashboard.sidebar.notifications, icon: Bell, badge: unreadCount },
+    { id: 'settings' as const, label: t.dashboard.sidebar.profile, icon: Settings, badge: 0 },
   ];
 
   if (!session) return null;
@@ -147,6 +169,7 @@ export default function DashboardSidebar({ activeSection, onSectionChange }: Sid
           {MENU_ITEMS.map((item) => {
             const Icon = item.icon;
             const isActive = activeSection === item.id;
+            const hasBadge = item.badge > 0;
             
             return (
               <button
@@ -160,18 +183,39 @@ export default function DashboardSidebar({ activeSection, onSectionChange }: Sid
                     : "text-slate-500 hover:bg-slate-50 hover:text-slate-900"
                 )}
               >
-                <Icon className={cn(
-                  "shrink-0 transition-colors duration-200",
-                  isCollapsed ? "h-6 w-6" : "h-5 w-5",
-                  isActive ? "text-white" : "text-slate-400 group-hover:text-slate-900"
-                )} />
+                {/* Icon with badge */}
+                <div className="relative shrink-0">
+                  <Icon className={cn(
+                    "transition-colors duration-200",
+                    isCollapsed ? "h-6 w-6" : "h-5 w-5",
+                    isActive ? "text-white" : "text-slate-400 group-hover:text-slate-900"
+                  )} />
+                  {hasBadge && (
+                    <span className={cn(
+                      "absolute -top-1.5 -right-1.5 min-w-[16px] h-4 px-1 rounded-full text-[10px] font-black flex items-center justify-center",
+                      isActive ? "bg-white text-slate-900" : "bg-cyan-500 text-white"
+                    )}>
+                      {item.badge > 99 ? '99+' : item.badge}
+                    </span>
+                  )}
+                </div>
                 
                 {!isCollapsed && (
                   <span className={cn(
-                    "text-sm font-semibold transition-all duration-200 truncate",
+                    "text-sm font-semibold transition-all duration-200 truncate flex-1",
                     isActive ? "opacity-100" : "opacity-80 group-hover:opacity-100"
                   )}>
                     {item.label}
+                  </span>
+                )}
+
+                {/* Unread badge label (expanded mode) */}
+                {!isCollapsed && hasBadge && (
+                  <span className={cn(
+                    "text-[10px] font-black px-1.5 py-0.5 rounded-full shrink-0",
+                    isActive ? "bg-white/20 text-white" : "bg-cyan-500 text-white"
+                  )}>
+                    {item.badge > 99 ? '99+' : item.badge}
                   </span>
                 )}
 

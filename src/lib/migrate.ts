@@ -184,5 +184,33 @@ export async function ensureMigrations(): Promise<void> {
     await pool.query(`CREATE INDEX IF NOT EXISTS idx_user_documents_user_id ON user_documents(user_id);`);
   } catch { /* already exists */ }
 
+  // Migration 009: notifications table
+  try {
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS notifications (
+        id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+        user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+        type VARCHAR(50) NOT NULL,
+        title TEXT NOT NULL,
+        body TEXT NOT NULL,
+        is_read BOOLEAN DEFAULT FALSE,
+        metadata JSONB DEFAULT '{}',
+        created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
+  } catch { /* already exists */ }
+
+  try {
+    await pool.query(`CREATE INDEX IF NOT EXISTS idx_notifications_user_id ON notifications(user_id);`);
+  } catch { /* already exists */ }
+
+  try {
+    await pool.query(`CREATE INDEX IF NOT EXISTS idx_notifications_created_at ON notifications(created_at DESC);`);
+  } catch { /* already exists */ }
+
+  try {
+    await pool.query(`CREATE INDEX IF NOT EXISTS idx_notifications_user_unread ON notifications(user_id, is_read) WHERE is_read = FALSE;`);
+  } catch { /* already exists */ }
+
   console.log('[migrate] ensureMigrations complete');
 }

@@ -3,6 +3,13 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'KVKK Aydınlatma Metni',
   description: 'Webtier KVKK Aydınlatma Metni - Kişisel verilerin korunması hakkında bilgilendirme.',
+  keywords: [
+    'kvkk',
+    'kvkk aydınlatma metni',
+    'kişisel verilerin korunması',
+    'webtier kvkk',
+    'gizlilik',
+  ],
 };
 
 export default function KVKKPage() {

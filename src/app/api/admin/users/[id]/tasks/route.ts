@@ -78,5 +78,22 @@ export async function POST(
     ]
   );
 
+  // Notify user about new task assignment
+  try {
+    await query(
+      `INSERT INTO notifications (user_id, type, title, body, metadata)
+       VALUES ($1, 'task_assigned', $2, $3, $4)`,
+      [
+        userId,
+        'Yeni Backlog Görevi Atandı',
+        `"${body.title.trim()}" başlıklı yeni bir görev size atandı.`,
+        JSON.stringify({ task_id: (task as any)?.id, priority, status }),
+      ]
+    );
+  } catch (notifErr) {
+    // Non-fatal: log and continue
+    console.error('[notifications] Failed to insert task notification:', notifErr);
+  }
+
   return NextResponse.json({ success: true, task }, { status: 201 });
 }

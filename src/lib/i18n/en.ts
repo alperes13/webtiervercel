@@ -983,6 +983,15 @@ const en: Translations = {
       title: 'Notifications',
       subtitle: 'Important updates and analysis results.',
       empty: 'You don\'t have any notifications yet.',
+      emptyHint: 'You\'ll be notified here when an analysis is complete or a new task is assigned.',
+      markAllRead: 'Mark All as Read',
+      unreadCount: '{count} unread notifications',
+      types: {
+        analysis_completed: 'Analysis Completed',
+        analysis_failed: 'Analysis Failed',
+        analysis_rejected: 'Analysis Rejected',
+        task_assigned: 'New Task Assigned',
+      },
     },
     settings: {
       title: 'Account Settings',

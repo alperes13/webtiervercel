@@ -16,6 +16,7 @@ import DashboardHeader from '@/components/dashboard/DashboardHeader';
 import AnalysisHistory from '@/components/dashboard/AnalysisHistory';
 import BacklogTasks from '@/components/dashboard/BacklogTasks';
 import UserDocuments from '@/components/dashboard/UserDocuments';
+import Notifications from '@/components/dashboard/Notifications';
 import PurchaseModal from '@/components/ui/PurchaseModal';
 import EmailVerificationModal from '@/components/ui/EmailVerificationModal';
 import { Zap, Mail, Shield, Bell } from 'lucide-react';
@@ -163,7 +164,7 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-[120vh] lg:min-h-screen bg-zinc-50 pt-16 lg:pt-0">
+    <div className="min-h-[100dvh] lg:min-h-screen bg-zinc-50 pt-16 lg:pt-0">
       <div className="flex w-full">
         {/* Sidebar */}
         <DashboardSidebar activeSection={activeSection} onSectionChange={setActiveSection} />
@@ -346,18 +347,7 @@ export default function DashboardPage() {
 
             {/* 6. Notifications Section */}
             {activeSection === 'notifications' && (
-              <div className="space-y-6">
-                <div className="space-y-1">
-                  <h2 className="text-xl font-bold text-slate-900">{t.dashboard.notifications.title}</h2>
-                  <p className="text-xs text-slate-500 font-medium">{t.dashboard.notifications.subtitle}</p>
-                </div>
-                <Card className="p-8 border-dashed border-2 flex flex-col items-center justify-center text-center space-y-3 bg-white">
-                  <div className="p-3 bg-slate-50 rounded-full">
-                    <Bell className="h-6 w-6 text-slate-400" />
-                  </div>
-                  <p className="text-sm font-medium text-slate-600">{t.dashboard.notifications.empty}</p>
-                </Card>
-              </div>
+              <Notifications token={session.token} />
             )}
 
             {/* 7. Settings Section */}
