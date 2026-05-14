@@ -61,9 +61,9 @@ export default function WhyUs() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.2 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="relative p-6 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface-card)] transition-hover hover:border-[var(--color-border-light)] group"
+              className="relative p-6 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-card)] transition-hover hover:border-[var(--color-border-light)] group"
             >
-              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-[var(--color-surface-light)] to-[var(--color-surface)] border border-[var(--color-border)] group-hover:border-[var(--color-accent)]/50 transition-colors">
+              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-gradient-to-br from-[var(--color-surface-light)] to-[var(--color-surface)] border border-[var(--color-border)] group-hover:border-[var(--color-accent)]/50 transition-colors">
                 <div className="text-[var(--color-text-secondary)] group-hover:text-[var(--color-accent)] transition-colors">
                   {reasons[index % reasons.length].icon}
                 </div>

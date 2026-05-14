@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { useLanguage } from '@/contexts/LanguageContext';
 
@@ -47,10 +48,14 @@ export default function References() {
                 key={`r1-${logo.id}-${i}`}
                 className="flex items-center justify-center shrink-0 opacity-40 hover:opacity-100 transition-all duration-300 filter grayscale hover:grayscale-0 px-6"
               >
-                <img 
+                <Image 
                   src={logo.path} 
                   alt={`Partner Logo ${logo.id}`} 
+                  width={240}
+                  height={80}
                   className="h-20 w-auto object-contain max-w-[240px]"
+                  loading="eager"
+                  priority={i < 10}
                 />
               </div>
             ))}
@@ -65,10 +70,13 @@ export default function References() {
                 key={`r2-${logo.id}-${i}`}
                 className="flex items-center justify-center shrink-0 opacity-40 hover:opacity-100 transition-all duration-300 filter grayscale hover:grayscale-0 px-6"
               >
-                <img 
+                <Image 
                   src={logo.path} 
                   alt={`Partner Logo ${logo.id}`} 
+                  width={240}
+                  height={80}
                   className="h-20 w-auto object-contain max-w-[240px]"
+                  loading="eager"
                 />
               </div>
             ))}

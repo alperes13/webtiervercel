@@ -48,7 +48,7 @@ export default function LanguageSwitcher({ className, variant = 'nav' }: Languag
 
       {isOpen && (
         <div className={cn(
-          "absolute right-0 top-full mt-2 w-32 rounded-xl border shadow-xl overflow-hidden z-[100]",
+          "absolute right-0 top-full mt-2 w-32 rounded-lg border shadow-xl overflow-hidden z-[100]",
           isDashboard
             ? "border-slate-200 bg-white"
             : "border-[var(--color-border)] bg-[var(--color-surface)]"

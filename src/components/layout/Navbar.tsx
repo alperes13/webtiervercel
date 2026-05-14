@@ -11,7 +11,6 @@ import { MenuToggleIcon } from '@/components/ui/MenuToggleIcon';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { usePathname } from 'next/navigation';
-import LanguageSwitcher from '@/components/shared/LanguageSwitcher';
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -19,7 +18,15 @@ export default function Navbar() {
   
   const [menuOpen, setMenuOpen] = useState(false);
   const { session, isAuthenticated, isHydrated } = useAuth();
-  const { t } = useLanguage();
+  const { t, language, setLanguage } = useLanguage();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 10);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   return (
     <>
@@ -27,7 +34,7 @@ export default function Navbar() {
         className={cn(
           'fixed top-0 left-0 w-full z-[80] transition-all duration-500',
           scrolled
-            ? 'bg-[var(--color-surface)]/80 backdrop-blur-[2px] border-b border-[var(--color-border)]'
+            ? 'bg-white/80 backdrop-blur-lg border-b border-slate-200 shadow-sm'
             : 'bg-transparent'
         )}
       >
@@ -37,13 +44,19 @@ export default function Navbar() {
             <div className="hidden md:flex items-center gap-8 md:flex-1">
                 <Link
                   href="/dashboard"
-                  className="text-sm font-semibold text-[var(--color-text-secondary)] transition-colors duration-200 hover:text-[var(--color-text)]"
+                  className={cn(
+                    "text-sm font-semibold transition-colors duration-200",
+                    scrolled ? "text-slate-600 hover:text-black" : "text-slate-700 hover:text-black"
+                  )}
                 >
                   {t.nav.cro}
                 </Link>
                 <Link
                   href="/retrainer"
-                  className="text-sm font-semibold text-[var(--color-text-secondary)] transition-colors duration-200 hover:text-[var(--color-text)]"
+                  className={cn(
+                    "text-sm font-semibold transition-colors duration-200",
+                    scrolled ? "text-slate-600 hover:text-black" : "text-slate-700 hover:text-black"
+                  )}
                 >
                   {t.nav.retrainer}
                 </Link>
@@ -55,8 +68,8 @@ export default function Navbar() {
                 <Image
                   src="/images/logo-black.png"
                   alt="Webtier"
-                  width={160}
-                  height={48}
+                  width={154}
+                  height={44}
                   className="h-11 sm:h-12 w-auto object-contain"
                   priority
                 />
@@ -65,15 +78,31 @@ export default function Navbar() {
 
             {/* Right side - Right (Always) */}
             <div className="flex items-center gap-3 md:flex-1 justify-end">
-              {/* Simplified Language Selector */}
-              <LanguageSwitcher className="hidden sm:block" />
+              {/* Simple Language Toggle (TR <-> EN) */}
+              <button
+                onClick={() => setLanguage(language === 'tr' ? 'en' : 'tr')}
+                className={cn(
+                  "hidden sm:flex h-9 items-center justify-center rounded-lg border px-3 text-xs font-bold transition-all uppercase",
+                  scrolled
+                    ? "border-slate-200 text-slate-600 hover:bg-slate-50 hover:text-black"
+                    : "border-slate-300 text-slate-700 hover:border-slate-400 hover:bg-white/50"
+                )}
+                aria-label="Toggle Language"
+              >
+                {language === 'tr' ? 'EN' : 'TR'}
+              </button>
 
               {isHydrated && isAuthenticated ? (
                 <Link href="/dashboard">
                   <Button
                     size="sm"
                     variant="secondary"
-                    className="rounded-xl border border-[var(--color-border-light)] bg-[var(--color-surface-card)]/80 px-3 text-[var(--color-text)] sm:px-4 font-bold"
+                    className={cn(
+                      "rounded-lg border font-bold px-3 sm:px-4",
+                      scrolled 
+                        ? "border-slate-200 bg-slate-50 text-slate-900" 
+                        : "border-slate-300 bg-white text-slate-900 hover:bg-slate-50"
+                    )}
                   >
                     <UserRound className="h-4 w-4" />
                     <span className="hidden sm:inline">
@@ -86,7 +115,12 @@ export default function Navbar() {
                   <Button
                     size="sm"
                     variant="secondary"
-                    className="rounded-xl border border-[var(--color-border-light)] bg-[var(--color-surface-card)]/80 px-3 text-[var(--color-text)] sm:px-4 font-bold"
+                    className={cn(
+                      "rounded-lg border font-bold px-3 sm:px-4",
+                      scrolled 
+                        ? "border-slate-200 bg-slate-50 text-slate-900" 
+                        : "border-slate-300 bg-white text-slate-900 hover:bg-slate-50"
+                    )}
                   >
                     <UserRound className="h-4 w-4" />
                     <span className="hidden sm:inline">{t.dashboard.auth.login}</span>
@@ -96,7 +130,12 @@ export default function Navbar() {
 
               <button
                 onClick={() => setMenuOpen(!menuOpen)}
-                className="flex h-9 w-9 items-center justify-center rounded-lg border border-[var(--color-border)] text-[var(--color-text-secondary)] transition-all hover:border-[var(--color-border-light)] hover:bg-[var(--color-surface-light)] hover:text-[var(--color-text)] z-[130]"
+                className={cn(
+                  "flex h-9 w-9 items-center justify-center rounded-lg border transition-all z-[130]",
+                  scrolled
+                    ? "border-slate-200 text-slate-600 hover:bg-slate-50 hover:text-black"
+                    : "border-slate-300 text-slate-700 hover:bg-white/50 hover:text-black"
+                )}
                 aria-label="Toggle Menu"
               >
                 <MenuToggleIcon open={menuOpen} className="h-5 w-5" duration={350} />

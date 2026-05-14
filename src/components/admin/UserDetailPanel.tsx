@@ -179,11 +179,11 @@ export default function UserDetailPanel({ user, onClose }: Props) {
           {tab === 'credits' && (
             <div className="space-y-5">
               <div className="grid grid-cols-2 gap-3">
-                <div className="p-4 rounded-xl bg-slate-900 border border-slate-800">
+                <div className="p-4 rounded-lg bg-slate-900 border border-slate-800">
                   <p className="text-xs text-slate-500 mb-1">Mini Kredi</p>
                   <p className="text-2xl font-bold text-white">{currentCredits.mini}</p>
                 </div>
-                <div className="p-4 rounded-xl bg-slate-900 border border-slate-800">
+                <div className="p-4 rounded-lg bg-slate-900 border border-slate-800">
                   <p className="text-xs text-slate-500 mb-1">Ultra Kredi</p>
                   <p className="text-2xl font-bold text-white">{currentCredits.ultra}</p>
                 </div>
@@ -195,7 +195,7 @@ export default function UserDetailPanel({ user, onClose }: Props) {
                   <select
                     value={creditType}
                     onChange={e => setCreditType(e.target.value as 'mini' | 'ultra')}
-                    className="px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white text-sm focus:outline-none focus:border-slate-500"
+                    className="px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-white text-sm focus:outline-none focus:border-slate-500"
                   >
                     <option value="mini">Mini Kredi</option>
                     <option value="ultra">Ultra Kredi</option>
@@ -205,13 +205,13 @@ export default function UserDetailPanel({ user, onClose }: Props) {
                     value={creditAmount}
                     onChange={e => setCreditAmount(e.target.value)}
                     placeholder="Miktar (- ile çıkar)"
-                    className="px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white text-sm placeholder-slate-600 focus:outline-none focus:border-slate-500"
+                    className="px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-white text-sm placeholder-slate-600 focus:outline-none focus:border-slate-500"
                   />
                 </div>
                 <button
                   type="submit"
                   disabled={creditLoading}
-                  className="w-full py-2.5 rounded-xl bg-white text-slate-900 text-sm font-medium hover:bg-slate-100 transition-colors disabled:opacity-50"
+                  className="w-full py-2.5 rounded-lg bg-white text-slate-900 text-sm font-medium hover:bg-slate-100 transition-colors disabled:opacity-50"
                 >
                   {creditLoading ? 'İşleniyor...' : 'Uygula'}
                 </button>
@@ -229,14 +229,14 @@ export default function UserDetailPanel({ user, onClose }: Props) {
                 <h3 className="text-sm font-medium text-slate-300">Backlog Task'ları</h3>
                 <button
                   onClick={() => { setEditingTask(null); setShowTaskForm(true); }}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/8 border border-white/10 text-white text-xs hover:bg-white/12 transition-colors"
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/8 border border-white/10 text-white text-xs hover:bg-white/12 transition-colors"
                 >
                   <Plus size={12} /> Yeni Task
                 </button>
               </div>
 
               {showTaskForm && (
-                <div className="p-4 rounded-xl bg-slate-900 border border-slate-700">
+                <div className="p-4 rounded-lg bg-slate-900 border border-slate-700">
                   <h4 className="text-sm font-medium text-white mb-4">{editingTask ? 'Task Düzenle' : 'Yeni Task Oluştur'}</h4>
                   <TaskForm
                     userId={user.id}
@@ -263,7 +263,7 @@ export default function UserDetailPanel({ user, onClose }: Props) {
               ) : (
                 <div className="space-y-2">
                   {tasks.map(task => (
-                    <div key={task.id} className="p-4 rounded-xl bg-slate-900 border border-slate-800 group">
+                    <div key={task.id} className="p-4 rounded-lg bg-slate-900 border border-slate-800 group">
                       <div className="flex items-start justify-between gap-3">
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 flex-wrap mb-1.5">
@@ -319,14 +319,14 @@ export default function UserDetailPanel({ user, onClose }: Props) {
                 <h3 className="text-sm font-medium text-slate-300">Dökümanlar & Analizler</h3>
                 <button
                   onClick={() => setShowDocForm(true)}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/8 border border-white/10 text-white text-xs hover:bg-white/12 transition-colors"
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/8 border border-white/10 text-white text-xs hover:bg-white/12 transition-colors"
                 >
                   <Plus size={12} /> Ekle
                 </button>
               </div>
 
               {showDocForm && (
-                <div className="p-4 rounded-xl bg-slate-900 border border-slate-700">
+                <div className="p-4 rounded-lg bg-slate-900 border border-slate-700">
                   <h4 className="text-sm font-medium text-white mb-4">Döküman / Link Ekle</h4>
                   <DocumentForm
                     userId={user.id}
@@ -343,7 +343,7 @@ export default function UserDetailPanel({ user, onClose }: Props) {
               ) : (
                 <div className="space-y-2">
                   {documents.map(doc => (
-                    <div key={doc.id} className="flex items-center gap-3 p-3 rounded-xl bg-slate-900 border border-slate-800 group">
+                    <div key={doc.id} className="flex items-center gap-3 p-3 rounded-lg bg-slate-900 border border-slate-800 group">
                       <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${
                         doc.type === 'link' ? 'bg-green-500/10 border border-green-500/20' : 'bg-blue-500/10 border border-blue-500/20'
                       }`}>

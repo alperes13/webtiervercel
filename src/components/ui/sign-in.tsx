@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from "react";
+import Image from "next/image";
 import { Eye, EyeOff } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -49,7 +50,7 @@ const GoogleIcon = () => (
 
 const GlassInputWrapper = ({ children, theme }: { children: React.ReactNode, theme?: "light" | "dark" }) => (
   <div className={cn(
-    "rounded-2xl border transition-colors focus-within:ring-2 focus-within:ring-[#a78bfa]/50",
+    "rounded-lg border transition-colors focus-within:ring-2 focus-within:ring-[#a78bfa]/50",
     theme === "light" 
       ? "border-zinc-200 bg-zinc-50 focus-within:border-[#a78bfa] focus-within:bg-white" 
       : "border-[var(--color-border)] bg-[var(--foreground)]/5 backdrop-blur-sm focus-within:border-[#a78bfa] focus-within:bg-[#a78bfa]/10"
@@ -59,8 +60,15 @@ const GlassInputWrapper = ({ children, theme }: { children: React.ReactNode, the
 );
 
 const TestimonialCard = ({ testimonial, delay }: { testimonial: Testimonial, delay: string }) => (
-  <div className={cn("animate-testimonial flex items-start gap-3 rounded-3xl bg-white/10 backdrop-blur-xl border border-white/10 p-5 w-64", delay)}>
-    <img src={testimonial.avatarSrc} className="h-10 w-10 object-cover rounded-2xl" alt="avatar" />
+  <div className={cn("animate-testimonial flex items-start gap-3 rounded-lg bg-white/10 backdrop-blur-xl border border-white/10 p-5 w-64", delay)}>
+    <div className="relative h-10 w-10 shrink-0">
+      <Image 
+        src={testimonial.avatarSrc} 
+        fill
+        className="object-cover rounded-lg" 
+        alt="avatar" 
+      />
+    </div>
     <div className="text-sm leading-snug">
       <p className="flex items-center gap-1 font-medium text-white">{testimonial.name}</p>
       <p className="mt-1 text-white/80">{testimonial.text}</p>
@@ -132,7 +140,7 @@ export const SignInPage: React.FC<SignInPageProps> = ({
                     placeholder={emailPlaceholder} 
                     required 
                     className={cn(
-                      "w-full bg-transparent text-sm p-4 rounded-2xl outline-none",
+                      "w-full bg-transparent text-sm p-4 rounded-lg outline-none",
                       isLight ? "text-zinc-900 placeholder:text-zinc-400" : "text-[var(--color-text)] placeholder:text-[var(--color-text-muted)]/50"
                     )} 
                   />
@@ -151,7 +159,7 @@ export const SignInPage: React.FC<SignInPageProps> = ({
                       placeholder={passwordPlaceholder}
                       required
                       className={cn(
-                        "w-full bg-transparent text-sm p-4 pr-12 rounded-2xl outline-none",
+                        "w-full bg-transparent text-sm p-4 pr-12 rounded-lg outline-none",
                         isLight ? "text-zinc-900 placeholder:text-zinc-400" : "text-[var(--color-text)] placeholder:text-[var(--color-text-muted)]/50"
                       )}
                     />
@@ -191,7 +199,7 @@ export const SignInPage: React.FC<SignInPageProps> = ({
 
               <button
                 type="submit"
-                className="animate-element animate-delay-600 w-full rounded-2xl bg-[#a78bfa] py-4 font-bold text-white hover:bg-[#9061f9] transition-all transform hover:scale-[0.99] active:scale-[0.97] shadow-lg shadow-[#a78bfa]/20"
+                className="animate-element animate-delay-600 w-full rounded-lg bg-[#a78bfa] py-4 font-bold text-white hover:bg-[#9061f9] transition-all transform hover:scale-[0.99] active:scale-[0.97] shadow-lg shadow-[#a78bfa]/20"
               >
                 {submitButtonText}
               </button>
@@ -209,7 +217,7 @@ export const SignInPage: React.FC<SignInPageProps> = ({
               type="button"
               onClick={onGoogleSignIn}
               className={cn(
-                "animate-element animate-delay-800 w-full flex items-center justify-center gap-3 border rounded-2xl py-4 transition-all hover:scale-[0.99] active:scale-[0.97]",
+                "animate-element animate-delay-800 w-full flex items-center justify-center gap-3 border rounded-lg py-4 transition-all hover:scale-[0.99] active:scale-[0.97]",
                 isLight 
                   ? "border-zinc-200 bg-white text-zinc-900 hover:bg-zinc-50 hover:border-zinc-300 shadow-sm" 
                   : "border-[var(--color-border)] text-[var(--color-text)] hover:bg-[var(--color-surface-light)]"
@@ -220,7 +228,7 @@ export const SignInPage: React.FC<SignInPageProps> = ({
             </button>
 
             <div className={cn(
-              "animate-element animate-delay-900 mt-6 p-6 rounded-3xl transition-all group",
+              "animate-element animate-delay-900 mt-6 p-6 rounded-lg transition-all group",
               isLight 
                 ? "bg-zinc-50 hover:bg-zinc-100/50" 
                 : "bg-white/5 hover:bg-white/[0.07]"
@@ -250,7 +258,13 @@ export const SignInPage: React.FC<SignInPageProps> = ({
       {/* Right column: hero image + testimonials */}
       {heroImageSrc && (
         <section className="hidden md:flex flex-1 relative overflow-hidden bg-zinc-950 min-h-screen">
-          <img src={heroImageSrc} className="absolute inset-0 w-full h-full object-cover opacity-60" alt="Hero" />
+          <Image 
+            src={heroImageSrc} 
+            fill
+            className="object-cover opacity-60" 
+            alt="Hero" 
+            priority
+          />
           <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-transparent to-transparent" />
           
           <div className="relative z-10 w-full h-full flex flex-col justify-end p-12 gap-8">

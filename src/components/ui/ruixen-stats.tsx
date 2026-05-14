@@ -34,7 +34,7 @@ export default function RuixenStats() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: idx * 0.05 }}
-              className="flex items-center gap-3 p-5 rounded-2xl border border-white/5 bg-white/[0.02] hover:bg-red-500/5 hover:border-red-500/20 transition-all group m-[3px_10px]"
+              className="flex items-center gap-3 p-5 rounded-lg border border-white/5 bg-white/[0.02] hover:bg-red-500/5 hover:border-red-500/20 transition-all group m-[3px_10px]"
             >
               <AlertCircle className="w-5 h-5 text-red-500/50 group-hover:text-red-500 transition-colors shrink-0" />
               <span className="text-zinc-400 text-sm font-semibold group-hover:text-white transition-colors">

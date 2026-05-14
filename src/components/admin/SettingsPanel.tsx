@@ -21,13 +21,13 @@ interface ToggleItemProps {
 
 function ToggleItem({ icon, title, description, value, onChange, loading, danger }: ToggleItemProps) {
   return (
-    <div className={`flex items-center justify-between p-4 rounded-xl border transition-colors ${
+    <div className={`flex items-center justify-between p-4 rounded-lg border transition-colors ${
       danger && value
         ? 'bg-amber-500/5 border-amber-500/20'
         : 'bg-slate-900 border-slate-800'
     }`}>
       <div className="flex items-start gap-3">
-        <div className={`w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5 ${
+        <div className={`w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5 ${
           value
             ? danger ? 'bg-amber-500/10 border border-amber-500/20' : 'bg-emerald-500/10 border border-emerald-500/20'
             : 'bg-slate-800 border border-slate-700'
@@ -146,7 +146,7 @@ export default function SettingsPanel() {
       )}
 
       {settings.maintenance_mode && (
-        <div className="p-4 rounded-xl bg-amber-500/10 border border-amber-500/20">
+        <div className="p-4 rounded-lg bg-amber-500/10 border border-amber-500/20">
           <div className="flex items-center gap-2 text-amber-400">
             <Power size={14} />
             <p className="text-sm font-medium">Bakım modu aktif</p>

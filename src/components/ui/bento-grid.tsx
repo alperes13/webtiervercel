@@ -69,7 +69,7 @@ function BentoGrid({ items = itemsSample }: BentoGridProps) {
                 <div
                     key={index}
                     className={cn(
-                        "group relative p-4 rounded-xl overflow-hidden transition-all duration-300",
+                        "group relative p-4 rounded-lg overflow-hidden transition-all duration-300",
                         "border border-gray-100/80 dark:border-white/10 bg-white dark:bg-black",
                         "hover:shadow-[0_2px_12px_rgba(0,0,0,0.03)] dark:hover:shadow-[0_2px_12px_rgba(255,255,255,0.03)]",
                         "hover:-translate-y-0.5 will-change-transform",
@@ -139,7 +139,7 @@ function BentoGrid({ items = itemsSample }: BentoGridProps) {
                     </div>
 
                     <div
-                        className={`absolute inset-0 -z-10 rounded-xl p-px bg-gradient-to-br from-transparent via-gray-100/50 to-transparent dark:via-white/10 ${
+                        className={`absolute inset-0 -z-10 rounded-lg p-px bg-gradient-to-br from-transparent via-gray-100/50 to-transparent dark:via-white/10 ${
                             item.hasPersistentHover
                                 ? "opacity-100"
                                 : "opacity-0 group-hover:opacity-100"

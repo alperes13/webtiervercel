@@ -950,8 +950,8 @@ const tr: Translations = {
   },
   profile: {
     title: 'Profilim',
-    phone: 'Telefon',
-    phoneLabel: 'Telefon Numaranız',
+    email: 'E-posta',
+    emailLabel: 'E-posta Adresiniz',
     status: 'Analiz Durumu',
     statusPending: 'Rapor Hazırlanıyor...',
     statusCompleted: 'Rapor Hazır',

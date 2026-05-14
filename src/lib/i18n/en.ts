@@ -396,8 +396,8 @@ const en: Translations = {
   },
   profile: {
     title: 'My Profile',
-    phone: 'Phone',
-    phoneLabel: 'Your Phone Number',
+    email: 'Email',
+    emailLabel: 'Your Email Address',
     status: 'Analysis Status',
     statusPending: 'Preparing Report...',
     statusCompleted: 'Report Ready',

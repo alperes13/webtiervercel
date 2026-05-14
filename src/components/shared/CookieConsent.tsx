@@ -39,7 +39,7 @@ export default function CookieConsent() {
 
         <Button
           size="sm"
-          className="min-h-11 shrink-0 rounded-xl px-5"
+          className="min-h-11 shrink-0 rounded-lg px-5"
           onClick={() => setConsent('accepted')}
         >
           {t.cookieConsent.button}

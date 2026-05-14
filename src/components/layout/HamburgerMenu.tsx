@@ -82,7 +82,7 @@ export default function HamburgerMenu({ open, onClose }: HamburgerMenuProps) {
               </Link>
               <button
                 onClick={onClose}
-                className="flex h-11 w-11 items-center justify-center rounded-2xl bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/5 text-[var(--color-text-muted)] transition-all hover:bg-black/10 dark:hover:bg-white/10 hover:rotate-90 active:scale-90"
+                className="flex h-11 w-11 items-center justify-center rounded-lg bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/5 text-[var(--color-text-muted)] transition-all hover:bg-black/10 dark:hover:bg-white/10 hover:rotate-90 active:scale-90"
                 aria-label={t.nav.close}
               >
                 <X className="h-6 w-6" />
@@ -103,10 +103,10 @@ export default function HamburgerMenu({ open, onClose }: HamburgerMenuProps) {
                     <Link
                       href={item.href}
                       onClick={onClose}
-                      className="group flex items-center gap-4 p-4 rounded-2xl transition-all hover:bg-black/[0.03] dark:hover:bg-white/[0.03] active:bg-black/[0.05]"
+                      className="group flex items-center gap-4 p-4 rounded-lg transition-all hover:bg-black/[0.03] dark:hover:bg-white/[0.03] active:bg-black/[0.05]"
                     >
                       <div className={cn(
-                        "flex h-12 w-12 items-center justify-center rounded-2xl bg-white dark:bg-black border border-black/5 dark:border-white/10 shadow-sm transition-all group-hover:scale-110 group-hover:rotate-3 group-hover:shadow-md",
+                        "flex h-12 w-12 items-center justify-center rounded-lg bg-white dark:bg-black border border-black/5 dark:border-white/10 shadow-sm transition-all group-hover:scale-110 group-hover:rotate-3 group-hover:shadow-md",
                         item.color
                       )}>
                         <item.icon className="h-5 w-5" />
@@ -120,62 +120,6 @@ export default function HamburgerMenu({ open, onClose }: HamburgerMenuProps) {
                 ))}
               </div>
 
-              {/* Language Selector */}
-              <div className="mt-12 pt-8 border-t border-black/5 dark:border-white/5">
-                <div className="text-[10px] uppercase tracking-[0.2em] font-black text-slate-400 mb-6 px-3">{t.nav.preferences}</div>
-                <div className="px-3">
-                  <button
-                    onClick={() => setLangOpen(!langOpen)}
-                    className={cn(
-                      "flex w-full items-center justify-between p-4 rounded-2xl border border-black/5 dark:border-white/10 transition-all",
-                      langOpen ? "bg-black/[0.02] dark:bg-white/[0.02] border-cyan-500/50" : "hover:bg-black/[0.01] dark:hover:bg-white/[0.01]"
-                    )}
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-cyan-500/10 text-cyan-500">
-                        <Globe className="h-5 w-5" />
-                      </div>
-                      <div className="text-left">
-                        <div className="text-[10px] text-slate-400 uppercase font-black tracking-widest">{t.nav.languageSelection}</div>
-                        <div className="text-sm font-black uppercase text-[var(--color-text)]">
-                           {currentLang.label} ({currentLang.code})
-                        </div>
-                      </div>
-                    </div>
-                    <ChevronDown className={cn("h-5 w-5 transition-transform duration-300", langOpen && "rotate-180")} />
-                  </button>
-                  
-                  <AnimatePresence>
-                    {langOpen && (
-                      <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: 'auto', opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        className="overflow-hidden space-y-1 mt-2"
-                      >
-                        {languages.map((lang) => (
-                          <button
-                            key={lang.code}
-                            onClick={() => { setLanguage(lang.code); setLangOpen(false); }}
-                            className={cn(
-                              "w-full flex items-center justify-between p-3.5 rounded-xl text-sm transition-all",
-                              language === lang.code 
-                                ? "bg-cyan-500 text-white font-black shadow-lg shadow-cyan-500/20" 
-                                : "text-[var(--color-text-secondary)] hover:bg-black/5 dark:hover:bg-white/5 font-bold"
-                            )}
-                          >
-                            <div className="flex items-center gap-3">
-                              <span className="text-lg">{lang.flag}</span>
-                              <span className="uppercase tracking-tight">{lang.label}</span>
-                            </div>
-                            {language === lang.code && <div className="h-2 w-2 rounded-full bg-white animate-pulse" />}
-                          </button>
-                        ))}
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              </div>
             </div>
 
             {/* Footer - Floating Contact */}
@@ -189,7 +133,7 @@ export default function HamburgerMenu({ open, onClose }: HamburgerMenuProps) {
                 <Link
                   href="/iletisim"
                   onClick={onClose}
-                  className="flex flex-col items-center justify-center gap-2 rounded-2xl bg-[#25D366]/10 p-4 text-[#25D366] transition-all hover:bg-[#25D366]/20 border border-[#25D366]/20 group active:scale-95"
+                  className="flex flex-col items-center justify-center gap-2 rounded-lg bg-[#25D366]/10 p-4 text-[#25D366] transition-all hover:bg-[#25D366]/20 border border-[#25D366]/20 group active:scale-95"
                 >
                   <MessageCircle className="h-6 w-6 group-hover:animate-bounce" />
                   <span className="text-[10px] font-black uppercase tracking-tighter">WhatsApp</span>
@@ -197,7 +141,7 @@ export default function HamburgerMenu({ open, onClose }: HamburgerMenuProps) {
                 <Link
                   href="/iletisim"
                   onClick={onClose}
-                  className="flex flex-col items-center justify-center gap-2 rounded-2xl bg-cyan-500/10 p-4 text-cyan-600 transition-all hover:bg-cyan-500/20 border border-cyan-500/20 group active:scale-95"
+                  className="flex flex-col items-center justify-center gap-2 rounded-lg bg-cyan-500/10 p-4 text-cyan-600 transition-all hover:bg-cyan-500/20 border border-cyan-500/20 group active:scale-95"
                 >
                   <Mail className="h-6 w-6 group-hover:scale-110 transition-transform" />
                   <span className="text-[10px] font-black uppercase tracking-tighter">E-posta</span>

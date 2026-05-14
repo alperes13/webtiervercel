@@ -250,7 +250,7 @@ export default function DashboardPage() {
 
                 <Card className="p-4 flex items-center justify-between border-cyan-100 bg-cyan-50/10">
                   <div className="flex items-center gap-4">
-                    <div className="bg-cyan-100 p-2 rounded-xl">
+                    <div className="bg-cyan-100 p-2 rounded-lg">
                       <Zap className="h-5 w-5 text-cyan-600" />
                     </div>
                     <div>
@@ -258,7 +258,7 @@ export default function DashboardPage() {
                       <p className="text-xs text-slate-500 font-medium">{t.dashboard.overview.ultraBannerDesc}</p>
                     </div>
                   </div>
-                  <Button onClick={() => setActiveSection('credits')} size="sm" className="bg-cyan-600 hover:bg-cyan-700 text-[11px] font-black px-6 uppercase tracking-wider rounded-xl">{t.dashboard.overview.ultraBannerButton}</Button>
+                  <Button onClick={() => setActiveSection('credits')} size="sm" className="bg-cyan-600 hover:bg-cyan-700 text-[11px] font-black px-6 uppercase tracking-wider rounded-lg">{t.dashboard.overview.ultraBannerButton}</Button>
                 </Card>
               </div>
             )}
@@ -330,7 +330,7 @@ export default function DashboardPage() {
                       <Button 
                         onClick={() => setPurchaseModalOpen(true)} 
                         className={cn(
-                          "w-full h-11 text-xs font-black uppercase tracking-widest rounded-xl transition-all",
+                          "w-full h-11 text-xs font-black uppercase tracking-widest rounded-lg transition-all",
                           pkg.popular 
                             ? "bg-cyan-500 hover:bg-cyan-600 text-white shadow-lg shadow-cyan-500/25" 
                             : "bg-slate-50 hover:bg-slate-100 text-slate-900 border border-slate-200"
@@ -369,9 +369,9 @@ export default function DashboardPage() {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <Card className="p-6 space-y-6 border-zinc-200 bg-white shadow-sm rounded-2xl">
+                  <Card className="p-6 space-y-6 border-zinc-200 bg-white shadow-sm rounded-lg">
                     <div className="flex items-center gap-3">
-                      <div className="p-2.5 rounded-xl bg-cyan-50 text-cyan-600">
+                      <div className="p-2.5 rounded-lg bg-cyan-50 text-cyan-600">
                         <Mail className="h-5 w-5" />
                       </div>
                       <h3 className="font-bold text-slate-900 uppercase tracking-tight">{t.dashboard.settings.personalInfo}</h3>
@@ -386,7 +386,7 @@ export default function DashboardPage() {
                             value={firstName}
                             onChange={(e) => setFirstName(e.target.value)}
                             placeholder={t.dashboard.settings.firstName}
-                            className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-sm font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 transition-all font-inter" 
+                            className="w-full px-4 py-3 bg-white border border-slate-200 rounded-lg text-sm font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 transition-all font-inter" 
                           />
                         </div>
                         <div className="space-y-1.5">
@@ -396,28 +396,28 @@ export default function DashboardPage() {
                             value={lastName}
                             onChange={(e) => setLastName(e.target.value)}
                             placeholder={t.dashboard.settings.lastName}
-                            className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-sm font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 transition-all font-inter" 
+                            className="w-full px-4 py-3 bg-white border border-slate-200 rounded-lg text-sm font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 transition-all font-inter" 
                           />
                         </div>
                       </div>
                       <div className="space-y-1.5">
                         <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.15em]">{t.dashboard.settings.email}</label>
-                        <div className="px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl text-sm font-bold text-slate-400 select-none">
+                        <div className="px-4 py-3 bg-slate-50 border border-slate-100 rounded-lg text-sm font-bold text-slate-400 select-none">
                           {session.email}
                         </div>
                       </div>
                       <Button 
                         onClick={handleProfileUpdate}
-                        className="w-full h-11 bg-slate-900 hover:bg-black text-[11px] font-black uppercase tracking-[0.1em] rounded-xl"
+                        className="w-full h-11 bg-slate-900 hover:bg-black text-[11px] font-black uppercase tracking-[0.1em] rounded-lg"
                       >
                         {t.dashboard.settings.saveButton}
                       </Button>
                     </div>
                   </Card>
 
-                  <Card className="p-6 space-y-6 border-zinc-200 bg-white shadow-sm rounded-2xl">
+                  <Card className="p-6 space-y-6 border-zinc-200 bg-white shadow-sm rounded-lg">
                     <div className="flex items-center gap-3">
-                      <div className="p-2.5 rounded-xl bg-purple-50 text-purple-600">
+                      <div className="p-2.5 rounded-lg bg-purple-50 text-purple-600">
                         <Shield className="h-5 w-5" />
                       </div>
                       <h3 className="font-bold text-slate-900 uppercase tracking-tight">{t.dashboard.settings.security}</h3>
@@ -432,7 +432,7 @@ export default function DashboardPage() {
                           onClick={handlePasswordResetRequest}
                           disabled={resetLoading || resetSuccess}
                           className={cn(
-                            "w-full h-11 text-[11px] font-black uppercase tracking-[0.1em] rounded-xl transition-all",
+                            "w-full h-11 text-[11px] font-black uppercase tracking-[0.1em] rounded-lg transition-all",
                             resetSuccess 
                               ? "bg-emerald-500 hover:bg-emerald-600 text-white" 
                               : "bg-slate-900 hover:bg-black text-white"
@@ -450,12 +450,12 @@ export default function DashboardPage() {
                   </Card>
                 </div>
 
-                <div className="flex items-center justify-between p-6 bg-red-50/30 border border-red-100 rounded-2xl">
+                <div className="flex items-center justify-between p-6 bg-red-50/30 border border-red-100 rounded-lg">
                   <div>
                     <h4 className="text-sm font-bold text-red-900 uppercase tracking-tight">{t.dashboard.settings.logoutTitle}</h4>
                     <p className="text-xs text-red-700/70 font-medium">{t.dashboard.settings.logoutDesc}</p>
                   </div>
-                  <Button onClick={logout} variant="outline" className="h-10 px-6 border-red-200 text-red-600 hover:bg-red-50 font-black text-[11px] uppercase tracking-wider rounded-xl">{t.dashboard.settings.logoutButton}</Button>
+                  <Button onClick={logout} variant="outline" className="h-10 px-6 border-red-200 text-red-600 hover:bg-red-50 font-black text-[11px] uppercase tracking-wider rounded-lg">{t.dashboard.settings.logoutButton}</Button>
                 </div>
               </div>
             )}

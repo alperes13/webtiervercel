@@ -67,7 +67,7 @@ export default function PurchaseModal({ open, onClose }: PurchaseModalProps) {
             <button
               key={pkg.amount}
               onClick={() => setSelectedAmount(pkg.amount)}
-              className={`relative flex items-center justify-between p-4 rounded-xl border transition-all ${
+              className={`relative flex items-center justify-between p-4 rounded-lg border transition-all ${
                 selectedAmount === pkg.amount
                   ? 'border-cyan-500 bg-cyan-500/5 ring-1 ring-cyan-500'
                   : 'border-[var(--color-border)] hover:border-cyan-500/50 hover:bg-[var(--color-surface-light)]'

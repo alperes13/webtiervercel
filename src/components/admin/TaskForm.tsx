@@ -89,7 +89,7 @@ export default function TaskForm({ userId, onSuccess, onCancel, initial }: TaskF
           value={title}
           onChange={e => setTitle(e.target.value)}
           placeholder="Task başlığı..."
-          className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white text-sm placeholder-slate-600 focus:outline-none focus:border-slate-500"
+          className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-white text-sm placeholder-slate-600 focus:outline-none focus:border-slate-500"
         />
       </div>
 
@@ -101,7 +101,7 @@ export default function TaskForm({ userId, onSuccess, onCancel, initial }: TaskF
           onChange={e => setDescription(e.target.value)}
           placeholder="Task detayları, kabul kriterleri..."
           rows={4}
-          className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white text-sm placeholder-slate-600 focus:outline-none focus:border-slate-500 resize-none"
+          className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-white text-sm placeholder-slate-600 focus:outline-none focus:border-slate-500 resize-none"
         />
       </div>
 
@@ -112,7 +112,7 @@ export default function TaskForm({ userId, onSuccess, onCancel, initial }: TaskF
           <select
             value={priority}
             onChange={e => setPriority(e.target.value)}
-            className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white text-sm focus:outline-none focus:border-slate-500"
+            className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-white text-sm focus:outline-none focus:border-slate-500"
           >
             {PRIORITIES.map(p => <option key={p.value} value={p.value}>{p.label}</option>)}
           </select>
@@ -122,7 +122,7 @@ export default function TaskForm({ userId, onSuccess, onCancel, initial }: TaskF
           <select
             value={status}
             onChange={e => setStatus(e.target.value)}
-            className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white text-sm focus:outline-none focus:border-slate-500"
+            className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-white text-sm focus:outline-none focus:border-slate-500"
           >
             {STATUSES.map(s => <option key={s.value} value={s.value}>{s.label}</option>)}
           </select>
@@ -138,9 +138,9 @@ export default function TaskForm({ userId, onSuccess, onCancel, initial }: TaskF
             onChange={e => setLabelInput(e.target.value)}
             onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addLabel(); } }}
             placeholder="Etiket ekle ve Enter'a bas..."
-            className="flex-1 px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white text-sm placeholder-slate-600 focus:outline-none focus:border-slate-500"
+            className="flex-1 px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-white text-sm placeholder-slate-600 focus:outline-none focus:border-slate-500"
           />
-          <button type="button" onClick={addLabel} className="px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-slate-300 hover:text-white transition-colors">
+          <button type="button" onClick={addLabel} className="px-3 py-2 rounded-lg bg-slate-800 border border-slate-700 text-slate-300 hover:text-white transition-colors">
             <Plus size={14} />
           </button>
         </div>
@@ -166,7 +166,7 @@ export default function TaskForm({ userId, onSuccess, onCancel, initial }: TaskF
             value={imageUrl}
             onChange={e => setImageUrl(e.target.value)}
             placeholder="https://..."
-            className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white text-sm placeholder-slate-600 focus:outline-none focus:border-slate-500"
+            className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-white text-sm placeholder-slate-600 focus:outline-none focus:border-slate-500"
           />
         </div>
         <div>
@@ -175,13 +175,13 @@ export default function TaskForm({ userId, onSuccess, onCancel, initial }: TaskF
             type="date"
             value={dueDate}
             onChange={e => setDueDate(e.target.value)}
-            className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white text-sm focus:outline-none focus:border-slate-500"
+            className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-white text-sm focus:outline-none focus:border-slate-500"
           />
         </div>
       </div>
 
       {error && (
-        <div className="px-3 py-2.5 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm">{error}</div>
+        <div className="px-3 py-2.5 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm">{error}</div>
       )}
 
       {/* Actions */}
@@ -189,14 +189,14 @@ export default function TaskForm({ userId, onSuccess, onCancel, initial }: TaskF
         <button
           type="button"
           onClick={onCancel}
-          className="flex-1 py-2.5 rounded-xl border border-slate-700 text-slate-400 text-sm hover:text-white transition-colors"
+          className="flex-1 py-2.5 rounded-lg border border-slate-700 text-slate-400 text-sm hover:text-white transition-colors"
         >
           İptal
         </button>
         <button
           type="submit"
           disabled={loading}
-          className="flex-1 py-2.5 rounded-xl bg-white text-slate-900 text-sm font-medium hover:bg-slate-100 transition-colors disabled:opacity-50"
+          className="flex-1 py-2.5 rounded-lg bg-white text-slate-900 text-sm font-medium hover:bg-slate-100 transition-colors disabled:opacity-50"
         >
           {loading ? 'Kaydediliyor...' : initial?.id ? 'Güncelle' : 'Oluştur'}
         </button>

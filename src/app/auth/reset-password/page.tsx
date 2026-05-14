@@ -49,11 +49,11 @@ function ResetPasswordForm() {
   return (
     <main className="min-h-screen bg-zinc-50 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
-        <div className="bg-white rounded-2xl border border-zinc-200 shadow-sm p-8">
+        <div className="bg-white rounded-lg border border-zinc-200 shadow-sm p-8">
           {success ? (
             <div className="text-center space-y-4">
               <div className="flex justify-center">
-                <div className="w-16 h-16 rounded-2xl bg-green-50 border border-green-100 flex items-center justify-center">
+                <div className="w-16 h-16 rounded-lg bg-green-50 border border-green-100 flex items-center justify-center">
                   <CheckCircle className="w-8 h-8 text-green-500" />
                 </div>
               </div>
@@ -73,7 +73,7 @@ function ResetPasswordForm() {
                   Giriş sayfasına dön
                 </button>
                 <div className="flex items-center gap-3 mb-2">
-                  <div className="w-10 h-10 rounded-xl bg-red-50 border border-red-100 flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-lg bg-red-50 border border-red-100 flex items-center justify-center">
                     <KeyRound className="w-5 h-5 text-red-500" />
                   </div>
                   <h1 className="text-xl font-bold text-slate-900">Yeni Şifre Belirle</h1>
@@ -82,7 +82,7 @@ function ResetPasswordForm() {
               </div>
 
               {!token ? (
-                <div className="bg-red-50 border border-red-100 rounded-xl px-4 py-4 text-center space-y-3">
+                <div className="bg-red-50 border border-red-100 rounded-lg px-4 py-4 text-center space-y-3">
                   <AlertCircle className="w-6 h-6 text-red-500 mx-auto" />
                   <p className="text-sm text-red-700 font-medium">Bu link geçersiz veya süresi dolmuş.</p>
                   <button
@@ -105,7 +105,7 @@ function ResetPasswordForm() {
                         onChange={(e) => { setNewPassword(e.target.value); setError(''); }}
                         placeholder="En az 6 karakter"
                         autoFocus
-                        className="w-full px-4 py-3 pr-10 rounded-xl border border-zinc-200 bg-zinc-50 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-red-400/30 focus:border-red-400 transition-all"
+                        className="w-full px-4 py-3 pr-10 rounded-lg border border-zinc-200 bg-zinc-50 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-red-400/30 focus:border-red-400 transition-all"
                       />
                       <button
                         type="button"
@@ -126,12 +126,12 @@ function ResetPasswordForm() {
                       value={confirmPassword}
                       onChange={(e) => { setConfirmPassword(e.target.value); setError(''); }}
                       placeholder="Şifreyi tekrar girin"
-                      className="w-full px-4 py-3 rounded-xl border border-zinc-200 bg-zinc-50 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-red-400/30 focus:border-red-400 transition-all"
+                      className="w-full px-4 py-3 rounded-lg border border-zinc-200 bg-zinc-50 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-red-400/30 focus:border-red-400 transition-all"
                     />
                   </div>
 
                   {error && (
-                    <div className="bg-red-50 border border-red-100 rounded-xl px-4 py-2.5 flex items-start gap-2">
+                    <div className="bg-red-50 border border-red-100 rounded-lg px-4 py-2.5 flex items-start gap-2">
                       <AlertCircle className="w-4 h-4 text-red-500 mt-0.5 shrink-0" />
                       <p className="text-xs text-red-600 font-medium">{error}</p>
                     </div>
@@ -140,7 +140,7 @@ function ResetPasswordForm() {
                   <button
                     type="submit"
                     disabled={loading || !newPassword || !confirmPassword}
-                    className="w-full py-3 rounded-xl bg-slate-900 hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-bold transition-colors"
+                    className="w-full py-3 rounded-lg bg-slate-900 hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-bold transition-colors"
                   >
                     {loading ? 'Güncelleniyor...' : 'Şifremi Güncelle'}
                   </button>

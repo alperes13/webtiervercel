@@ -51,7 +51,7 @@ export const Box = ({
 
         {/* Features - Optional if provided */}
         {features.length > 0 && (
-          <CardContent className="pricing-box-content rounded-2xl border border-white/5 bg-white/[0.02] p-5 flex flex-col gap-4 relative z-10">
+          <CardContent className="pricing-box-content rounded-lg border border-white/5 bg-white/[0.02] p-5 flex flex-col gap-4 relative z-10">
             {features.map((feature, i) => (
               <div key={i} className="flex items-start gap-3 text-zinc-300">
                 <div className="mt-1 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-cyan-500/20 text-cyan-400">
@@ -83,21 +83,21 @@ export const Box = ({
             asChild={!!href}
             onClick={onCtaClick}
             className={cn(
-              "group/cta flex items-center justify-center gap-4 px-6 h-14 rounded-2xl text-sm sm:text-base font-bold text-black transition-all duration-300 w-fit",
+              "group/cta flex items-center justify-center gap-4 px-6 h-14 rounded-lg text-sm sm:text-base font-bold text-black transition-all duration-300 w-fit",
               "bg-gradient-to-r from-white to-zinc-200 hover:from-white hover:to-white shadow-[0_10px_30px_rgba(255,255,255,0.1)] hover:shadow-[0_10px_40px_rgba(255,255,255,0.2)] border-none"
             )}
           >
             {href ? (
               <Link href={href}>
                 <span className="tracking-tight">{ctaText}</span>
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-black text-white transition-transform duration-300 group-hover/cta:translate-x-0.5 group-hover/cta:-translate-y-0.5 shadow-lg shrink-0">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-black text-white transition-transform duration-300 group-hover/cta:translate-x-0.5 group-hover/cta:-translate-y-0.5 shadow-lg shrink-0">
                   <ArrowUpRight className="h-5 w-5" />
                 </div>
               </Link>
             ) : (
               <>
                 <span className="tracking-tight">{ctaText}</span>
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-black text-white transition-transform duration-300 group-hover/cta:translate-x-0.5 group-hover/cta:-translate-y-0.5 shadow-lg shrink-0">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-black text-white transition-transform duration-300 group-hover/cta:translate-x-0.5 group-hover/cta:-translate-y-0.5 shadow-lg shrink-0">
                   <ArrowUpRight className="h-5 w-5" />
                 </div>
               </>

@@ -16,8 +16,8 @@ export default function CROXUltraSection() {
     >
       {/* Background Glows */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-7xl pointer-events-none">
-        <div className="absolute top-[20%] right-0 w-[500px] h-[500px] bg-cyan-500/10 blur-[80px] rounded-full" />
-        <div className="absolute bottom-[20%] left-0 w-[500px] h-[500px] bg-blue-600/5 blur-[80px] rounded-full" />
+        <div className="absolute top-[20%] right-0 w-[500px] h-[500px] bg-cyan-500/10 blur-[40px] md:blur-[80px] rounded-full transform-gpu" />
+        <div className="absolute bottom-[20%] left-0 w-[500px] h-[500px] bg-blue-600/5 blur-[40px] md:blur-[80px] rounded-full transform-gpu" />
       </div>
 
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -49,7 +49,7 @@ export default function CROXUltraSection() {
               transition={{ duration: 0.5 }}
               className="crox-ultra-items-grid lg:w-2/3"
             >
-              <div className="relative rounded-[32px] border border-white/10 bg-zinc-900/40 backdrop-blur-lg p-8 lg:p-10 shadow-2xl">
+              <div className="relative rounded-[32px] border border-white/10 bg-zinc-900/40 backdrop-blur-md lg:backdrop-blur-lg transform-gpu p-8 lg:p-10 shadow-2xl">
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-[4px]">
                   {(t.croxUltra.items ?? []).map((item, idx) => (
                     <motion.div
@@ -79,7 +79,7 @@ export default function CROXUltraSection() {
             transition={{ duration: 0.8 }}
             className="crox-ultra-stats-wrapper"
           >
-            <div className="relative rounded-[40px] border border-white/5 bg-white/[0.01] backdrop-blur-md overflow-hidden">
+            <div className="relative rounded-[40px] border border-white/5 bg-white/[0.01] backdrop-blur-sm md:backdrop-blur-md transform-gpu overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 via-transparent to-blue-500/5 pointer-events-none" />
               <RuixenStats />
             </div>

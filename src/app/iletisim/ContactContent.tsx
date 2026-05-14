@@ -66,9 +66,9 @@ export default function ContactContent() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: i * 0.1 }}
-                className="group rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface-card)] p-6 text-center transition-all hover:border-[var(--color-accent)]/30 hover:shadow-lg"
+                className="group rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-card)] p-6 text-center transition-all hover:border-[var(--color-accent)]/30 hover:shadow-lg"
               >
-                <div className={`mx-auto flex h-14 w-14 items-center justify-center rounded-2xl ${method.bgColor} ${method.color}`}>
+                <div className={`mx-auto flex h-14 w-14 items-center justify-center rounded-lg ${method.bgColor} ${method.color}`}>
                   {method.icon}
                 </div>
                 <h3 className="mt-4 font-[family-name:var(--font-clash-display)] text-lg font-semibold text-[var(--color-text)]">
@@ -85,7 +85,7 @@ export default function ContactContent() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.4 }}
-            className="mt-12 rounded-2xl border border-[var(--color-accent-secondary)]/20 bg-[var(--color-surface-card)] p-8 text-center"
+            className="mt-12 rounded-lg border border-[var(--color-accent-secondary)]/20 bg-[var(--color-surface-card)] p-8 text-center"
           >
             <MessageCircle className="mx-auto h-8 w-8 text-[var(--color-accent)]" />
             <h2 className="mt-4 font-[family-name:var(--font-clash-display)] text-2xl font-bold text-[var(--color-text)]">

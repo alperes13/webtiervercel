@@ -44,7 +44,7 @@ export default function AdminSidebar({ active, onChange, adminEmail, onLogout }:
             <button
               key={id}
               onClick={() => onChange(id)}
-              className={`w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm font-medium transition-all ${
+              className={`w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
                 isActive
                   ? 'bg-white/8 text-white'
                   : 'text-slate-400 hover:text-slate-200 hover:bg-white/4'
@@ -65,7 +65,7 @@ export default function AdminSidebar({ active, onChange, adminEmail, onLogout }:
         </div>
         <button
           onClick={onLogout}
-          className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm text-slate-400 hover:text-red-400 hover:bg-red-500/8 transition-all"
+          className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm text-slate-400 hover:text-red-400 hover:bg-red-500/8 transition-all"
         >
           <LogOut size={15} />
           Çıkış Yap

@@ -27,7 +27,7 @@ export default function Accordion({ items, className, variant = 'light' }: Accor
           <div
             key={index}
             className={cn(
-              'overflow-hidden rounded-xl border transition-all duration-300',
+              'overflow-hidden rounded-lg border transition-all duration-300',
               isOpen
                 ? dark
                   ? 'border-cyan-400/40 bg-white/5'

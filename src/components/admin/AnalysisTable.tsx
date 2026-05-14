@@ -79,13 +79,13 @@ export default function AnalysisTable() {
             value={search}
             onChange={e => { setSearch(e.target.value); setPage(1); }}
             placeholder="E-posta veya URL ara..."
-            className="w-full pl-8 pr-3 py-2 rounded-xl bg-slate-900 border border-slate-800 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-slate-600"
+            className="w-full pl-8 pr-3 py-2 rounded-lg bg-slate-900 border border-slate-800 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-slate-600"
           />
         </div>
         <select
           value={statusFilter}
           onChange={e => { setStatusFilter(e.target.value); setPage(1); }}
-          className="px-3 py-2 rounded-xl bg-slate-900 border border-slate-800 text-sm text-slate-300 focus:outline-none focus:border-slate-600"
+          className="px-3 py-2 rounded-lg bg-slate-900 border border-slate-800 text-sm text-slate-300 focus:outline-none focus:border-slate-600"
         >
           <option value="">Tüm Durumlar</option>
           {VALID_STATUSES.map(s => (
@@ -95,19 +95,19 @@ export default function AnalysisTable() {
         <select
           value={typeFilter}
           onChange={e => { setTypeFilter(e.target.value); setPage(1); }}
-          className="px-3 py-2 rounded-xl bg-slate-900 border border-slate-800 text-sm text-slate-300 focus:outline-none focus:border-slate-600"
+          className="px-3 py-2 rounded-lg bg-slate-900 border border-slate-800 text-sm text-slate-300 focus:outline-none focus:border-slate-600"
         >
           <option value="">Tüm Tipler</option>
           <option value="mini">Mini</option>
           <option value="ultra">Ultra</option>
         </select>
-        <button onClick={fetchAnalyses} className="p-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-400 hover:text-white transition-colors">
+        <button onClick={fetchAnalyses} className="p-2 rounded-lg bg-slate-900 border border-slate-800 text-slate-400 hover:text-white transition-colors">
           <RefreshCw size={14} className={loading ? 'animate-spin' : ''} />
         </button>
       </div>
 
       {/* Table */}
-      <div className="rounded-xl border border-slate-800 overflow-hidden">
+      <div className="rounded-lg border border-slate-800 overflow-hidden">
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-slate-800 bg-slate-900/50">

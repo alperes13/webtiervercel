@@ -2,7 +2,7 @@ import dynamic from 'next/dynamic';
 import HeroSection from '@/components/sections/HeroSection';
 import SharedBackgroundWrapper from '@/components/layout/SharedBackgroundWrapper';
 import Footer from '@/components/layout/Footer';
-import { queryOne } from '@/lib/db';
+import { pool, queryOne } from '@/lib/db';
 import { ensureMigrations } from '@/lib/migrate';
 
 const CROXUltraSection = dynamic(() => import('@/components/sections/CROXUltraSection'), {
@@ -23,10 +23,14 @@ export default async function Home() {
 
   try {
     await ensureMigrations();
-    const [mini, ultra] = await Promise.all([
-      queryOne<{ value: string }>('SELECT value FROM app_settings WHERE key = $1', ['cro_mini_enabled']),
-      queryOne<{ value: string }>('SELECT value FROM app_settings WHERE key = $1', ['cro_ultra_enabled']),
-    ]);
+    const settings = await pool.query<{ key: string; value: string }>(
+      'SELECT key, value FROM app_settings WHERE key IN ($1, $2)',
+      ['cro_mini_enabled', 'cro_ultra_enabled']
+    );
+    
+    const mini = settings.rows.find(r => r.key === 'cro_mini_enabled');
+    const ultra = settings.rows.find(r => r.key === 'cro_ultra_enabled');
+    
     isMiniEnabled = (mini?.value ?? 'true') === 'true';
     isUltraEnabled = (ultra?.value ?? 'true') === 'true';
   } catch {

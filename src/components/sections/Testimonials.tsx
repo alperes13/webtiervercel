@@ -50,7 +50,7 @@ export default function Testimonials() {
               variants={itemVariants}
               whileHover={{ y: -6, transition: { duration: 0.3 } }}
               layout={false}
-              className="gradient-border glass-card animate-shimmer flex flex-col rounded-2xl p-7"
+              className="gradient-border glass-card animate-shimmer flex flex-col rounded-lg p-7"
             >
               {/* Stars */}
               <div className="flex gap-1">

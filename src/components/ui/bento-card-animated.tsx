@@ -33,7 +33,7 @@ export default function AnimatedBentoCard({
             key={tab.id}
             onClick={() => setActiveTab(index)}
             className={cn(
-              'flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 border',
+              'flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-bold transition-all duration-300 border',
               activeTab === index
                 ? 'bg-white/[0.08] border-white/15 text-white'
                 : 'bg-white/[0.02] border-white/5 text-zinc-500 hover:text-zinc-300 hover:bg-white/[0.04]'
@@ -51,7 +51,7 @@ export default function AnimatedBentoCard({
       </div>
 
       {/* Card Content */}
-      <div className="relative rounded-3xl border border-white/10 bg-white/[0.02] backdrop-blur-sm overflow-hidden min-h-[340px]">
+      <div className="relative rounded-lg border border-white/10 bg-white/[0.02] backdrop-blur-sm overflow-hidden min-h-[340px]">
         {/* Background glow */}
         <div
           className="absolute -top-20 -right-20 w-64 h-64 rounded-full blur-[80px] opacity-15 transition-all duration-700 pointer-events-none"
@@ -72,7 +72,7 @@ export default function AnimatedBentoCard({
               <div className="space-y-4">
                 <div className="flex items-center gap-3">
                   <div
-                    className="w-10 h-10 rounded-xl flex items-center justify-center"
+                    className="w-10 h-10 rounded-lg flex items-center justify-center"
                     style={{ backgroundColor: `${accentColor}15`, color: accentColor }}
                   >
                     {tabs[activeTab].icon}
@@ -92,7 +92,7 @@ export default function AnimatedBentoCard({
                     initial={{ opacity: 0, x: 15 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: i * 0.06, duration: 0.3 }}
-                    className="flex items-center gap-3 p-3 rounded-xl bg-white/[0.03] border border-white/5"
+                    className="flex items-center gap-3 p-3 rounded-lg bg-white/[0.03] border border-white/5"
                   >
                     <div
                       className="w-1.5 h-1.5 rounded-full shrink-0"

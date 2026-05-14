@@ -30,7 +30,7 @@ export default function CorporatePreview() {
             transition={{ duration: 0.5 }}
             className="relative order-2 lg:order-1"
           >
-            <div className="aspect-[4/3] rounded-2xl border border-[var(--color-border)] bg-gradient-to-br from-[var(--color-surface-card)] to-[var(--color-surface-light)] p-8 flex items-center justify-center">
+            <div className="aspect-[4/3] rounded-lg border border-[var(--color-border)] bg-gradient-to-br from-[var(--color-surface-card)] to-[var(--color-surface-light)] p-8 flex items-center justify-center">
               <div className="text-center">
                 <Shield className="mx-auto h-16 w-16 text-[var(--color-accent-secondary)]/30" />
                 <p className="mt-4 text-sm text-[var(--color-text-muted)]">{t.corporatePreview.mockupLabel}</p>

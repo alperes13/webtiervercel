@@ -63,7 +63,7 @@
   --chart-3: oklch(0.35 0.14 15);
   --chart-4: oklch(0.25 0.10 15);
   --chart-5: oklch(0.20 0.06 15);
-  --radius: 0.625rem;
+  --radius: 0.4rem;
 
   /* Aurora background CSS variables (21st.dev) */
   --white: #ffffff;
@@ -118,13 +118,14 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
-  --radius-sm: calc(var(--radius) * 0.6);
-  --radius-md: calc(var(--radius) * 0.8);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) * 1.4);
-  --radius-2xl: calc(var(--radius) * 1.8);
-  --radius-3xl: calc(var(--radius) * 2.2);
-  --radius-4xl: calc(var(--radius) * 2.6);
+  --radius: 0.4rem;
+  --radius-sm: calc(var(--radius) * 0.75);
+  --radius-md: calc(var(--radius) * 1);
+  --radius-lg: calc(var(--radius) * 1.25);
+  --radius-xl: calc(var(--radius) * 1.75);
+  --radius-2xl: calc(var(--radius) * 2.25);
+  --radius-3xl: calc(var(--radius) * 3);
+  --radius-4xl: calc(var(--radius) * 4);
   @keyframes float {
   0%, 100% {
     transform: translateY(0px);

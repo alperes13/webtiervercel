@@ -48,7 +48,7 @@ export default function ProfilePopup({ open, onClose }: ProfilePopupProps) {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 10 }}
               transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-              className="relative w-full max-w-sm rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6 shadow-2xl"
+              className="relative w-full max-w-sm rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] p-6 shadow-2xl"
             >
               {/* Header */}
               <div className="flex items-center justify-between mb-6">
@@ -65,11 +65,11 @@ export default function ProfilePopup({ open, onClose }: ProfilePopupProps) {
               </div>
 
               {/* Email */}
-              <div className="mb-4 rounded-xl bg-[var(--color-surface-card)] p-4">
+              <div className="mb-4 rounded-lg bg-[var(--color-surface-card)] p-4">
                 <div className="flex items-center gap-3">
                   <Mail className="h-4 w-4 text-[var(--color-text-muted)]" />
                   <div className="flex-1">
-                    <p className="text-xs text-[var(--color-text-muted)]">E-posta</p>
+                    <p className="text-xs text-[var(--color-text-muted)]">{t.profile.email}</p>
                     <p className="text-sm font-medium text-[var(--color-text)]">
                       {showEmail ? session.email : maskEmail(session.email)}
                     </p>
@@ -85,7 +85,7 @@ export default function ProfilePopup({ open, onClose }: ProfilePopupProps) {
               </div>
 
               {/* Analysis Status */}
-              <div className="mb-4 rounded-xl bg-[var(--color-surface-card)] p-4">
+              <div className="mb-4 rounded-lg bg-[var(--color-surface-card)] p-4">
                 <div className="flex items-center gap-3">
                   <BarChart3 className="h-4 w-4 text-[var(--color-text-muted)]" />
                   <div className="flex-1">
@@ -112,7 +112,7 @@ export default function ProfilePopup({ open, onClose }: ProfilePopupProps) {
               {/* Credits */}
               <div className="mb-6 space-y-3">
                 {/* Mini Credits */}
-                <div className="rounded-xl bg-[var(--color-surface-card)] p-4">
+                <div className="rounded-lg bg-[var(--color-surface-card)] p-4">
                   <div className="flex items-center gap-3">
                     <CreditCard className="h-4 w-4 text-emerald-500/70" />
                     <div className="flex-1">
@@ -125,7 +125,7 @@ export default function ProfilePopup({ open, onClose }: ProfilePopupProps) {
                 </div>
 
                 {/* Ultra Credits */}
-                <div className="rounded-xl bg-[var(--color-surface-card)] p-4">
+                <div className="rounded-lg bg-[var(--color-surface-card)] p-4">
                   <div className="flex items-center gap-3">
                     <CreditCard className="h-4 w-4 text-cyan-500/70" />
                     <div className="flex-1">

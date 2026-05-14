@@ -40,12 +40,10 @@ export default function SharedBackgroundWrapper({ children }: SharedBackgroundWr
           <MeshGradient
             className="w-full h-full scale-[2]"
             colors={[
-              "#000000", "#020617", "#06b6d4", "#22d3ee", "#67e8f9", "#0891b2",
-              "#0ea5e9", "#1e1b4b", "#312e81", "#0f172a", "#111827", "#f97316",
-              "#fb923c", "#164e63", "#0891b2", "#0369a1", "#075985", "#1e1b4b",
-              "#2e1065", "#4c1d95", "#312e81", "#1e3a8a", "#172554", "#042f2e"
+              "#020617", "#06b6d4", "#22d3ee", "#0891b2",
+              "#0ea5e9", "#1e1b4b", "#0f172a", "#164e63"
             ]}
-            speed={0.15}
+            speed={0.1}
           />
         </div>
       )}

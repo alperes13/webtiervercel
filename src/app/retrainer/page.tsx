@@ -113,7 +113,7 @@ export default function RetrainerPage() {
             {processItems.map((item, i) => (
               <div
                 key={i}
-                className="flex items-center gap-3 p-4 rounded-xl bg-white/[0.03] border border-white/8 hover:border-[#a78bfa]/30 transition-all"
+                className="flex items-center gap-3 p-4 rounded-lg bg-white/[0.03] border border-white/8 hover:border-[#a78bfa]/30 transition-all"
               >
                 <div className="w-5 h-5 rounded-full bg-[#a78bfa]/20 flex items-center justify-center shrink-0">
                   <CheckCircle className="w-3 h-3 text-[#a78bfa]" />

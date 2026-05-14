@@ -82,7 +82,7 @@ export default function EcommerceContent() {
               {t.ecommerce.problems.map((problem, i) => (
                 <div
                   key={i}
-                  className="group flex items-start gap-4 p-5 rounded-2xl bg-white/[0.03] border border-white/8 hover:border-blue-500/25 transition-all duration-300"
+                  className="group flex items-start gap-4 p-5 rounded-lg bg-white/[0.03] border border-white/8 hover:border-blue-500/25 transition-all duration-300"
                 >
                   <div className="w-8 h-8 rounded-lg bg-red-500/10 flex items-center justify-center shrink-0 mt-0.5">
                     <TrendingUp className="w-4 h-4 text-red-400" />

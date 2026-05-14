@@ -51,10 +51,10 @@ export default function UserSearch() {
             value={query}
             onChange={e => { setQuery(e.target.value); setPage(1); }}
             placeholder="E-posta veya isim ara..."
-            className="w-full pl-8 pr-3 py-2 rounded-xl bg-slate-900 border border-slate-800 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-slate-600"
+            className="w-full pl-8 pr-3 py-2 rounded-lg bg-slate-900 border border-slate-800 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-slate-600"
           />
         </div>
-        <button onClick={fetchUsers} className="p-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-400 hover:text-white transition-colors">
+        <button onClick={fetchUsers} className="p-2 rounded-lg bg-slate-900 border border-slate-800 text-slate-400 hover:text-white transition-colors">
           <RefreshCw size={14} className={loading ? 'animate-spin' : ''} />
         </button>
       </div>
@@ -70,10 +70,10 @@ export default function UserSearch() {
           return (
             <div
               key={user.id}
-              className="flex items-center gap-3 p-4 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 cursor-pointer transition-colors"
+              className="flex items-center gap-3 p-4 rounded-lg bg-slate-900 border border-slate-800 hover:border-slate-700 cursor-pointer transition-colors"
               onClick={() => setSelectedUser(user)}
             >
-              <div className="w-9 h-9 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center flex-shrink-0">
+              <div className="w-9 h-9 rounded-lg bg-slate-800 border border-slate-700 flex items-center justify-center flex-shrink-0">
                 <UserCircle size={18} className="text-slate-400" />
               </div>
               <div className="flex-1 min-w-0">

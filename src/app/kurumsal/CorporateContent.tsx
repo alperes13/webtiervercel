@@ -191,7 +191,7 @@ export default function CorporateContent() {
               {t.corporate.problems.map((problem, i) => (
                 <div
                   key={i}
-                  className="group flex items-start gap-4 p-5 rounded-2xl bg-white/[0.02] border border-white/5 hover:border-red-500/20 transition-all duration-300"
+                  className="group flex items-start gap-4 p-5 rounded-lg bg-white/[0.02] border border-white/5 hover:border-red-500/20 transition-all duration-300"
                 >
                   <div className="w-8 h-8 rounded-lg bg-red-500/10 flex items-center justify-center shrink-0 mt-0.5">
                     <TrendingUp className="w-4 h-4 text-red-400" />
@@ -219,7 +219,7 @@ export default function CorporateContent() {
             {t.corporate.features.map((feature, i) => (
               <div
                 key={feature}
-                className="flex items-center gap-3 p-4 rounded-xl bg-white/[0.02] border border-white/5 hover:border-cyan-500/20 transition-all"
+                className="flex items-center gap-3 p-4 rounded-lg bg-white/[0.02] border border-white/5 hover:border-cyan-500/20 transition-all"
               >
                 <CheckCircle2 className="h-4 w-4 shrink-0 text-cyan-400" />
                 <span className="text-sm text-zinc-300 font-medium">{feature}</span>

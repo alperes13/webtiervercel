@@ -7,7 +7,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { Button } from './Button';
 
 const bannerVariants = cva(
-	'relative overflow-hidden rounded-xl border shadow-lg text-sm transition-all duration-300',
+	'relative overflow-hidden rounded-lg border shadow-lg text-sm transition-all duration-300',
 	{
 		variants: {
 			variant: {

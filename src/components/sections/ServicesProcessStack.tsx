@@ -44,7 +44,7 @@ function StickyCard({
           scale: isTop ? 1 : 1 - (total - index) * 0.015,
           opacity: isTop ? 1 : 0.65 + (index / total) * 0.35,
         }}
-        className={`rounded-3xl border border-white/10 ${isTop ? 'bg-black/95' : 'bg-black/80'} p-6 md:p-10 shadow-2xl backdrop-blur-xl min-h-[460px] md:min-h-[480px] flex flex-col justify-start relative overflow-hidden group hover:border-cyan-500/40 transition-all duration-300`}
+        className={`rounded-lg border border-white/10 ${isTop ? 'bg-black/95' : 'bg-black/90 md:bg-black/80'} p-6 md:p-10 shadow-2xl backdrop-blur-md md:backdrop-blur-xl transform-gpu min-h-[460px] md:min-h-[480px] flex flex-col justify-start relative overflow-hidden group hover:border-cyan-500/40 transition-all duration-300`}
       >
         <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-500/10 blur-[40px] rounded-full group-hover:bg-cyan-500/20 transition-colors duration-500 pointer-events-none" />
 

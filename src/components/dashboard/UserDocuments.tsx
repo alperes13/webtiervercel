@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 import { FileText, ExternalLink } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 
@@ -58,14 +59,15 @@ export default function UserDocuments({ token }: Props) {
             href={doc.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="group flex flex-col rounded-2xl border border-black/8 overflow-hidden hover:border-black/16 hover:shadow-sm transition-all bg-white"
+            className="group flex flex-col rounded-lg border border-black/8 overflow-hidden hover:border-black/16 hover:shadow-sm transition-all bg-white"
           >
             {/* Thumbnail */}
-            <div className="aspect-video bg-slate-50 overflow-hidden">
-              <img
+            <div className="aspect-video bg-slate-50 overflow-hidden relative">
+              <Image
                 src={doc.type === 'link' ? DRIVE_ICON : STOCK_ANALYSIS_IMAGE}
                 alt={doc.name}
-                className="w-full h-full object-cover"
+                fill
+                className="object-cover"
               />
             </div>
 

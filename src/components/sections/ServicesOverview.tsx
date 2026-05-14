@@ -63,9 +63,9 @@ export default function ServicesOverview() {
               key={index}
               variants={itemVariants}
               whileHover={{ y: -6, transition: { duration: 0.3, ease: 'easeOut' } }}
-              className="group gradient-border glass-card flex flex-col rounded-2xl p-7 transition-shadow hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)]"
+              className="group gradient-border glass-card flex flex-col rounded-lg p-7 transition-shadow hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)]"
             >
-              <div className={`mb-5 flex h-13 w-13 items-center justify-center rounded-xl ${
+              <div className={`mb-5 flex h-13 w-13 items-center justify-center rounded-lg ${
                 index === 0
                   ? 'bg-[var(--color-accent)]/10 text-[var(--color-accent)]'
                   : index === 1

@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 import { Calendar, Tag, ChevronDown, ChevronUp } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 
@@ -46,7 +47,7 @@ function TaskCard({ task }: TaskCardProps) {
   const statusLabel = (t.dashboard.backlog.statuses as any)[task.status === 'in_progress' ? 'inProgress' : task.status] || t.dashboard.backlog.statuses.todo;
 
   return (
-    <div className="border border-black/8 rounded-2xl bg-white overflow-hidden hover:border-black/12 transition-colors">
+    <div className="border border-black/8 rounded-lg bg-white overflow-hidden hover:border-black/12 transition-colors">
       <button
         className="w-full text-left p-4 flex items-start gap-3"
         onClick={() => (task.description || task.image_url) && setExpanded(e => !e)}
@@ -92,11 +93,13 @@ function TaskCard({ task }: TaskCardProps) {
       {expanded && (
         <div className="px-4 pb-4 border-t border-black/4 pt-3">
           {task.image_url && (
-            <img
+            <Image
               src={task.image_url}
               alt={task.title}
-              className="w-full rounded-xl object-cover max-h-48 mb-3"
-              onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }}
+              width={400}
+              height={200}
+              className="w-full rounded-lg object-cover max-h-48 mb-3"
+              unoptimized
             />
           )}
           {task.description && (

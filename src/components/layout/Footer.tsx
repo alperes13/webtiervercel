@@ -31,8 +31,8 @@ export default function Footer() {
               <Image
                 src={isHome ? "/images/logo-white.png" : "/images/logo-black.png"}
                 alt="Webtier"
-                width={140}
-                height={40}
+                width={112}
+                height={32}
                 className="h-8 sm:h-9 w-auto object-contain"
               />
             </Link>

@@ -47,7 +47,7 @@ export default function CTA() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <Button variant="secondary" size="lg" className="rounded-2xl px-8 text-base border-[var(--color-border-light)]">
+              <Button variant="secondary" size="lg" className="rounded-lg px-8 text-base border-[var(--color-border-light)]">
                 <MessageCircle className="h-5 w-5 text-[#25D366]" />
                 {t.cta.secondaryCta}
               </Button>

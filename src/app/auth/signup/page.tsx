@@ -80,7 +80,7 @@ export default function SignupPage() {
       trustedByLabel={t.auth.trustedBy}
     >
       {error && (
-        <div className="animate-element mt-1 bg-red-50 border border-red-100 text-red-600 p-3 rounded-xl text-xs font-medium text-center">
+        <div className="animate-element mt-1 bg-red-50 border border-red-100 text-red-600 p-3 rounded-lg text-xs font-medium text-center">
           {error}
         </div>
       )}

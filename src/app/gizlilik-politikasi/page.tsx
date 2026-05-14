@@ -36,7 +36,7 @@ export default function PrivacyPage() {
             </ul>
             <h3 className="mt-3 font-medium text-[var(--color-text)]">Sizin Sağladığınız Bilgiler:</h3>
             <ul className="mt-2 list-disc pl-6 space-y-1">
-              <li>Telefon numarası (OTP doğrulama)</li>
+              <li>E-posta adresi (OTP doğrulama)</li>
               <li>Web sitesi URL&apos;si (CRO analizi)</li>
             </ul>
           </section>
@@ -73,7 +73,7 @@ export default function PrivacyPage() {
             <h2 className="text-lg font-semibold text-[var(--color-text)]">5. Üçüncü Taraf Hizmetler</h2>
             <ul className="mt-2 list-disc pl-6 space-y-1">
               <li>Google Fonts (tipografi)</li>
-              <li>SMS Servis Sağlayıcısı (OTP doğrulama)</li>
+              <li>E-posta Servis Sağlayıcısı (OTP doğrulama)</li>
             </ul>
           </section>
 

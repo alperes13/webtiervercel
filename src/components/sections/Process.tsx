@@ -82,7 +82,7 @@ export default function Process() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.15 }}
               transition={{ duration: 0.55, delay: index * 0.1, ease: 'easeOut' }}
-              className={`relative flex flex-col rounded-2xl border bg-gradient-to-b ${stepColors[index]} p-6 lg:p-7`}
+              className={`relative flex flex-col rounded-lg border bg-gradient-to-b ${stepColors[index]} p-6 lg:p-7`}
             >
               {/* Big step number (background) */}
               <span className={`absolute top-4 right-5 font-[family-name:var(--font-heading)] text-6xl font-black opacity-10 select-none ${numberColors[index]}`}>
@@ -90,7 +90,7 @@ export default function Process() {
               </span>
 
               {/* Icon */}
-              <div className={`mb-5 flex h-14 w-14 items-center justify-center rounded-2xl ring-1 ${iconColors[index]}`}>
+              <div className={`mb-5 flex h-14 w-14 items-center justify-center rounded-lg ring-1 ${iconColors[index]}`}>
                 {step.icon}
               </div>
 
@@ -117,7 +117,7 @@ export default function Process() {
           className="mt-14 flex flex-col items-center gap-4 text-center"
         >
           <Link href="/#hero">
-            <Button size="lg" className="animate-pulse-glow rounded-2xl px-10 text-base font-semibold">
+            <Button size="lg" className="animate-pulse-glow rounded-lg px-10 text-base font-semibold">
               {t.process.steps[0].title} {t.process.titleHighlight}
               <ArrowUpRight className="h-4 w-4" />
             </Button>

@@ -24,9 +24,8 @@ export const AuroraBackground = ({
       )}
       {...props}
     >
-      <div className="absolute inset-0 overflow-hidden" style={{ contain: 'strict' }}>
+      <div className="absolute inset-0 overflow-hidden pointer-events-none" style={{ contain: 'strict' }}>
         <div
-          //   I'm sorry but this is what peak developer performance looks like // trigger warning
           className={cn(
             `
             [--white-gradient:repeating-linear-gradient(100deg,var(--white)_0%,var(--white)_7%,var(--transparent)_10%,var(--transparent)_12%,var(--white)_16%)]
@@ -36,13 +35,14 @@ export const AuroraBackground = ({
             dark:[background-image:var(--dark-gradient),var(--aurora)]
             [background-size:300%,_200%]
             [background-position:50%_50%,50%_50%]
-            filter blur-[10px] invert dark:invert-0
+            filter blur-[8px] invert dark:invert-0
             after:content-[''] after:absolute after:inset-0 after:[background-image:var(--white-gradient),var(--aurora)] 
             after:dark:[background-image:var(--dark-gradient),var(--aurora)]
             after:[background-size:200%,_100%] 
             after:animate-aurora after:mix-blend-difference
-            pointer-events-none
-            absolute -inset-[10px] opacity-50`,
+            absolute -inset-[10px] opacity-40
+            transform-gpu [will-change:transform]
+            [transform:translateZ(0)]`,
 
             showRadialGradient &&
               `[mask-image:radial-gradient(ellipse_at_100%_0%,black_10%,var(--transparent)_70%)]`

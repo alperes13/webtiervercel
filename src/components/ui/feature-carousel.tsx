@@ -80,7 +80,7 @@ export default function FeatureCarousel({
       </div>
 
       {/* Main card */}
-      <div className="relative rounded-3xl border border-white/10 bg-white/[0.02] backdrop-blur-sm overflow-hidden min-h-[400px]">
+      <div className="relative rounded-lg border border-white/10 bg-white/[0.02] backdrop-blur-sm overflow-hidden min-h-[400px]">
         {/* Background glow */}
         <div
           className="absolute top-0 right-0 w-56 h-56 blur-[80px] opacity-10 pointer-events-none transition-all duration-700"
@@ -126,7 +126,7 @@ export default function FeatureCarousel({
               <div className="space-y-4">
                 {/* Icon card */}
                 <div
-                  className="relative w-full rounded-2xl p-6 flex items-center justify-center mb-2 overflow-hidden border border-white/8"
+                  className="relative w-full rounded-lg p-6 flex items-center justify-center mb-2 overflow-hidden border border-white/8"
                   style={{
                     background: `linear-gradient(135deg, ${accentColor}12 0%, ${accentColor}04 100%)`,
                   }}
@@ -138,7 +138,7 @@ export default function FeatureCarousel({
                     }}
                   />
                   <div
-                    className="relative z-10 w-16 h-16 rounded-2xl flex items-center justify-center shadow-xl"
+                    className="relative z-10 w-16 h-16 rounded-lg flex items-center justify-center shadow-xl"
                     style={{
                       backgroundColor: `${accentColor}20`,
                       color: accentColor,
@@ -156,7 +156,7 @@ export default function FeatureCarousel({
                     initial={{ opacity: 0, x: 16 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: i * 0.06, duration: 0.3 }}
-                    className="flex items-center gap-3 p-3 rounded-xl bg-white/[0.03] border border-white/5"
+                    className="flex items-center gap-3 p-3 rounded-lg bg-white/[0.03] border border-white/5"
                   >
                     <div
                       className="w-2 h-2 rounded-full shrink-0"
@@ -193,14 +193,14 @@ export default function FeatureCarousel({
         <div className="flex items-center gap-2">
           <button
             onClick={goPrev}
-            className="w-10 h-10 rounded-xl border border-white/10 flex items-center justify-center text-zinc-400 hover:text-white hover:border-white/20 transition-all"
+            className="w-10 h-10 rounded-lg border border-white/10 flex items-center justify-center text-zinc-400 hover:text-white hover:border-white/20 transition-all"
             aria-label="Önceki"
           >
             <ChevronLeft className="w-4 h-4" />
           </button>
           <button
             onClick={goNext}
-            className="w-10 h-10 rounded-xl border border-white/10 flex items-center justify-center text-zinc-400 hover:text-white hover:border-white/20 transition-all"
+            className="w-10 h-10 rounded-lg border border-white/10 flex items-center justify-center text-zinc-400 hover:text-white hover:border-white/20 transition-all"
             aria-label="Sonraki"
           >
             <ChevronRight className="w-4 h-4" />

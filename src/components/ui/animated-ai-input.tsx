@@ -176,16 +176,13 @@ export function HeroInput({
         )}
       </motion.div>
 
-      {/* Glow wrapper — replicates GlowingShadow border effect around input */}
-      <div className="hero-ai-input-glow-wrapper relative rounded-2xl">
-        {/* Animated glow border */}
-        <div className="hero-ai-input-glow-border absolute inset-0 rounded-2xl" aria-hidden="true" />
-
+      {/* Inner card wrapper */}
+      <div className="relative rounded-lg">
         {/* Inner card */}
         <div
           className={cn(
-            "relative z-[1] flex flex-col w-full rounded-2xl overflow-hidden",
-            "bg-white/80 backdrop-blur-2xl",
+            "relative z-[1] flex flex-col w-full rounded-lg overflow-hidden transform-gpu",
+            "bg-white/80 backdrop-blur-lg md:backdrop-blur-2xl",
             "border transition-colors duration-200",
             isFocused || value ? "border-black/12" : "border-black/8"
           )}

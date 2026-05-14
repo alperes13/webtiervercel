@@ -183,7 +183,7 @@ export default function PricingSection() {
                 <Button
                   variant={plan.buttonVariant === "default" ? "default" : "outline"}
                   className={cn(
-                    "w-full h-12 text-lg font-semibold rounded-xl transition-all duration-300",
+                    "w-full h-12 text-lg font-semibold rounded-lg transition-all duration-300",
                     plan.popular
                       ? "bg-[var(--color-accent)] hover:bg-[var(--color-accent-secondary)] text-white shadow-lg shadow-[var(--color-accent)]/20"
                       : "border-[var(--color-border)] hover:bg-[var(--color-surface-card-hover)] text-[var(--color-text)]"

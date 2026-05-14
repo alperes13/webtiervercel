@@ -28,7 +28,7 @@ export default function KVKKPage() {
             <h2 className="text-lg font-semibold text-[var(--color-text)]">2. İşlenen Kişisel Veriler</h2>
             <p className="mt-2">Web sitemiz üzerinden aşağıdaki kişisel verileriniz işlenmektedir:</p>
             <ul className="mt-2 list-disc pl-6 space-y-1">
-              <li>Telefon numarası (OTP doğrulama için)</li>
+              <li>E-posta adresi (OTP doğrulama için)</li>
               <li>Web sitesi URL bilgisi (CRO analizi için)</li>
               <li>IP adresi ve tarayıcı bilgileri (güvenlik amacıyla)</li>
               <li>Çerez verileri (site performansı için)</li>
@@ -50,7 +50,7 @@ export default function KVKKPage() {
             <h2 className="text-lg font-semibold text-[var(--color-text)]">4. Verilerin Aktarılması</h2>
             <p className="mt-2">
               Kişisel verileriniz, yasal zorunluluklar ve hizmet gereksinimleri dışında üçüncü taraflarla
-              paylaşılmamaktadır. OTP doğrulama için SMS servis sağlayıcısı ile telefon numaranız paylaşılır.
+              paylaşılmamaktadır. OTP doğrulama için e-posta servis sağlayıcısı ile e-posta adresiniz paylaşılır.
             </p>
           </section>
 

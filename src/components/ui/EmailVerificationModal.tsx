@@ -166,7 +166,7 @@ export default function EmailVerificationModal({
               onClick={(e) => e.stopPropagation()}
             >
               {/* Card */}
-              <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-white/10"
+              <div className="relative rounded-lg overflow-hidden shadow-2xl border border-white/10"
                 style={{
                   background: 'linear-gradient(145deg, #0f172a 0%, #1a0a1e 50%, #0f172a 100%)',
                 }}
@@ -194,14 +194,14 @@ export default function EmailVerificationModal({
                         initial={{ scale: 0 }}
                         animate={{ scale: 1 }}
                         transition={{ type: 'spring', stiffness: 400, damping: 20 }}
-                        className="mb-5 flex items-center justify-center w-14 h-14 rounded-2xl bg-green-500/20 border border-green-500/30"
+                        className="mb-5 flex items-center justify-center w-14 h-14 rounded-lg bg-green-500/20 border border-green-500/30"
                       >
                         <CheckCircle className="w-7 h-7 text-green-400" />
                       </motion.div>
                     ) : (
                       <motion.div
                         key="default-icon"
-                        className="mb-5 flex items-center justify-center w-14 h-14 rounded-2xl bg-red-600/20 border border-red-500/30"
+                        className="mb-5 flex items-center justify-center w-14 h-14 rounded-lg bg-red-600/20 border border-red-500/30"
                       >
                         <Zap className="w-7 h-7 text-red-400" fill="currentColor" />
                       </motion.div>
@@ -246,7 +246,7 @@ export default function EmailVerificationModal({
                             onKeyDown={(e) => handleKeyDown(i, e)}
                             disabled={verifying}
                             className={[
-                              'w-11 h-13 text-center text-xl font-bold rounded-xl outline-none transition-all duration-150',
+                              'w-11 h-13 text-center text-xl font-bold rounded-lg outline-none transition-all duration-150',
                               'bg-white/5 border text-white caret-red-400',
                               error
                                 ? 'border-red-500/70 bg-red-500/10'
@@ -278,7 +278,7 @@ export default function EmailVerificationModal({
                         onClick={() => handleVerify(code)}
                         disabled={!isFilled || verifying}
                         className={[
-                          'w-full py-3 rounded-xl font-bold text-sm transition-all duration-200',
+                          'w-full py-3 rounded-lg font-bold text-sm transition-all duration-200',
                           isFilled && !verifying
                             ? 'bg-red-600 hover:bg-red-500 text-white shadow-lg shadow-red-600/25 hover:shadow-red-500/40 hover:-translate-y-0.5'
                             : 'bg-white/5 text-white/30 cursor-not-allowed',

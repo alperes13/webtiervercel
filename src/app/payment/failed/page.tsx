@@ -44,9 +44,9 @@ export default function PaymentFailedPage() {
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.4 }}
-          className="rounded-2xl border border-white/5 bg-white/5 p-6 backdrop-blur-xl space-y-4"
+          className="rounded-lg border border-white/5 bg-white/5 p-6 backdrop-blur-xl space-y-4"
         >
-          <div className="flex items-center gap-3 p-4 rounded-xl bg-red-500/5 border border-red-500/10 text-left">
+          <div className="flex items-center gap-3 p-4 rounded-lg bg-red-500/5 border border-red-500/10 text-left">
             <AlertCircle className="h-5 w-5 text-red-400 shrink-0" />
             <p className="text-xs text-red-200/70">
               Sorun devam ederse bankanızla iletişime geçebilir veya farklı bir ödeme yöntemi deneyebilirsiniz.

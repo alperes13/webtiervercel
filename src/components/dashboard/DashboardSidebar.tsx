@@ -153,7 +153,7 @@ export default function DashboardSidebar({ activeSection, onSectionChange }: Sid
                 key={item.id}
                 onClick={() => handleSectionChange(item.id)}
                 className={cn(
-                  "w-full flex items-center gap-3 rounded-xl transition-all duration-200 group relative",
+                  "w-full flex items-center gap-3 rounded-lg transition-all duration-200 group relative",
                   isCollapsed ? "justify-center px-2 py-3" : "px-3 py-2.5",
                   isActive 
                     ? "bg-slate-900 text-white shadow-lg shadow-slate-200" 
@@ -190,7 +190,7 @@ export default function DashboardSidebar({ activeSection, onSectionChange }: Sid
             <button
               onClick={() => handleSectionChange('home')}
               className={cn(
-                "w-full flex items-center gap-3 rounded-xl transition-all duration-200 group relative",
+                "w-full flex items-center gap-3 rounded-lg transition-all duration-200 group relative",
                 isCollapsed ? "justify-center px-2 py-3" : "px-3 py-2.5",
                 "text-slate-500 hover:bg-slate-50 hover:text-slate-900"
               )}
@@ -224,7 +224,7 @@ export default function DashboardSidebar({ activeSection, onSectionChange }: Sid
             "flex items-center gap-3 transition-all duration-300 overflow-hidden",
             isCollapsed ? "justify-center" : "px-2"
           )}>
-            <div className="h-10 w-10 shrink-0 rounded-xl bg-gradient-to-tr from-slate-100 to-slate-50 border border-slate-200 flex items-center justify-center text-xs font-black text-slate-400 shadow-sm">
+            <div className="h-10 w-10 shrink-0 rounded-lg bg-gradient-to-tr from-slate-100 to-slate-50 border border-slate-200 flex items-center justify-center text-xs font-black text-slate-400 shadow-sm">
               {initials}
             </div>
             {!isCollapsed && (
@@ -241,7 +241,7 @@ export default function DashboardSidebar({ activeSection, onSectionChange }: Sid
             <button
                onClick={() => {}} // Placeholder for support
                className={cn(
-                "w-full flex items-center gap-3 rounded-xl transition-all duration-200 group relative px-3 py-2.5 text-slate-500 hover:text-slate-900 hover:bg-slate-50",
+                "w-full flex items-center gap-3 rounded-lg transition-all duration-200 group relative px-3 py-2.5 text-slate-500 hover:text-slate-900 hover:bg-slate-50",
                 isCollapsed && "justify-center px-2"
                )}
             >
@@ -252,7 +252,7 @@ export default function DashboardSidebar({ activeSection, onSectionChange }: Sid
             <button
               onClick={logout}
               className={cn(
-                "w-full flex items-center gap-3 rounded-xl transition-all duration-200 group relative px-3 py-2.5 text-slate-500 hover:text-red-600 hover:bg-red-50",
+                "w-full flex items-center gap-3 rounded-lg transition-all duration-200 group relative px-3 py-2.5 text-slate-500 hover:text-red-600 hover:bg-red-50",
                 isCollapsed && "justify-center px-2"
               )}
             >

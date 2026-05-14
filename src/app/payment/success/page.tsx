@@ -51,13 +51,13 @@ function SuccessContent() {
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.4 }}
-        className="rounded-2xl border border-white/5 bg-white/5 p-6 backdrop-blur-xl space-y-4"
+        className="rounded-lg border border-white/5 bg-white/5 p-6 backdrop-blur-xl space-y-4"
       >
         <div className="flex items-center justify-between text-xs font-bold tracking-widest text-zinc-500 uppercase">
           <span>Sipariş Özeti</span>
           <span className="text-emerald-400">Tamamlandı</span>
         </div>
-        <div className="flex items-center justify-between p-4 rounded-xl bg-black/20 border border-white/5">
+        <div className="flex items-center justify-between p-4 rounded-lg bg-black/20 border border-white/5">
           <div className="flex items-center gap-3">
             <div className="p-2 rounded-lg bg-emerald-500/10 text-emerald-400">
               <Zap className="h-4 w-4" />

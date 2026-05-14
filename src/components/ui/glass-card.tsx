@@ -22,7 +22,7 @@ export default function GlassCard({
     <motion.div
       whileHover={{ y: -5, transition: { duration: 0.25 } }}
       className={cn(
-        'group relative rounded-2xl overflow-hidden cursor-pointer transition-all duration-300',
+        'group relative rounded-lg overflow-hidden cursor-pointer transition-all duration-300',
         'bg-white/[0.04] backdrop-blur-xl border border-white/[0.10]',
         'hover:border-white/20 hover:bg-white/[0.07]',
         'hover:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.6)]',
@@ -46,7 +46,7 @@ export default function GlassCard({
         />
         {/* Icon */}
         <div
-          className="relative z-10 w-14 h-14 rounded-2xl flex items-center justify-center transition-transform duration-300 group-hover:scale-110 shadow-lg"
+          className="relative z-10 w-14 h-14 rounded-lg flex items-center justify-center transition-transform duration-300 group-hover:scale-110 shadow-lg"
           style={{
             backgroundColor: `${accentColor}20`,
             color: accentColor,

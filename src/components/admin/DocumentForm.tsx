@@ -50,7 +50,7 @@ export default function DocumentForm({ userId, onSuccess, onCancel }: DocumentFo
           <button
             type="button"
             onClick={() => setType('file')}
-            className={`flex items-center gap-2 px-3 py-2.5 rounded-xl border text-sm transition-all ${
+            className={`flex items-center gap-2 px-3 py-2.5 rounded-lg border text-sm transition-all ${
               type === 'file'
                 ? 'bg-blue-500/10 border-blue-500/30 text-blue-400'
                 : 'bg-slate-900 border-slate-700 text-slate-400 hover:text-white'
@@ -62,7 +62,7 @@ export default function DocumentForm({ userId, onSuccess, onCancel }: DocumentFo
           <button
             type="button"
             onClick={() => setType('link')}
-            className={`flex items-center gap-2 px-3 py-2.5 rounded-xl border text-sm transition-all ${
+            className={`flex items-center gap-2 px-3 py-2.5 rounded-lg border text-sm transition-all ${
               type === 'link'
                 ? 'bg-blue-500/10 border-blue-500/30 text-blue-400'
                 : 'bg-slate-900 border-slate-700 text-slate-400 hover:text-white'
@@ -81,7 +81,7 @@ export default function DocumentForm({ userId, onSuccess, onCancel }: DocumentFo
           value={name}
           onChange={e => setName(e.target.value)}
           placeholder={type === 'file' ? 'CRO Analiz Raporu Q1 2025' : 'Drive Klasörü'}
-          className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white text-sm placeholder-slate-600 focus:outline-none focus:border-slate-500"
+          className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-white text-sm placeholder-slate-600 focus:outline-none focus:border-slate-500"
         />
       </div>
 
@@ -92,7 +92,7 @@ export default function DocumentForm({ userId, onSuccess, onCancel }: DocumentFo
           value={url}
           onChange={e => setUrl(e.target.value)}
           placeholder="https://..."
-          className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white text-sm placeholder-slate-600 focus:outline-none focus:border-slate-500"
+          className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-white text-sm placeholder-slate-600 focus:outline-none focus:border-slate-500"
         />
       </div>
 
@@ -104,27 +104,27 @@ export default function DocumentForm({ userId, onSuccess, onCancel }: DocumentFo
             value={fileExtension}
             onChange={e => setFileExtension(e.target.value)}
             placeholder="pdf, docx, xlsx..."
-            className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white text-sm placeholder-slate-600 focus:outline-none focus:border-slate-500"
+            className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-white text-sm placeholder-slate-600 focus:outline-none focus:border-slate-500"
           />
         </div>
       )}
 
       {error && (
-        <div className="px-3 py-2.5 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm">{error}</div>
+        <div className="px-3 py-2.5 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm">{error}</div>
       )}
 
       <div className="flex gap-2 pt-1">
         <button
           type="button"
           onClick={onCancel}
-          className="flex-1 py-2.5 rounded-xl border border-slate-700 text-slate-400 text-sm hover:text-white transition-colors"
+          className="flex-1 py-2.5 rounded-lg border border-slate-700 text-slate-400 text-sm hover:text-white transition-colors"
         >
           İptal
         </button>
         <button
           type="submit"
           disabled={loading}
-          className="flex-1 py-2.5 rounded-xl bg-white text-slate-900 text-sm font-medium hover:bg-slate-100 transition-colors disabled:opacity-50"
+          className="flex-1 py-2.5 rounded-lg bg-white text-slate-900 text-sm font-medium hover:bg-slate-100 transition-colors disabled:opacity-50"
         >
           {loading ? 'Ekleniyor...' : 'Ekle'}
         </button>

@@ -134,9 +134,9 @@ export default function BrandContent() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5 }}
-              className="rounded-2xl border border-[var(--color-accent)]/20 bg-[var(--color-accent)]/5 p-8"
+              className="rounded-lg border border-[var(--color-accent)]/20 bg-[var(--color-accent)]/5 p-8"
             >
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--color-accent)]/15 text-[var(--color-accent)] mb-5 ring-1 ring-[var(--color-accent)]/25">
+              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-[var(--color-accent)]/15 text-[var(--color-accent)] mb-5 ring-1 ring-[var(--color-accent)]/25">
                 <Target className="h-6 w-6" />
               </div>
               <h3 className="font-[family-name:var(--font-heading)] text-xl font-bold text-[var(--color-text)]">
@@ -152,9 +152,9 @@ export default function BrandContent() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.1 }}
-              className="rounded-2xl border border-[var(--color-accent-blue)]/20 bg-[var(--color-accent-blue)]/5 p-8"
+              className="rounded-lg border border-[var(--color-accent-blue)]/20 bg-[var(--color-accent-blue)]/5 p-8"
             >
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--color-accent-blue)]/15 text-[var(--color-accent-blue)] mb-5 ring-1 ring-[var(--color-accent-blue)]/25">
+              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-[var(--color-accent-blue)]/15 text-[var(--color-accent-blue)] mb-5 ring-1 ring-[var(--color-accent-blue)]/25">
                 <TrendingUp className="h-6 w-6" />
               </div>
               <h3 className="font-[family-name:var(--font-heading)] text-xl font-bold text-[var(--color-text)]">
@@ -193,9 +193,9 @@ export default function BrandContent() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: '-80px' }}
                 transition={{ delay: i * 0.08 }}
-                className="flex gap-5 rounded-2xl border border-white/5 bg-[var(--color-surface-card)] p-6"
+                className="flex gap-5 rounded-lg border border-white/5 bg-[var(--color-surface-card)] p-6"
               >
-                <div className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl ring-1 ${value.color}`}>
+                <div className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-lg ring-1 ${value.color}`}>
                   {value.icon}
                 </div>
                 <div>
@@ -220,7 +220,7 @@ export default function BrandContent() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[var(--color-accent-secondary)]/10 text-[var(--color-accent-secondary)] ring-1 ring-[var(--color-accent-secondary)]/20 mx-auto mb-6">
+            <div className="flex h-14 w-14 items-center justify-center rounded-lg bg-[var(--color-accent-secondary)]/10 text-[var(--color-accent-secondary)] ring-1 ring-[var(--color-accent-secondary)]/20 mx-auto mb-6">
               <Users className="h-7 w-7" />
             </div>
             <h2 className="font-[family-name:var(--font-heading)] text-2xl font-bold text-[var(--color-text)] sm:text-3xl">

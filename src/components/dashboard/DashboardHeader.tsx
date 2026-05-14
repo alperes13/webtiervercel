@@ -6,16 +6,15 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { Card } from '@/components/ui/Card';
 import { cn } from '@/lib/utils';
 import { Zap, Target, LayoutDashboard } from 'lucide-react';
-import LanguageSwitcher from '@/components/shared/LanguageSwitcher';
 
 export default function DashboardHeader() {
   const { session, isHydrated } = useAuth();
   const [isVerifyModalOpen, setVerifyModalOpen] = useState(false);
-  const { t } = useLanguage();
+  const { t, language, setLanguage } = useLanguage();
 
   // Hydration and safety guard
   if (!isHydrated || !session) {
-    return <div className="h-20 animate-pulse bg-slate-100 rounded-2xl" />;
+    return <div className="h-20 animate-pulse bg-slate-100 rounded-lg" />;
   }
 
   const firstName = session.firstName;
@@ -29,11 +28,15 @@ export default function DashboardHeader() {
           <h1 className="text-xl font-bold tracking-tight text-slate-900">
             {t.dashboard.header.greeting.replace('{name}', displayName)}
           </h1>
-          <p className="text-xs text-slate-500">
-            CRO-X AI Dashboard
-          </p>
         </div>
-        <LanguageSwitcher variant="dashboard" className="w-fit" />
+        {/* Simple Language Toggle (TR <-> EN) */}
+        <button
+          onClick={() => setLanguage(language === 'tr' ? 'en' : 'tr')}
+          className="flex h-9 items-center justify-center rounded-lg border border-slate-200 bg-white px-3 text-xs font-bold transition-all hover:bg-slate-50 uppercase text-slate-600"
+          aria-label="Toggle Language"
+        >
+          {language === 'tr' ? 'EN' : 'TR'}
+        </button>
       </div>
 
       <div className={cn(
