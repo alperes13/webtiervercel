@@ -8,5 +8,5 @@ export async function GET(request: NextRequest) {
   if (!admin) {
     return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
   }
-  return NextResponse.json({ success: true, admin: { email: admin.email, sub: admin.sub } });
+  return NextResponse.json({ success: true, admin: { sub: admin.sub } });
 }

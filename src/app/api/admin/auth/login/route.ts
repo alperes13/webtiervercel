@@ -1,10 +1,7 @@
 export const runtime = 'nodejs';
 
 import { NextRequest, NextResponse } from 'next/server';
-import { queryOne } from '@/lib/db';
-import { verifyPassword } from '@/lib/password';
 import { signAdminSession, makeAdminCookieOptions, ADMIN_COOKIE_NAME } from '@/lib/admin-auth';
-import { ensureMigrations } from '@/lib/migrate';
 
 const loginAttempts = new Map<string, { count: number; resetAt: number }>();
 
@@ -33,44 +30,35 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  let body: { email?: string; password?: string };
+  let body: { password?: string };
   try {
     body = await request.json();
   } catch {
     return NextResponse.json({ success: false, error: 'Geçersiz istek.' }, { status: 400 });
   }
 
-  const { email, password } = body;
-  if (!email || !password) {
-    return NextResponse.json({ success: false, error: 'E-posta ve şifre zorunludur.' }, { status: 400 });
+  const { password } = body;
+  if (!password) {
+    return NextResponse.json({ success: false, error: 'Şifre zorunludur.' }, { status: 400 });
   }
 
-  await ensureMigrations();
-
-  const user = await queryOne<{
-    id: string;
-    email: string;
-    password_hash: string;
-    is_admin: boolean;
-    is_active: boolean;
-  }>(
-    'SELECT id, email, password_hash, is_admin, is_active FROM users WHERE email = $1',
-    [email.toLowerCase().trim()]
-  );
-
-  if (!user || !user.is_admin || !user.is_active) {
-    return NextResponse.json({ success: false, error: 'Geçersiz kimlik bilgileri.' }, { status: 401 });
+  // Admin şifresi .env.local dosyasındaki ADMIN_PASSWORD değişkeninden alınır
+  const adminPassword = process.env.ADMIN_PASSWORD;
+  if (!adminPassword) {
+    return NextResponse.json(
+      { success: false, error: 'Admin şifresi yapılandırılmamış.' },
+      { status: 500 }
+    );
   }
 
-  const valid = await verifyPassword(password, user.password_hash);
-  if (!valid) {
-    return NextResponse.json({ success: false, error: 'Geçersiz kimlik bilgileri.' }, { status: 401 });
+  if (password !== adminPassword) {
+    return NextResponse.json({ success: false, error: 'Geçersiz şifre.' }, { status: 401 });
   }
 
-  const token = await signAdminSession({ sub: user.id, email: user.email });
+  const token = await signAdminSession();
   const cookieOpts = makeAdminCookieOptions(token);
 
-  const response = NextResponse.json({ success: true, admin: { email: user.email, id: user.id } });
+  const response = NextResponse.json({ success: true });
   response.cookies.set(ADMIN_COOKIE_NAME, cookieOpts.value, {
     httpOnly: cookieOpts.httpOnly,
     secure: cookieOpts.secure,

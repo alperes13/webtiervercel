@@ -7,14 +7,13 @@ import { useLanguage } from '@/contexts/LanguageContext';
 export default function AdminLoginPage() {
   const { t } = useLanguage();
   const router = useRouter();
-  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [checking, setChecking] = useState(true);
 
   useEffect(() => {
-    fetch('/api/admin/verify', { credentials: 'include' })
+    fetch('/api/admin/auth/verify', { credentials: 'include' })
       .then(r => { if (r.ok) router.replace('/adminpanel/dashboard'); })
       .finally(() => setChecking(false));
   }, [router]);
@@ -24,11 +23,11 @@ export default function AdminLoginPage() {
     setError('');
     setLoading(true);
     try {
-      const res = await fetch('/api/admin/login', {
+      const res = await fetch('/api/admin/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ password }),
       });
       const data = await res.json();
       if (!res.ok) { setError(data.error || t.admin.loginFailed); return; }
@@ -66,18 +65,6 @@ export default function AdminLoginPage() {
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-3">
           <div>
-            <label className="block text-xs font-medium text-slate-400 mb-1.5">{t.admin.emailLabel}</label>
-            <input
-              type="email"
-              value={email}
-              onChange={e => setEmail(e.target.value)}
-              required
-              autoComplete="email"
-              placeholder="admin@webtier.com.tr"
-              className="w-full px-3.5 py-2.5 rounded-lg bg-slate-900 border border-slate-800 text-white placeholder-slate-600 text-sm focus:outline-none focus:border-slate-600 transition-colors"
-            />
-          </div>
-          <div>
             <label className="block text-xs font-medium text-slate-400 mb-1.5">{t.admin.passwordLabel}</label>
             <input
               type="password"
@@ -85,6 +72,7 @@ export default function AdminLoginPage() {
               onChange={e => setPassword(e.target.value)}
               required
               autoComplete="current-password"
+              autoFocus
               placeholder="••••••••"
               className="w-full px-3.5 py-2.5 rounded-lg bg-slate-900 border border-slate-800 text-white placeholder-slate-600 text-sm focus:outline-none focus:border-slate-600 transition-colors"
             />

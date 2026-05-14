@@ -12,22 +12,20 @@ export default function AdminDashboardPage() {
   const { t } = useLanguage();
   const router = useRouter();
   const [activeSection, setActiveSection] = useState<AdminSection>('analyses');
-  const [adminEmail, setAdminEmail] = useState('');
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('/api/admin/verify', { credentials: 'include' })
+    fetch('/api/admin/auth/verify', { credentials: 'include' })
       .then(r => r.json())
       .then(data => {
         if (!data.success) { router.replace('/adminpanel'); return; }
-        setAdminEmail(data.admin.email);
       })
       .catch(() => router.replace('/adminpanel'))
       .finally(() => setLoading(false));
   }, [router]);
 
   async function handleLogout() {
-    await fetch('/api/admin/logout', { method: 'POST', credentials: 'include' });
+    await fetch('/api/admin/auth/logout', { method: 'POST', credentials: 'include' });
     router.replace('/adminpanel');
   }
 
@@ -50,7 +48,7 @@ export default function AdminDashboardPage() {
       <AdminSidebar
         active={activeSection}
         onChange={setActiveSection}
-        adminEmail={adminEmail}
+        adminEmail="Admin"
         onLogout={handleLogout}
       />
 

@@ -6,7 +6,6 @@ const ADMIN_TTL = 60 * 60 * 8; // 8 hours
 
 export interface AdminJWTPayload {
   sub: string;
-  email: string;
   role: 'admin';
 }
 
@@ -16,10 +15,10 @@ function getAdminSecret(): Uint8Array {
   return new TextEncoder().encode(secret + ':admin');
 }
 
-export async function signAdminSession(payload: { sub: string; email: string }): Promise<string> {
-  return new SignJWT({ email: payload.email, role: 'admin' })
+export async function signAdminSession(): Promise<string> {
+  return new SignJWT({ role: 'admin' })
     .setProtectedHeader({ alg: 'HS256' })
-    .setSubject(payload.sub)
+    .setSubject('admin')
     .setIssuedAt()
     .setExpirationTime(`${ADMIN_TTL}s`)
     .sign(getAdminSecret());
@@ -28,8 +27,8 @@ export async function signAdminSession(payload: { sub: string; email: string }):
 export async function verifyAdminSession(token: string): Promise<AdminJWTPayload | null> {
   try {
     const { payload } = await jwtVerify(token, getAdminSecret());
-    if (payload.role !== 'admin' || !payload.sub || typeof payload.email !== 'string') return null;
-    return { sub: payload.sub as string, email: payload.email, role: 'admin' };
+    if (payload.role !== 'admin' || !payload.sub) return null;
+    return { sub: payload.sub as string, role: 'admin' };
   } catch {
     return null;
   }
