@@ -69,6 +69,7 @@ export interface Translations {
     leaksTitle: string;
     leaksHighlight: string;
     leaksSubtitle: string;
+    problems: readonly string[];
     leaksDescription: string;
   };
   trustSignals: {
@@ -206,6 +207,7 @@ export interface Translations {
     tag: string;
     title: string;
     titleHighlight: string;
+    titleSuffix: string;
     subtitle: string;
     ctaAnalysis: string;
     ctaWhatsApp: string;
@@ -228,7 +230,7 @@ export interface Translations {
     faqItems: readonly { question: string; answer: string }[];
     ctaTitle: string;
     ctaTitleHighlight: string;
-    titleSuffix: string;
+    ctaTitleSuffix: string;
     hero: {
       brandName: string;
       tagline1: string;
@@ -240,6 +242,8 @@ export interface Translations {
       ctaDescription: string;
       ctaAnalysisLabel: string;
       ctaContactLabel: string;
+      ctaAnalysisSub: string;
+      ctaContactSub: string;
       badge1Title: string;
       badge1Sub: string;
       badge2Title: string;
@@ -394,19 +398,6 @@ export interface Translations {
     includedTitle: string;
     includedHighlight: string;
     includedSubtitle: string;
-    ultraBox: {
-      title: string;
-      subtitle: string;
-      price: string;
-      credit: string;
-    };
-    miniBox: {
-      title: string;
-      subtitle: string;
-      price: string;
-      credit: string;
-      cta: string;
-    };
   };
   contact: {
     title: string;
@@ -712,6 +703,20 @@ const tr: Translations = {
     leaksTitle: 'Sizi {highlight} uğratan sebepler ney?',
     leaksHighlight: 'zarara',
     leaksSubtitle: "İşletmelerin %92'si aşağıdaki 12 temel sorundan en az 5 tanesini paylaşıyor. Sizin sitenizdeki engel hangisi?",
+    problems: [
+      'Ziyaretçiler siteyi geziyor ama satın almıyor',
+      'Sepet terk etme oranı çok yüksek',
+      'Mobilde dönüşüm oranı çok düşük',
+      'Ürün sayfaları yeterince ikna edici değil',
+      'Ödeme adımları çok karmaşık ve uzun',
+      'Sitenin yüklenme hızı kullanıcıları kaçırıyor',
+      'Güven sinyalleri ve sosyal kanıtlar eksik',
+      'Navigasyon yapısı kafa karıştırıyor',
+      'Eylem çağrıları (CTA) görünür değil',
+      'Hizmetler/Ürünler net bir şekilde anlaşılmıyor',
+      'Rakipler dijitalde daha profesyonel görünüyor',
+      'Arama fonksiyonu verimli çalışmıyor'
+    ],
     leaksDescription: "Yukarıdaki tüm sızıntıları gerçek zamanlı verilerle kapatıyoruz. Sadece analiz etmiyor, dönüşüm oranlarınızı katlayacak bir yol haritası sunuyoruz.\n\nTek yapmanız gereken dijital bir adres girmek.",
   },
   trustSignals: {
@@ -1053,7 +1058,7 @@ const tr: Translations = {
     ],
     ctaTitle: 'E-Ticaret Sitenizi',
     ctaTitleHighlight: 'Dönüştürmeye',
-    titleSuffix: 'Hazır mısınız?',
+    ctaTitleSuffix: 'Hazır mısınız?',
     hero: {
       brandName: 'SATIŞ',
       tagline1: 'E-Ticarette Fark',
@@ -1065,6 +1070,8 @@ const tr: Translations = {
       ctaDescription: 'Ücretsiz CRO analizi ile başlayın. E-ticaret sitenizin gerçek potansiyelini keşfedin.',
       ctaAnalysisLabel: 'CRO Analizi Al',
       ctaContactLabel: 'İletişime Geç',
+      ctaAnalysisSub: 'Ücretsiz',
+      ctaContactSub: 'Şimdi',
       badge1Title: '+34.2% Büyüme',
       badge1Sub: 'Bu ay gerçekleşti',
       badge2Title: 'Sepet Optimizasyonu',

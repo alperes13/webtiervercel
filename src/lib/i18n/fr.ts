@@ -70,7 +70,11 @@ const fr: Translations = {
       invalidUrl: 'Saisissez une URL valide. ex : votresite.fr',
       invalidEmail: 'Saisissez une adresse e-mail valide.',
       timeout: 'Trop de tentatives. Réessayez dans {minutes} minutes.',
+      insufficientMini: 'Crédit Mini insuffisant. Vous pouvez acheter des crédits supplémentaires dans votre profil.',
+      insufficientUltra: 'Crédit Ultra insuffisant. Veuillez ajouter du solde.',
+      analysisGenericError: 'L\'analyse n\'a pas pu être lancée',
     },
+    analysisSuccess: 'Votre demande d\'analyse a été reçue avec succès. Vous serez informé lorsque votre rapport sera prêt.',
   },
   croxUltra: {
     badge: 'CRO-X ULTRA',
@@ -145,6 +149,20 @@ const fr: Translations = {
     leaksTitle: 'Quelles sont les raisons qui vous causent une {highlight} ?',
     leaksHighlight: 'perte',
     leaksSubtitle: "92 % des entreprises partagent au moins 5 des 12 problèmes clés suivants. Quel est l'obstacle sur votre site ?",
+    problems: [
+      'Les visiteurs parcourent le site mais n\'achètent pas',
+      'Le taux d\'abandon du panier est très élevé',
+      'Le taux de conversion sur mobile est très bas',
+      'Les pages produits ne sont pas assez convaincantes',
+      'Les étapes de paiement sont trop complexes et longues',
+      'La vitesse de chargement du site fait fuir les utilisateurs',
+      'Les signaux de confiance et la preuve sociale manquent',
+      'La structure de navigation est confuse',
+      'Les appels à l\'action (CTA) ne sont pas visibles',
+      'Les services/produits ne sont pas clairement compris',
+      'Les concurrents semblent plus professionnels dans le numérique',
+      'La fonction de recherche ne fonctionne pas efficacement'
+    ],
     leaksDescription: "Nous comblons toutes les fuites ci-dessus avec des données en temps réel. Nous n'analysons pas seulement, nous fournissons une feuille de route qui multipliera vos taux de conversion.\n\nTout ce que vous avez à faire est de saisir une adresse numérique.",
   },
   trustSignals: {
@@ -509,6 +527,7 @@ const fr: Translations = {
     ctaTrustNote: 'Aucune carte de crédit requise • Résultat en 2 minutes • Analyse d\'expert',
     ctaTitle: 'Votre site E-Commerce',
     ctaTitleHighlight: 'à optimiser',
+    ctaTitleSuffix: 'Êtes-vous prêt ?',
   },
   corporate: {
     tag: 'Design Web Entreprise',

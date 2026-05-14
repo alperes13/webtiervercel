@@ -70,7 +70,11 @@ const de: Translations = {
       invalidUrl: 'Geben Sie eine gültige URL ein. z.B.: ihrewebsite.de',
       invalidEmail: 'Geben Sie eine gültige E-Mail-Adresse ein.',
       timeout: 'Zu viele Versuche. Versuchen Sie es in {minutes} Minuten erneut.',
+      insufficientMini: 'Nicht genügend Mini-Credits. Sie können zusätzliche Credits in Ihrem Profil kaufen.',
+      insufficientUltra: 'Nicht genügend Ultra-Credits. Bitte laden Sie Ihr Guthaben auf.',
+      analysisGenericError: 'Analyse konnte nicht gestartet werden',
     },
+    analysisSuccess: 'Ihre Analyseanfrage wurde erfolgreich empfangen. Sie werden benachrichtigt, wenn Ihr Bericht fertig ist.',
   },
   croxUltra: {
     badge: 'CRO-X ULTRA',
@@ -145,6 +149,20 @@ const de: Translations = {
     leaksTitle: 'Was sind die Gründe, die Ihnen {highlight} verursachen?',
     leaksHighlight: 'Verlust',
     leaksSubtitle: "92 % der Unternehmen teilen mindestens 5 der folgenden 12 Hauptprobleme. Welches ist die Hürde auf Ihrer Seite?",
+    problems: [
+      'Besucher stöbern auf der Seite, kaufen aber nicht',
+      'Warenkorbabbrecherquote ist sehr hoch',
+      'Conversion-Rate auf Mobilgeräten ist sehr niedrig',
+      'Produktseiten sind nicht überzeugend genug',
+      'Checkout-Schritte sind zu komplex und langwierig',
+      'Die Ladegeschwindigkeit vertreibt die Nutzer',
+      'Vertrauenssignale und Social Proof fehlen',
+      'Navigationsstruktur ist verwirrend',
+      'Handlungsaufforderungen (CTA) sind nicht sichtbar',
+      'Dienstleistungen/Produkte werden nicht klar verstanden',
+      'Wettbewerber wirken digital professioneller',
+      'Suchfunktion arbeitet nicht effizient'
+    ],
     leaksDescription: "Wir schließen alle oben genannten Lecks mit Echtzeitdaten. Wir analysieren nicht nur, sondern bieten einen Fahrplan, der Ihre Konversionsraten vervielfachen wird.\n\nSie müssen lediglich eine digitale Adresse eingeben.",
   },
   trustSignals: {
@@ -508,6 +526,7 @@ const de: Translations = {
     ctaTrustNote: 'Keine Kreditkarte erforderlich • Ergebnis in 2 Minuten • Expertenanalyse',
     ctaTitle: 'Ihre E-Commerce Seite',
     ctaTitleHighlight: 'Konvertieren',
+    ctaTitleSuffix: 'Sind Sie bereit?',
   },
   corporate: {
     tag: 'Unternehmens-Webdesign',

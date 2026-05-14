@@ -70,7 +70,11 @@ const es: Translations = {
       invalidUrl: 'Introduce una URL válida. Ej: tusitio.es',
       invalidEmail: 'Introduce una dirección de correo electrónico válida.',
       timeout: 'Demasiados intentos. Inténtalo de nuevo en {minutes} minutos.',
+      insufficientMini: 'Crédito Mini insuficiente. Puede comprar crédito adicional en su perfil.',
+      insufficientUltra: 'Crédito Ultra insuficiente. Por favor, añada saldo.',
+      analysisGenericError: 'No se pudo iniciar el análisis',
     },
+    analysisSuccess: 'Su solicitud de análisis ha sido recibida con éxito. Se le notificará cuando su informe esté listo.',
   },
   croxUltra: {
     badge: 'CRO-X ULTRA',
@@ -145,11 +149,21 @@ const es: Translations = {
     leaksTitle: '¿Cuáles son las razones que le causan {highlight}?',
     leaksHighlight: 'pérdida',
     leaksSubtitle: "El 92% de las empresas comparten al menos 5 de los siguientes 12 problemas clave. ¿Cuál es el obstáculo en su sitio?",
-    leaksDescription: "Cerramos todas las fugas anteriores con datos en tiempo real. No solo analizamos, sino que ofrecemos una hoja de ruta que multiplicará sus tasas de conversión.\n\nTodo lo que tiene que hacer es ingresar una dirección digital.",
-    commonErrors: [
-      'Vemos cómo aumentar las tasas de conversión',
-      'Nuestras pruebas sociales faltan o son ineficaces'
+    problems: [
+      'Los visitantes navegan por el sitio pero no compran',
+      'La tasa de abandono del carrito es muy alta',
+      'La tasa de conversión en móviles es muy baja',
+      'Las páginas de productos no son lo suficientemente convincentes',
+      'Los pasos de pago son demasiado complejos y largos',
+      'La velocidad de carga del sitio ahuyenta a los usuarios',
+      'Faltan señales de confianza y prueba social',
+      'La estructura de navegación es confusa',
+      'Las llamadas a la acción (CTA) no son visibles',
+      'Los servicios/productos no se entienden claramente',
+      'Los competidores parecen más profesionales en lo digital',
+      'La función de búsqueda no funciona eficientemente'
     ],
+    leaksDescription: "Cerramos todas las fugas anteriores con datos en tiempo real. No solo analizamos, sino que ofrecemos una hoja de ruta que multiplicará sus tasas de conversión.\n\nTodo lo que tiene que hacer es ingresar una dirección digital.",
   },
   trustSignals: {
     stats: [
@@ -512,6 +526,7 @@ const es: Translations = {
     ctaTrustNote: 'No se requiere tarjeta de crédito • Resultado en 2 minutos • Análisis experto',
     ctaTitle: 'Su sitio E-Commerce',
     ctaTitleHighlight: 'para convertir',
+    ctaTitleSuffix: '¿Estás listo?',
   },
   corporate: {
     tag: 'Diseño Web Corporativo',

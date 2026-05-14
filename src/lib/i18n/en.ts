@@ -149,6 +149,20 @@ const en: Translations = {
     leaksTitle: 'What are the reasons that cause you {highlight}?',
     leaksHighlight: 'loss',
     leaksSubtitle: "92% of businesses share at least 5 of the following 12 key issues. Which one is the hurdle on your site?",
+    problems: [
+      'Visitors browse the site but don\'t buy',
+      'Cart abandonment rate is very high',
+      'Conversion rate on mobile is very low',
+      'Product pages are not convincing enough',
+      'Checkout steps are too complex and long',
+      'Site loading speed is driving users away',
+      'Trust signals and social proof are missing',
+      'Navigation structure is confusing',
+      'Calls to action (CTA) are not visible',
+      'Services/Products are not clearly understood',
+      'Competitors look more professional in digital',
+      'Search function is not working efficiently'
+    ],
     leaksDescription: "We close all the above leaks with real-time data. We don't just analyze, we provide a roadmap that will multiply your conversion rates.\n\nAll you have to do is enter a digital address.",
   },
   trustSignals: {
@@ -490,7 +504,7 @@ const en: Translations = {
     ],
     ctaTitle: 'Ready to Transform',
     ctaTitleHighlight: 'Your E-commerce Site?',
-    titleSuffix: '',
+    ctaTitleSuffix: '',
     hero: {
       brandName: 'SALES',
       tagline1: 'E-commerce Infrastructure',
@@ -502,6 +516,8 @@ const en: Translations = {
       ctaDescription: 'Start with free CRO analysis. Discover your e-commerce site\'s real potential.',
       ctaAnalysisLabel: 'Get CRO Analysis',
       ctaContactLabel: 'Get in Touch',
+      ctaAnalysisSub: 'Free',
+      ctaContactSub: 'Now',
       badge1Title: '+34.2% Growth',
       badge1Sub: 'Happened this month',
       badge2Title: 'Cart Optimization',
