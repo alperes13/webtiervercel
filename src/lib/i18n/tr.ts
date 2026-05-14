@@ -177,8 +177,8 @@ export interface Translations {
   };
   profile: {
     title: string;
-    phone: string;
-    phoneLabel: string;
+    email: string;
+    emailLabel: string;
     status: string;
     statusPending: string;
     statusCompleted: string;
