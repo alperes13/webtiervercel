@@ -4,6 +4,7 @@ import { ArrowRight, Check, ChevronDown, ArrowLeftRight, Hourglass } from "lucid
 import { useState, useRef, useCallback, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
+import { useLanguage } from "@/contexts/LanguageContext";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -90,6 +91,7 @@ export function HeroInput({
   className = "",
   isEnabled = true,
 }: HeroInputProps) {
+  const { t } = useLanguage();
   const [status, setStatus] = useState<"loading" | "live" | "maintenance">("loading");
   const [isMounted, setIsMounted] = useState(false);
   const [internalIsFocused, setInternalIsFocused] = useState(false);
@@ -129,9 +131,6 @@ export function HeroInput({
   return (
     <div className={cn("relative w-full max-w-2xl mx-auto", className)}>
 
-      {/* Model label removed to prevent overlap with dashboard Card headers */}
-
-
       <motion.div
         key={status}
         initial={{ opacity: 0, scale: 0.9 }}
@@ -153,7 +152,7 @@ export function HeroInput({
               <div className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></div>
             </div>
             <span className="text-[9px] font-black text-emerald-600/90 tracking-widest uppercase flex items-center gap-1">
-              CANLI
+              {t.aiInput.live}
             </span>
           </>
         ) : status === "maintenance" ? (
@@ -162,7 +161,7 @@ export function HeroInput({
               <div className="relative inline-flex rounded-full h-1.5 w-1.5 bg-amber-500"></div>
             </div>
             <span className="text-[9px] font-black text-amber-600/90 tracking-widest uppercase flex items-center gap-1">
-              BAKIMDA
+              {t.aiInput.maintenance}
             </span>
           </>
         ) : (
@@ -171,7 +170,7 @@ export function HeroInput({
               <div className="animate-spin absolute inline-flex h-full w-full rounded-full border border-amber-500/30 border-t-amber-500"></div>
             </div>
             <span className="text-[9px] font-black text-amber-600/90 tracking-widest uppercase flex items-center gap-1">
-              BEKLENİYOR
+              {t.aiInput.waiting}
             </span>
           </>
         )}
@@ -307,7 +306,7 @@ export function HeroInput({
                 type="button"
                 onClick={onSubmit}
                 disabled={disabled || !isEnabled}
-                aria-label="Analiz Et"
+                aria-label={t.aiInput.analyze}
                 className={cn(
                   "rounded-lg p-2 transition-all",
                   "bg-[#0F172A]",

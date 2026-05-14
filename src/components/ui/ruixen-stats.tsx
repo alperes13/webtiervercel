@@ -19,11 +19,10 @@ export default function RuixenStats() {
       <div className="space-y-6">
         <div className="text-center space-y-4 max-w-3xl mx-auto">
           <h3 className="ruixen-stats-leak-title text-3xl lg:text-5xl font-black text-white font-[family-name:var(--font-heading)] p-[20px]">
-            Sizi <span className="text-red-500">zarara</span> uğratan sebepler ney?
+            {t.croxUltra.leaksTitle.replace('{highlight}', '')} <span className="text-red-500">{t.croxUltra.leaksHighlight}</span> {t.croxUltra.leaksTitle.split('{highlight}')[1]}
           </h3>
           <p className="text-white text-lg font-medium opacity-90 px-5">
-            İşletmelerin %92'si aşağıdaki 12 temel sorundan en az 5 tanesini paylaşıyor.
-            Sizin sitenizdeki engel hangisi?
+            {t.croxUltra.leaksSubtitle}
           </p>
         </div>
 
@@ -57,12 +56,8 @@ export default function RuixenStats() {
           <h3 className="ruixen-stats-why-title text-4xl lg:text-7xl font-black text-white leading-tight font-[family-name:var(--font-heading)] pt-[50px] !text-[2.5em]">
             <span className="text-cyan-400">CRO-X Ultra</span>
           </h3>
-          <p className="text-zinc-400 leading-relaxed w-full p-[0px_20px_50px_20px] !text-[1.2em]">
-            Yukarıdaki tüm sızıntıları gerçek zamanlı verilerle kapatıyoruz.
-            Sadece analiz etmiyor, dönüşüm oranlarınızı katlayacak bir yol haritası sunuyoruz.
-            <br />
-            <br />
-            Tek yapmanız gereken dijital bir adres girmek.
+          <p className="text-zinc-400 leading-relaxed w-full p-[0px_20px_50px_20px] !text-[1.2em] whitespace-pre-line">
+            {t.croxUltra.leaksDescription}
           </p>
         </div>
       </div>

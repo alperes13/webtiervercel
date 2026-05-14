@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { FileText, ExternalLink } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface UserDocument {
   id: string;
@@ -23,6 +24,7 @@ interface Props {
 export default function UserDocuments({ token }: Props) {
   const [documents, setDocuments] = useState<UserDocument[]>([]);
   const [loading, setLoading] = useState(true);
+  const { t } = useLanguage();
 
   useEffect(() => {
     if (!token) return;
@@ -48,7 +50,7 @@ export default function UserDocuments({ token }: Props) {
 
   return (
     <div className="mt-6">
-      <h3 className="text-sm font-semibold text-[var(--color-text)] mb-3">Dökümanlar & Linkler</h3>
+      <h3 className="text-sm font-semibold text-[var(--color-text)] mb-3">{t.dashboard.analysis.documentsTitle}</h3>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
         {documents.map(doc => (
           <a

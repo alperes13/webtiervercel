@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useAuth } from '@/contexts/AuthContext';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { 
   LayoutDashboard, 
   FileText, 
@@ -34,19 +35,20 @@ interface SidebarProps {
   onSectionChange: (section: DashboardSection) => void;
 }
 
-const MENU_ITEMS = [
-  { id: 'overview' as const, label: 'CRO-X AI Dashboard', icon: LayoutDashboard },
-  { id: 'analysis' as const, label: 'Analizler & Dökümanlar', icon: FileText },
-  { id: 'backlog' as const, label: 'Backlog', icon: ListTodo },
-  { id: 'credits' as const, label: 'Kredi Yükleme', icon: CreditCard },
-  { id: 'notifications' as const, label: 'Bildirimler', icon: Bell },
-  { id: 'settings' as const, label: 'Profil', icon: Settings },
-];
-
 export default function DashboardSidebar({ activeSection, onSectionChange }: SidebarProps) {
   const { session, logout } = useAuth();
+  const { t } = useLanguage();
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const MENU_ITEMS = [
+    { id: 'overview' as const, label: t.dashboard.sidebar.dashboard, icon: LayoutDashboard },
+    { id: 'analysis' as const, label: t.dashboard.sidebar.analysis, icon: FileText },
+    { id: 'backlog' as const, label: t.dashboard.sidebar.backlog, icon: ListTodo },
+    { id: 'credits' as const, label: t.dashboard.sidebar.credits, icon: CreditCard },
+    { id: 'notifications' as const, label: t.dashboard.sidebar.notifications, icon: Bell },
+    { id: 'settings' as const, label: t.dashboard.sidebar.profile, icon: Settings },
+  ];
 
   if (!session) return null;
 
@@ -75,10 +77,10 @@ export default function DashboardSidebar({ activeSection, onSectionChange }: Sid
         <button 
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           className="flex items-center gap-2 p-1.5 hover:bg-slate-50 transition-colors z-[130]"
-          aria-label="Menü"
+          aria-label={t.dashboard.header.panel}
         >
           <MenuToggleIcon open={isMobileMenuOpen} className="h-6 w-6 text-slate-600" duration={350} />
-          <span className="text-[10px] font-black text-slate-500 uppercase tracking-[0.1em]">PANEL</span>
+          <span className="text-[10px] font-black text-slate-500 uppercase tracking-[0.1em]">{t.dashboard.header.panel}</span>
         </button>
         <Link href="/">
           <Image src="/images/logo-black.png" alt="Logo" width={100} height={30} className="h-7 w-auto object-contain" />
@@ -138,7 +140,7 @@ export default function DashboardSidebar({ activeSection, onSectionChange }: Sid
         <div className="flex-1 overflow-y-auto px-3 py-6 space-y-1 custom-scrollbar">
           {!isCollapsed && (
             <p className="px-3 mb-2 text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em]">
-              Sistem
+              {t.dashboard.sidebar.system}
             </p>
           )}
 
@@ -201,13 +203,13 @@ export default function DashboardSidebar({ activeSection, onSectionChange }: Sid
               
               {!isCollapsed && (
                 <span className="text-sm font-semibold transition-all duration-200 truncate opacity-80 group-hover:opacity-100">
-                  Anasayfa
+                  {t.dashboard.sidebar.home}
                 </span>
               )}
 
               {isCollapsed && (
                 <div className="absolute left-[calc(100%+12px)] top-1/2 -translate-y-1/2 px-3 py-1.5 bg-slate-900 text-white text-[11px] rounded-lg opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-300 whitespace-nowrap z-50 font-bold shadow-xl">
-                  Anasayfa
+                  {t.dashboard.sidebar.home}
                   <div className="absolute top-1/2 -left-1 -translate-y-1/2 border-y-4 border-y-transparent border-r-4 border-r-slate-900" />
                 </div>
               )}
@@ -229,7 +231,7 @@ export default function DashboardSidebar({ activeSection, onSectionChange }: Sid
               <div className="flex-1 min-w-0 pr-1">
                 <p className="text-sm font-bold text-slate-900 truncate">{fullName}</p>
                 <p className="text-[10px] font-bold text-slate-400 uppercase tracking-tight truncate">
-                  {session.emailVerified ? 'Doğrulanmış Üye' : 'Doğrulanmamış'}
+                  {session.emailVerified ? t.dashboard.sidebar.verifiedMember : t.dashboard.sidebar.notVerified}
                 </p>
               </div>
             )}
@@ -244,7 +246,7 @@ export default function DashboardSidebar({ activeSection, onSectionChange }: Sid
                )}
             >
               <LifeBuoy className="h-5 w-5 shrink-0 text-slate-400 group-hover:text-slate-900" />
-              {!isCollapsed && <span className="text-sm font-medium">Destek</span>}
+              {!isCollapsed && <span className="text-sm font-medium">{t.dashboard.sidebar.support}</span>}
             </button>
             
             <button
@@ -255,7 +257,7 @@ export default function DashboardSidebar({ activeSection, onSectionChange }: Sid
               )}
             >
               <LogOut className="h-5 w-5 shrink-0 text-slate-400 group-hover:text-red-500" />
-              {!isCollapsed && <span className="text-sm font-medium">Çıkış Yap</span>}
+              {!isCollapsed && <span className="text-sm font-medium">{t.dashboard.sidebar.logout}</span>}
             </button>
           </div>
         </div>

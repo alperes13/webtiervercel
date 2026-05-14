@@ -13,6 +13,10 @@ export interface Translations {
     privacy: string;
     freeAnalysis: string;
     retrainer: string;
+    navigation: string;
+    preferences: string;
+    languageSelection: string;
+    close: string;
   };
   hero: {
     badge: string;
@@ -36,23 +40,36 @@ export interface Translations {
       invalidUrl: string;
       invalidEmail: string;
       timeout: string;
+      insufficientMini: string;
+      insufficientUltra: string;
+      analysisGenericError: string;
     };
+    analysisSuccess: string;
   };
   croxUltra: {
     badge: string;
     title: string;
-    titleHighlight?: string;
     subtitle: string;
-    slideDeckLabel?: string;
-    benefitCategories?: readonly { title: string; items: readonly string[] }[];
-    totalLabel?: string;
+    moreTitle: string;
+    items: string[];
+    ultraBox: {
+      title: string;
+      subtitle: string;
+      price: string;
+      credit: string;
+    };
+    miniBox: {
+      title: string;
+      subtitle: string;
+      price: string;
+      credit: string;
+      cta: string;
+    };
     cta: string;
-    problems?: readonly string[];
-    price?: string;
-    summaryLabel?: string;
-    bannerTitle?: string;
-    bannerSubtext?: string;
-    items?: readonly string[];
+    leaksTitle: string;
+    leaksHighlight: string;
+    leaksSubtitle: string;
+    leaksDescription: string;
   };
   trustSignals: {
     stats: readonly { value: number; suffix: string; label: string }[];
@@ -88,6 +105,19 @@ export interface Translations {
     titleHighlight: string;
     subtitle: string;
     steps: readonly { title: string; description: string }[];
+  };
+  workflow: {
+    title: string;
+    highlight: string;
+    subtitle1: string;
+    subtitle2: string;
+    exploreLabel: string;
+    exploreHint: string;
+    steps: {
+      id: string;
+      title: string;
+      description: string;
+    }[];
   };
   whyUs: {
     label: string;
@@ -199,6 +229,26 @@ export interface Translations {
     ctaTitle: string;
     ctaTitleHighlight: string;
     titleSuffix: string;
+    hero: {
+      brandName: string;
+      tagline1: string;
+      tagline2: string;
+      cardHeading: string;
+      cardDescription: string;
+      metricLabel: string;
+      ctaHeading: string;
+      ctaDescription: string;
+      ctaAnalysisLabel: string;
+      ctaContactLabel: string;
+      badge1Title: string;
+      badge1Sub: string;
+      badge2Title: string;
+      badge2Sub: string;
+      storeLabel: string;
+      salesLabel: string;
+    };
+    ctaDescription: string;
+    ctaTrustNote: string;
   };
   corporate: {
     tag: string;
@@ -219,6 +269,90 @@ export interface Translations {
     faqItems: readonly { question: string; answer: string }[];
     ctaTitle: string;
     ctaTitleHighlight: string;
+    heroTitle: string;
+    shimmerTitle: string;
+    shimmerSubtitle: string;
+    ctaButton: string;
+    featuresSubtitle: string;
+    carouselSlides: {
+      id: string;
+      title: string;
+      description: string;
+      features: string[];
+    }[];
+    checklistTitle: string;
+    checklistHighlight: string;
+    ctaDescription: string;
+    ctaTrustNote: string;
+  };
+  admin: {
+    loginTitle: string;
+    loginSubtitle: string;
+    emailLabel: string;
+    passwordLabel: string;
+    loginButton: string;
+    loggingIn: string;
+    unauthorizedNote: string;
+    loginFailed: string;
+    serverError: string;
+    analysesTitle: string;
+    usersTitle: string;
+    settingsTitle: string;
+  };
+  auth: {
+    signupTitle: string;
+    signupSubtitle: string;
+    signupButtonText: string;
+    loginTitleText: string;
+    loginSubtitle: string;
+    loginButtonText: string;
+    emailLabel: string;
+    passwordLabel: string;
+    emailPlaceholder: string;
+    passwordPlaceholder: string;
+    rememberMe: string;
+    alreadyHaveAccount: string;
+    noAccountYet: string;
+    forgotPassword: string;
+    orContinueWith: string;
+    googleContinue: string;
+    trustedBy: string;
+    resetPasswordSoonText: string;
+    welcomeMessage: string;
+    signupFailedText: string;
+    loginFailedText: string;
+    oauthErrors: {
+      failed: string;
+      cancelled: string;
+      config: string;
+      generic: string;
+    };
+    testimonials: {
+      name: string;
+      text: string;
+    }[];
+  };
+  pricing: {
+    title: string;
+    subtitle: string;
+    monthly: string;
+    yearly: string;
+    getQuote: string;
+    popular: string;
+    yearlyNote: string;
+    monthlyNote: string;
+    totalPrice: string;
+    plans: {
+      name: string;
+      description: string;
+      includes: string[];
+    }[];
+  };
+  aiInput: {
+    live: string;
+    maintenance: string;
+    waiting: string;
+    analyze: string;
   };
   retrainer: {
     tag: string;
@@ -227,6 +361,12 @@ export interface Translations {
     subtitle: string;
     ctaPrimary: string;
     ctaSecondary: string;
+    box: {
+      title: string;
+      subtitle: string;
+      price: string;
+      cta: string;
+    };
     features: readonly { title: string; description: string }[];
     processTitle: string;
     processTitleHighlight: string;
@@ -239,6 +379,34 @@ export interface Translations {
     ctaSecondaryButton: string;
     faqTitle: string;
     faqItems: readonly { question: string; answer: string }[];
+    timelineItems: readonly {
+      title: string;
+      date: string;
+      content: string;
+      category: string;
+    }[];
+    bentoTabs: readonly {
+      label: string;
+      title: string;
+      description: string;
+      features: readonly string[];
+    }[];
+    includedTitle: string;
+    includedHighlight: string;
+    includedSubtitle: string;
+    ultraBox: {
+      title: string;
+      subtitle: string;
+      price: string;
+      credit: string;
+    };
+    miniBox: {
+      title: string;
+      subtitle: string;
+      price: string;
+      credit: string;
+      cta: string;
+    };
   };
   contact: {
     title: string;
@@ -269,6 +437,134 @@ export interface Translations {
     privacyLink: string;
     and: string;
   };
+  dashboard: {
+    sidebar: {
+      system: string;
+      dashboard: string;
+      analysis: string;
+      backlog: string;
+      credits: string;
+      notifications: string;
+      profile: string;
+      home: string;
+      verifiedMember: string;
+      notVerified: string;
+      support: string;
+      logout: string;
+    };
+    header: {
+      panel: string;
+      greeting: string;
+      credits: string;
+      verificationStatus: string;
+      pendingVerification: string;
+    };
+    overview: {
+      miniTitle: string;
+      ultraTitle: string;
+      miniCredit: string;
+      ultraCredit: string;
+      placeholderMini: string;
+      placeholderUltra: string;
+      insufficientCredits: string;
+      urlRequired: string;
+      invalidUrl: string;
+      analysisRequested: string;
+      ultraAnalysisRequested: string;
+      ultraBannerTitle: string;
+      ultraBannerDesc: string;
+      ultraBannerButton: string;
+    };
+    verification: {
+      bannerTitle: string;
+      bannerDesc: string;
+      bannerButton: string;
+    };
+    backlog: {
+      title: string;
+      subtitle: string;
+      noTasks: string;
+      soon: string;
+      priorities: {
+        low: string;
+        medium: string;
+        high: string;
+        critical: string;
+      };
+      statuses: {
+        todo: string;
+        inProgress: string;
+        review: string;
+        done: string;
+        cancelled: string;
+      };
+    };
+    credits: {
+      title: string;
+      subtitle: string;
+      starter: string;
+      popular: string;
+      advantage: string;
+      features: readonly string[];
+      selectButton: string;
+      packageDescription: string;
+    };
+    purchaseModal: {
+      title: string;
+      subtitle: string;
+      popular: string;
+      payButton: string;
+      loading: string;
+      securePayment: string;
+      sslInfo: string;
+      paymentError: string;
+      packageLabel: string;
+      errorGeneric: string;
+      securePaymentTitle: string;
+      paymentIframeTitle: string;
+    };
+    auth: {
+      login: string;
+    };
+    notifications: {
+      title: string;
+      subtitle: string;
+      empty: string;
+    };
+    settings: {
+      title: string;
+      subtitle: string;
+      personalInfo: string;
+      firstName: string;
+      lastName: string;
+      email: string;
+      saveButton: string;
+      security: string;
+      securityDesc: string;
+      resetPasswordButton: string;
+      resetRequested: string;
+      resetCheckEmail: string;
+      logoutTitle: string;
+      logoutDesc: string;
+      logoutButton: string;
+      updateSuccess: string;
+      updateError: string;
+      resetError: string;
+    };
+    analysis: {
+      historyTitle: string;
+      totalLabel: string;
+      noAnalyses: string;
+      startFirst: string;
+      statusCompleted: string;
+      statusPending: string;
+      statusProcessing: string;
+      viewReport: string;
+      loadError: string;
+      genericError: string;
+      documentsTitle: string;
+    };
+  };
 }
 
 const tr: Translations = {
@@ -286,6 +582,10 @@ const tr: Translations = {
     privacy: 'Gizlilik & Çerez',
     freeAnalysis: 'Ücretsiz Analiz',
     retrainer: 'Webtier Retrainer',
+    navigation: 'Navigasyon',
+    preferences: 'Tercihler',
+    languageSelection: 'Dil Seçimi',
+    close: 'Kapat',
   },
   hero: {
     badge: 'türkiye\'nin cro odaklı Embedded AI modülü',
@@ -333,25 +633,31 @@ const tr: Translations = {
     ],
     scroll: 'CRO-X Ultra',
     errors: {
-      emptyUrl: 'Lütfen web sitenizin URL\'sini girin.',
-      invalidUrl: 'Geçerli bir URL girin. Örn: websiteniz.com',
+      emptyUrl: 'Lütfen bir web sitesi adresi girin',
+      invalidUrl: 'Lütfen geçerli bir web sitesi adresi girin (örn: example.com)',
       invalidEmail: 'Geçerli bir e-posta adresi girin.',
       timeout: 'Çok fazla deneme. {minutes} dakika sonra tekrar deneyin.',
+      insufficientMini: 'Yetersiz Mini kredi. Profilinizden ek kredi alabilirsiniz.',
+      insufficientUltra: 'Yetersiz Ultra kredi. Lütfen bakiye yükleyin.',
+      analysisGenericError: 'Analiz başlatılamadı',
     },
+    analysisSuccess: 'Analiz talebiniz başarıyla alındı. Raporunuz hazırlandığında bilgilendirileceksiniz.',
   },
   croxUltra: {
     badge: 'CRO-X ULTRA',
-    title: 'CRO-X ULTRA ile Tam Kapsamlı Analiz',
-    subtitle: 'İşletmenizin dijital varlığını 360° analiz eden, stratejik yol haritası çıkartan premium analiz paketi.',
-    price: '249.00 TL',
-    summaryLabel: '+ 30 sayfa özet',
-    bannerTitle: 'CRO-X AI ULTRA',
-    bannerSubtext: 'Geleceğinizi analiz ile tecrübe edin.',
+    title: 'CRO-X Ultra Listenin Hepsi!',
+    subtitle: 'İşletmenizin dijital varlığını 360° analiz eden, stratejik yol haritası çıkartan premium analiz motoru.',
+    moreTitle: 'Daha Fazlası',
     items: [
-      'Rakip Analizi & Kıyaslama',
-      'Dönüşüm Hunisi (Funnel) Haritalama',
-      'Isı Haritası (Heatmap) Yorumu',
-      'Tıklama Haritası Analizi',
+      'Gelişmiş CRO Analizi',
+      'Kullanıcı Davranış Analizi',
+      'Dönüşüm Hunisi Takibi',
+      'Isı Haritası Entegrasyonu',
+      'Hız ve Performans Testi',
+      'A/B Testi Önerileri',
+      'Kullanılabilirlik Denetimi',
+      'Mobil Uyumluluk Analizi',
+      'SEO ve İçerik Kontrolü',
       'Kaydırma (Scroll) Derinliği Ölçümü',
       'Form Alanı Bırakma Analizi',
       'Mobil Kullanılabilirlik Denetimi',
@@ -389,21 +695,24 @@ const tr: Translations = {
       'Marka Sesi ve Tutarlılık Kontrolü',
       '12 Aylık Dönüşüm Yol Haritası'
     ],
-    cta: 'CRO-X Ultra',
-    problems: [
-      'Reklam harcıyoruz ama satış gelmiyor',
-      'Ziyaretçiler siteye girip hemen çıkıyor',
-      'Sepet terk oranlarımız çok yüksek',
-      'Mobil kullanıcılar ödeme yapamıyor',
-      'Rakiplerimiz bizden daha hızlı büyüyor',
-      'Hangi sayfanın müşteri kaçırdığını bilmiyoruz',
-      'Verilerimiz var ama yorumlayamıyoruz',
-      'Sitemiz çok yavaş yükleniyor',
-      'Kullanıcılar güven duymadığı için almıyor',
-      'Ödeme adımları çok karmaşık',
-      'Dönüşüm oranlarını nasıl artıracağımızı bilmiyoruz',
-      'Sosyal kanıtlarımız eksik veya etkisiz'
-    ],
+    ultraBox: {
+      title: 'CRO-X AI ULTRA',
+      subtitle: 'Geleceğinizi analiz ile tecrübe edin.',
+      price: '249 TL',
+      credit: '2 Kredi Hakkı.',
+    },
+    miniBox: {
+      title: 'CRO-X AI MINI',
+      subtitle: 'Dijital varlığınızı analiz edin, farkı görün.',
+      price: 'Ücretsiz',
+      credit: '1 Kredi Hakkı.',
+      cta: 'ANALİZ AL',
+    },
+    cta: 'ŞİMDİ DENE',
+    leaksTitle: 'Sizi {highlight} uğratan sebepler ney?',
+    leaksHighlight: 'zarara',
+    leaksSubtitle: "İşletmelerin %92'si aşağıdaki 12 temel sorundan en az 5 tanesini paylaşıyor. Sizin sitenizdeki engel hangisi?",
+    leaksDescription: "Yukarıdaki tüm sızıntıları gerçek zamanlı verilerle kapatıyoruz. Sadece analiz etmiyor, dönüşüm oranlarınızı katlayacak bir yol haritası sunuyoruz.\n\nTek yapmanız gereken dijital bir adres girmek.",
   },
   trustSignals: {
     stats: [
@@ -419,7 +728,7 @@ const tr: Translations = {
     subtitle: 'E-ticaretten kurumsala, CRO analizinden sürekli optimizasyona — ihtiyacınıza özel çözümler.',
     items: [
       { title: 'CRO Analizi', description: 'Sitenizin dönüşüm açıklarını tespit edin ve gelir kaybını durdurun.', cta: 'Ücretsiz Analiz' },
-      { title: 'E-Ticaret Çözümleri', description: 'Satış üreten, dönüşüm odaklı e-ticaret altyapısı kurun.', cta: 'Detaylı Bilgi' },
+      { title: 'E-Ticaret Çolsun', description: 'Satış üreten, dönüşüm odaklı e-ticaret altyapısı kurun.', cta: 'Detaylı Bilgi' },
       { title: 'Kurumsal Web Sitesi', description: 'Lead üreten, güven veren kurumsal web sitesi oluşturun.', cta: 'Detaylı Bilgi' },
     ],
   },
@@ -451,7 +760,47 @@ const tr: Translations = {
       { title: 'Ücretsiz Analiz', description: 'Web sitenizin URL\'sini girin, CRO analizinizi başlatalım.' },
       { title: 'WhatsApp Görüşme', description: 'Analiz sonuçlarını birlikte değerlendirelim.' },
       { title: 'Strateji & Teklif', description: 'Size özel dönüşüm stratejisi ve teklif hazırlayalım.' },
-      { title: 'Uygulama & Sonuç', description: 'Stratejiyi uygulayalım, sonuçları birlikte takip edelim.' },
+      { title: 'Sonuçlar', description: 'Analiz tamamlandığında aksiyon planınızla birlikte büyüme yolculuğunuz başlar.' },
+    ],
+  },
+  workflow: {
+    title: 'Retrainer',
+    highlight: 'Webtier',
+    subtitle1: 'Webtier olarak, dijital dünyadaki varlığınızı sadece bir web sitesi olmanın ötesine taşıyoruz. Geliştirdiğimiz CRO-X AI teknolojisi ve veri odaklı stratejilerimizle, markanızın büyüme potansiyelini maksimize eden uçtan uca bir dönüşüm yolculuğu kurguluyoruz.',
+    subtitle2: 'Her projemizde, kullanıcı davranışlarını milimetrik hassasiyetle analiz ederek, stratejimizi sadece tahminlerle değil, somut verilerle şekillendiriyoruz.',
+    exploreLabel: 'Keşfet',
+    exploreHint: 'Kartlara tıklayarak süreci keşfedin',
+    steps: [
+      {
+        id: 'p1',
+        title: 'CRO-X AI Analizi',
+        description: 'Geliştirdiğimiz CRO-X AI teknolojimizle web sitenizin kullanıcı deneyimini derinlemesine analiz ediyor, dönüşüm hunisindeki darboğazları milimetrik hassasiyetle belirliyoruz. Veri odaklı yaklaşımımızla, kullanıcılarınızın nerede ve neden sitenizi terk ettiğini ortaya çıkararak gelir kaybını anında durduruyoruz.',
+      },
+      {
+        id: 'p2',
+        title: 'CRO-X Ultra',
+        description: 'Dijital varlığınızın tam potansiyelini ortaya çıkaran kapsamlı strateji paketi. Rakip analizinden marka konumlandırmasına, özel raporumuzla dönüşüm yol haritanızı milimetrik hassasiyetle çiziyoruz.',
+      },
+      {
+        id: 'p3',
+        title: 'Webtier E-Ticaret',
+        description: 'Sadece bir web sitesi değil, yüksek cirolar ve sürdürülebilir büyüme için tasarlanmış bir satış makinesi. Her detayı satış psikolojisine göre optimize edilmiş profesyonel e-ticaret altyapıları ile e-ticaret sitenizi gelire dönüştürüyoruz.',
+      },
+      {
+        id: 'p4',
+        title: 'Webtier CRO Optimizasyonu',
+        description: 'Sürekli gelişim, sürekli artış. Mevcut trafiğinizi reklamlara ek bütçe ayırmadan daha fazla müşteriye dönüştürmek için veri odaklı A/B testleri ve kullanıcı davranış analizleri ile sitenizi her gün daha iyiye taşıyoruz.',
+      },
+      {
+        id: 'p5',
+        title: 'Danışmanlık ve Teklifler',
+        description: 'İşletmenize özel butik çözümler ve büyüme stratejileri. Mevcut dijital stratejinizi birlikte değerlendiriyor, büyüme hedeflerinize en hızlı ulaşmanızı sağlayacak performansa dayalı iş birliği modellerini kurguluyoruz.',
+      },
+      {
+        id: 'p6',
+        title: 'Limitlerin Ötesinde',
+        description: 'Webtier, verinin gücüne ve yapay zekanın hassasiyetine inanan bir teknoloji ve strateji ajansıdır. Limitlerin ötesinde mottomuzla, her işletmenin saklı kalmış potansiyelini verilere ve yapay zekaya dayanarak açığa çıkarıyoruz.',
+      },
     ],
   },
   whyUs: {
@@ -497,9 +846,9 @@ const tr: Translations = {
     subtitle: 'Merak ettiğiniz konularda size yardımcı olalım.',
     items: [
       { question: 'CRO nedir ve neden önemlidir?', answer: 'CRO (Conversion Rate Optimization), web sitenize gelen ziyaretçilerin müşteriye dönüşme oranını artırma sürecidir. Reklam harcamalarınız aynı kalırken, daha fazla satış ve lead elde etmenizi sağlar.' },
-      { question: 'Ücretsiz CRO analizi neleri kapsar?', answer: 'Ücretsiz analizimiz sitenizin dönüşüm hunisini, kullanıcı deneyimini, CTA etkinliğini, mobil uyumluluğunu ve sayfa hızını kapsar. Detaylı bir rapor ile iyileştirme önerilerimizi sunarız.' },
+      { question: 'Ücretsiz CRO analizi neleri kapsar?', answer: 'Ücretsiz analizimiz sitenizin dönüşüm hunisini, kullanıcı deneyimini, CTA etkinliğini, mobil uyumluluğunu ve sayfa hızını kapsar. Detaylı bir rapor ile iyileştirme önerilerimizi sunarer.' },
       { question: 'Analiz sonuçları ne kadar sürede gelir?', answer: 'Ücretsiz CRO analiziniz genellikle 24-48 saat içinde hazır olur. Detaylı raporu WhatsApp üzerinden sizinle paylaşırız.' },
-      { question: 'E-ticaret sitemde dönüşüm oranım neden düşük?', answer: 'Düşük dönüşüm oranının birçok sebebi olabilir: karmaşık satın alma akışı, yetersiz güven sinyalleri, yavaş sayfa hızı, mobil uyumsuzluk veya zayıf CTAlar. CRO analizi ile tam olarak nerelerde kayıp yaşadığınızı tespit ederiz.' },
+      { question: 'E-ticaret sitemde dönüşüm oranım neden düşük?', answer: 'Düşük dönüşüm oranının birçok sebebi olabilir: karmaşık satın alma akışı, yetersiz güven sinyalleri, yavaş sayfa hızı, mobil uyumsuzluk veya zayıf CTAlar. CRO analiz ile tam olarak nerelerde kayıp yaşadığınızı tespit ederiz.' },
       { question: 'Shopify/WooCommerce ile çalışıyor musunuz?', answer: 'Evet, tüm popüler e-ticaret platformları ile çalışıyoruz. Shopify, WooCommerce, Trendyol entegrasyonlu siteler ve özel altyapılar dahil.' },
       { question: 'Sıfırdan e-ticaret sitesi kurulumu ne kadar sürer?', answer: 'Projenin kapsamına göre 4-8 hafta arasında değişir. Anahtar teslim, dönüşüm odaklı bir e-ticaret sitesi kuruyoruz.' },
       { question: 'Kurumsal sitemin neden satış üretmediğini nasıl anlarım?', answer: 'Ücretsiz CRO analizimiz ile sitenizin ziyaretçi davranışlarını, form dönüşümlerini ve kullanıcı akışını inceliyoruz. Sitenizin nerede müşteri kaybettiğini net olarak görürsünüz.' },
@@ -700,10 +1049,31 @@ const tr: Translations = {
       { question: 'Shopify/WooCommerce ile çalışıyor musunuz?', answer: 'Evet, tüm popüler e-ticaret platformları ile çalışıyoruz. Shopify, WooCommerce, Trendyol entegrasyonlu siteler ve özel altyapılar dahil.' },
       { question: 'Mevcut sitemin optimizasyonu ne kadar sürer?', answer: 'CRO Optimize paketi genellikle 2-4 hafta sürer. İlk iyileştirmeler 1-2 hafta içinde uygulanmaya başlar.' },
       { question: 'Sıfırdan e-ticaret sitesi kurulumu ne kadar sürer?', answer: 'Projenin kapsamına göre 4-8 hafta arasında değişir. Anahtar teslim, dönüşüm odaklı bir e-ticaret sitesi kuruyoruz.' },
-      { question: 'Aylık retainer\'ı iptal edebilir miyim?', answer: 'Evet, aylık retainer paketimiz esnek bir yapıdadır. İstediğiniz zaman iptal edebilirsiniz, herhangi bir taahhüt yoktur.' },
+      { question: 'Aylık retainer\'ı iptal edebilir miyim?', answer: 'Hizmetimiz aylık abonelik şeklindedir. İstediğiniz zaman iptal edebilir veya dondurabilirsiniz. Taahhüt zorunluluğu yoktur.' },
     ],
     ctaTitle: 'E-Ticaret Sitenizi',
     ctaTitleHighlight: 'Dönüştürmeye',
+    titleSuffix: 'Hazır mısınız?',
+    hero: {
+      brandName: 'SATIŞ',
+      tagline1: 'E-Ticarette Fark',
+      tagline2: 'Yaratan Altyapı.',
+      cardHeading: 'Dönüşümü artırın.',
+      cardDescription: 'Webtier, e-ticaret sitenizi ziyaretçiden müşteriye dönüştüren stratejik tasarım ve CRO optimizasyonu ile büyümenizi hızlandırır.',
+      metricLabel: 'Aylık Ciro ₺',
+      ctaHeading: 'E-Ticarette büyüyün.',
+      ctaDescription: 'Ücretsiz CRO analizi ile başlayın. E-ticaret sitenizin gerçek potansiyelini keşfedin.',
+      ctaAnalysisLabel: 'CRO Analizi Al',
+      ctaContactLabel: 'İletişime Geç',
+      badge1Title: '+34.2% Büyüme',
+      badge1Sub: 'Bu ay gerçekleşti',
+      badge2Title: 'Sepet Optimizasyonu',
+      badge2Sub: 'CRO aktif',
+      storeLabel: 'Mağaza',
+      salesLabel: 'Satışlar',
+    },
+    ctaDescription: 'Ücretsiz CRO analizi ile başlayın. E-ticaret sitenizin gerçek potansiyelini keşfedin.',
+    ctaTrustNote: 'Kredi kartı gerekmez • 2 dakikada sonuç • Uzman analizi',
   },
   corporate: {
     tag: 'Kurumsal Web Tasarım',
@@ -750,7 +1120,170 @@ const tr: Translations = {
       { question: 'Sonradan içerik ekleyebilir miyim?', answer: 'Evet, tüm sitelerimiz kolay yönetilebilir yapıda kurulur. Gerekirse CMS entegrasyonu da yapılabilir.' },
     ],
     ctaTitle: 'Kurumsal Sitenizi',
-    ctaTitleHighlight: 'Dönüştürmeye',
+    ctaTitleHighlight: 'Dönüştürün',
+    heroTitle: 'Marka Olmak Mı?',
+    shimmerTitle: 'Dijital dünyada fark yaratın.',
+    shimmerSubtitle: 'Profesyonel kurumsal web tasarımı ile markanızı dijitalde güçlü bir şekilde konumlandırın. İlk izlenim, kalıcı etki.',
+    ctaButton: 'Teklif Al',
+    featuresSubtitle: 'Kurumsal web sitenizde sunduğumuz kapsamlı hizmetler',
+    carouselSlides: [
+      {
+        id: 'design',
+        title: 'Premium Tasarım',
+        description: 'Marka kimliğinizi yansıtan, benzersiz ve modern kurumsal web tasarımı. İlk izlenim her şeydir.',
+        features: [
+          'Özel UI/UX tasarım süreci',
+          'Marka odaklı renk paleti',
+          'Profesyonel tipografi',
+          'Animasyonlu etkileşimler',
+          'Responsive tasarım',
+        ],
+      },
+      {
+        id: 'seo',
+        title: 'SEO & Performans',
+        description: "Google'da üst sıralarda yer almanız için teknik SEO ve sayfa performansı optimizasyonu.",
+        features: [
+          'On-page SEO optimizasyonu',
+          'Core Web Vitals uyumu',
+          'Schema markup entegrasyonu',
+          'Sitemap ve robots.txt',
+          'Sayfa hızı optimizasyonu',
+        ],
+      },
+      {
+        id: 'conversion',
+        title: 'Dönüşüm Odaklı',
+        description: 'Ziyaretçileri müşteriye dönüştüren stratejik tasarım ve CTA optimizasyonu.',
+        features: [
+          'CTA stratejik yerleşimi',
+          'Lead yakalama formları',
+          'Güven sinyalleri entegrasyonu',
+          'Kullanıcı yolculuğu planlaması',
+          'A/B test altyapısı',
+        ],
+      },
+      {
+        id: 'tech',
+        title: 'Modern Teknoloji',
+        description: 'En güncel web teknolojileri ile hızlı, güvenli ve ölçeklenebilir altyapı.',
+        features: [
+          'Next.js / React altyapısı',
+          'Headless CMS entegrasyonu',
+          'SSL sertifikası',
+          'CDN üzerinden hızlı dağıtım',
+          'Otomatik yedekleme',
+        ],
+      },
+    ],
+    checklistTitle: 'Her Paketin',
+    checklistHighlight: 'İçeriği',
+    ctaDescription: 'Ücretsiz CRO analizi ile başlayın. Kurumsal sitenizin lead üretme potansiyelini keşfedin.',
+    ctaTrustNote: 'Kredi kartı gerekmez • 2 dakikada sonuç • Uzman analizi',
+  },
+  admin: {
+    loginTitle: 'Webtier Admin',
+    loginSubtitle: 'Yönetici paneline giriş yapın',
+    emailLabel: 'E-posta',
+    passwordLabel: 'Şifre',
+    loginButton: 'Giriş Yap',
+    loggingIn: 'Giriş yapılıyor...',
+    unauthorizedNote: 'Webtier Admin Panel — Yetkisiz erişim yasaktır.',
+    loginFailed: 'Giriş başarısız.',
+    serverError: 'Sunucu hatası. Lütfen tekrar deneyin.',
+    analysesTitle: 'Analiz Siparişleri',
+    usersTitle: 'Kullanıcı Yönetimi',
+    settingsTitle: 'Ayarlar',
+  },
+  auth: {
+    signupTitle: 'Hesap Oluştur',
+    signupSubtitle: 'Webtier ailesine katılın ve dijital varlığınızı analiz etmeye bugün başlayın.',
+    signupButtonText: 'Hesap Oluştur',
+    loginTitleText: 'Giriş Yap',
+    loginSubtitle: 'Hoş geldiniz! Hesabınıza giriş yaparak analizlerinizi yönetin.',
+    loginButtonText: 'Giriş Yap',
+    emailLabel: 'Email Adresi',
+    passwordLabel: 'Şifre',
+    emailPlaceholder: 'E-posta adresinizi girin',
+    passwordPlaceholder: 'Şifrenizi girin',
+    rememberMe: 'Oturumu açık tut',
+    alreadyHaveAccount: 'Zaten bir hesabınız var mı?',
+    noAccountYet: 'Henüz bir hesabınız yok mu?',
+    forgotPassword: 'Şifremi Unuttum',
+    orContinueWith: 'veya şununla devam et',
+    googleContinue: 'Google ile devam et',
+    trustedBy: '10,000+ KULLANICI TARAFINDAN GÜVENİLİR',
+    resetPasswordSoonText: 'Şifre sıfırlama özelliği yakında aktif olacaktır. Lütfen destek ile iletişime geçin.',
+    welcomeMessage: 'Başarıyla giriş yapıldı! Hoş geldiniz.',
+    signupFailedText: 'Kayıt başarısız. Lütfen bilgilerinizi kontrol edin.',
+    loginFailedText: 'Giriş başarısız. Lütfen bilgilerinizi kontrol edin.',
+    oauthErrors: {
+      failed: 'Google ile giriş başarısız oldu. Lütfen tekrar deneyin.',
+      cancelled: 'Google girişi iptal edildi.',
+      config: 'Sunucu yapılandırma hatası. Lütfen daha sonra tekrar deneyin.',
+      generic: 'Bir hata oluştu. Lütfen tekrar deneyin.',
+    },
+    testimonials: [
+      { name: 'Burak Yılmaz', text: 'CRO-X Ultra analizi sonrası sepet terk oranımız %40 düştü. İnanılmaz sonuçlar.' },
+      { name: 'Ayşe Kaya', text: 'Webtier ile sitemiz sadece güzel değil, aynı zamanda gerçek bir satış makinesi haline geldi.' },
+      { name: 'Can Demir', text: 'A/B testleri sayesinde lead kazanım maliyetimizi tam yarıya indirmeyi başardık.' },
+      { name: 'Merve Aras', text: 'Dönüşüm odaklı tasarım yaklaşımı gerçekten fark yaratıyor. Teşekkürler Webtier!' },
+      { name: 'Emre Koç', text: 'Müşterilerimize artık Webtier Retrainer ile sürdürülebilir büyüme vaat edebiliyoruz.' },
+      { name: 'Selin Deniz', text: 'Kurumsal sitemiz artık sadece bir kartvizit değil, gerçek bir lead jeneratörü.' },
+      { name: 'Kerem Öztürk', text: 'Dönüşüm oranlarındaki artış doğrudan ROI\'mize yansıdı. Her kuruşuna kesinlikle değer.' },
+      { name: 'Deniz Yıldız', text: 'Shopify optimizasyonları sonrası sayfa hızımız ve dönüşümümüz inanılmaz arttı.' },
+    ],
+  },
+  pricing: {
+    title: 'Size En Uygun Planı Seçin',
+    subtitle: 'Şeffaf fiyatlandırma, maksimum dönüşüm. İşletmenizin ölçeğine göre optimize edilmiş paketler.',
+    monthly: 'Aylık',
+    yearly: 'Yıllık',
+    getQuote: 'Teklif Al',
+    popular: 'Popüler',
+    yearlyNote: 'yıllık planlama için',
+    monthlyNote: 'paket detayları için',
+    totalPrice: 'Toplam Ücret',
+    plans: [
+      {
+        name: 'Starter',
+        description: 'Küçük işletmeler ve yeni başlayanlar için ideal CRO başlangıç paketi.',
+        includes: [
+          'Temel CRO Analizi',
+          'Ayda 1 A/B Testi',
+          'Isı Haritası Takibi',
+          'Haftalık Raporlama',
+        ],
+      },
+      {
+        name: 'Professional',
+        description: 'Büyüyen işletmeler için gelişmiş optimizasyon özellikleri.',
+        includes: [
+          'Starter Paketindeki Her Şey',
+          'Ayda 3 A/B Testi',
+          'Kullanıcı Kayıt Analizi',
+          'Dönüşüm Hunisi Optimizasyonu',
+          'Öncelikli Destek',
+        ],
+      },
+      {
+        name: 'Enterprise',
+        description: 'Büyük ölçekli operasyonlar için tam kapsamlı CRO çözümü.',
+        includes: [
+          'Professional Paketindeki Her Şey',
+          'Sınırsız A/B Testi',
+          'Özel Strateji Danışmanlığı',
+          '7/24 Teknik Destek',
+          'Özel Entegrasyonlar',
+        ],
+      },
+    ],
+  },
+  aiInput: {
+    live: 'CANLI',
+    maintenance: 'BAKIMDA',
+    waiting: 'BEKLENİYOR',
+    analyze: 'Analiz Et',
   },
   retrainer: {
     tag: 'CRO-X Uygulama Hizmeti',
@@ -759,6 +1292,12 @@ const tr: Translations = {
     subtitle: 'CRO-X AI analiz sonuçlarını dijital varlıklarınıza uyguluyoruz. Abonelik bazlı aylık optimizasyon hizmeti ile dönüşüm oranlarınızı sürekli artırın.',
     ctaPrimary: 'Hemen Başvur',
     ctaSecondary: 'Detaylı Bilgi Al',
+    box: {
+      title: 'Webtier Retrainer',
+      subtitle: 'KOBI\'lere uygun yaklaşımlar, markalara çığır açtıracak temaslar.',
+      price: 'Önce bir planlayalım',
+      cta: 'BİLGİ AL',
+    },
     features: [
       {
         title: 'CRO-X Uygulama',
@@ -795,6 +1334,79 @@ const tr: Translations = {
       { question: 'Aylık retainer ücreti neye göre belirleniyor?', answer: 'Sitenizin trafiği, sayfa sayısı ve optimizasyon derinliğine göre size özel bir plan sunuyoruz.' },
       { question: 'İstediğim zaman iptal edebilir miyim?', answer: 'Evet, Retrainer hizmeti taahhütsüzdür. Bir sonraki ayın ödemesi yapılmadığında hizmet durdurulur.' },
     ],
+    timelineItems: [
+      {
+        title: 'CRO-X Raporu',
+        date: 'Adım 1',
+        content: 'CRO-X AI analizinden gelen kapsamlı rapor ve öneriler değerlendirilir, öncelikli aksiyonlar belirlenir.',
+        category: 'Analiz',
+      },
+      {
+        title: 'Uygulama',
+        date: 'Adım 2',
+        content: 'Rapordaki tüm aksiyonlar web sitenize ve dijital varlıklarınıza profesyonel ekibimizle uygulanır.',
+        category: 'Uygulama',
+      },
+      {
+        title: 'Takip & Analiz',
+        date: 'Adım 3',
+        content: 'Uygulanan değişikliklerin performansı aylık olarak takip edilir, raporlanır ve değerlendirilir.',
+        category: 'Takip',
+      },
+      {
+        title: 'Optimizasyon',
+        date: 'Adım 4',
+        content: 'Veriler ışığında yeni iyileştirme fırsatları tespit edilir ve sürekli olarak uygulanır.',
+        category: 'Optimizasyon',
+      },
+      {
+        title: 'Büyüme',
+        date: 'Adım 5',
+        content: 'Dönüşüm oranlarınız aydan aya artar, sürdürülebilir büyüme ve gelir artışı sağlanır.',
+        category: 'Büyüme',
+      },
+    ],
+    bentoTabs: [
+      {
+        label: 'Uygulama',
+        title: 'CRO-X Uygulama Hizmeti',
+        description: 'CRO-X AI raporundaki tüm önerileri web sitenize, e-ticaret altyapınıza ve dijital varlıklarınıza profesyonel ekibimizle uyguluyoruz.',
+        features: [
+          'Web sitesi teknik güncellemeler',
+          'UX/UI iyileştirmeleri',
+          'CTA optimizasyonu',
+          'Mobil uyumluluk düzenlemeleri',
+          'Sayfa hızı optimizasyonu',
+        ],
+      },
+      {
+        label: 'Aylık Takip',
+        title: 'Aylık Optimizasyon Döngüsü',
+        description: 'Her ay düzenli olarak performans takibi yapar, yeni iyileştirme fırsatlarını tespit eder ve dijital varlıklarınıza uygularız.',
+        features: [
+          'Aylık performans raporu',
+          'Yeni optimizasyon önerileri',
+          'A/B test stratejileri',
+          'Kullanıcı davranış analizi',
+          'Dönüşüm hunisi takibi',
+        ],
+      },
+      {
+        label: 'Büyüme',
+        title: 'Sürekli Büyüme Motoru',
+        description: 'Abonelik süresi boyunca dijital varlıklarınız sürekli güncellenir, dönüşüm oranlarınız aydan aya artar.',
+        features: [
+          'Sürdürülebilir dönüşüm artışı',
+          'Rakip analizi ve kıyaslama',
+          'Trend adaptasyonu',
+          'Proaktif iyileştirmeler',
+          'Esnek abonelik modeli',
+        ],
+      },
+    ],
+    includedTitle: 'Neler',
+    includedHighlight: 'Dahil?',
+    includedSubtitle: 'Retrainer hizmetinin kapsamını keşfedin',
   },
   contact: {
     title: 'İletişime Geçin',
@@ -824,6 +1436,134 @@ const tr: Translations = {
     termsLink: 'Kullanım Şartları',
     privacyLink: 'Gizlilik Politikası',
     and: 've',
+  },
+  dashboard: {
+    sidebar: {
+      system: 'Sistem',
+      dashboard: 'CRO-X AI Paneli',
+      analysis: 'Analizler & Belgeler',
+      backlog: 'Backlog',
+      credits: 'Kredi Yükle',
+      notifications: 'Bildirimler',
+      profile: 'Profil',
+      home: 'Anasayfa',
+      verifiedMember: 'Doğrulanmış Üye',
+      notVerified: 'Doğrulanmamış',
+      support: 'Destek',
+      logout: 'Çıkış Yap',
+    },
+    header: {
+      panel: 'PANEL',
+      greeting: 'Merhaba, {name}',
+      credits: 'KREDİ',
+      verificationStatus: 'Doğrulama Durumu',
+      pendingVerification: 'Doğrulama Bekliyor',
+    },
+    overview: {
+      miniTitle: 'CRO-X MINI',
+      ultraTitle: 'CRO-X ULTRA',
+      miniCredit: '1 KREDİ',
+      ultraCredit: '1 KREDİ',
+      placeholderMini: 'URL girin (Örn: example.com)',
+      placeholderUltra: 'Detaylı analiz için URL girin...',
+      insufficientCredits: 'Yetersiz kredi. Lütfen bakiye yükleyin.',
+      urlRequired: 'URL gerekli',
+      invalidUrl: 'Geçersiz URL',
+      analysisRequested: 'Mini analiz talebiniz alındı!',
+      ultraAnalysisRequested: 'Ultra analiz talebiniz alındı! Uzmanlarımız incelemeye başlıyor.',
+      ultraBannerTitle: 'Ultra Analiz Paketleri',
+      ultraBannerDesc: 'Sitenizi uzmanlarımız incelesin, dönüşümlerinizi uçurun.',
+      ultraBannerButton: 'Hemen Yükle',
+    },
+    verification: {
+      bannerTitle: 'E-posta Adresinizi Doğrulayın',
+      bannerDesc: 'Analiz alabilmek için e-posta adresinizi doğrulayın.',
+      bannerButton: 'Doğrulama Gönder',
+    },
+    backlog: {
+      title: 'Backlog',
+      subtitle: 'Planlanan ve devam eden geliştirme süreçleri.',
+      noTasks: "Henüz backlog task'ı yok.",
+      soon: 'Ekibimiz yakında görevler ekleyecek.',
+      priorities: {
+        low: 'Düşük',
+        medium: 'Orta',
+        high: 'Yüksek',
+        critical: 'Kritik',
+      },
+      statuses: {
+        todo: 'Yapılacak',
+        inProgress: 'Devam Ediyor',
+        review: 'İncelemede',
+        done: 'Tamamlandı',
+        cancelled: 'İptal Edildi',
+      },
+    },
+    credits: {
+      title: 'Kredi Yükle',
+      subtitle: 'CRO-X Ultra paketleri ile profesyonel raporlar alın.',
+      starter: 'BAŞLANGIÇ',
+      popular: 'POPÜLER',
+      advantage: 'AVANTAJLI',
+      features: ['Uzman İncelemesi', 'Görüntülü Rapor', 'Eylem Planı'],
+      selectButton: 'Paketi Seç',
+      packageDescription: '{count} Adet Ultra Analiz',
+    },
+    purchaseModal: {
+      title: 'Ultra Kredi Satın Al',
+      subtitle: 'İşletmeniz için derinlemesine Ultra Analiz raporları oluşturmak üzere kredi bakiyenizi güncelleyin.',
+      popular: 'EN POPÜLER',
+      payButton: 'Ödeme Yap',
+      loading: 'Yükleniyor...',
+      securePayment: 'PayTR Güvencesi',
+      sslInfo: '256-bit SSL',
+      paymentError: 'Ödeme sırasında bir hata oluştu.',
+      packageLabel: '{count} Kredi Paketi',
+      errorGeneric: 'Ödeme başlatılamadı',
+      securePaymentTitle: 'Güvenli Ödeme',
+      paymentIframeTitle: 'PayTR Ödeme',
+    },
+    auth: {
+      login: 'Giriş Yap',
+    },
+    notifications: {
+      title: 'Bildirimler',
+      subtitle: 'Önemli güncellemeler ve analiz sonuçları.',
+      empty: 'Henüz bildiriminiz bulunmuyor.',
+    },
+    settings: {
+      title: 'Hesap Ayarları',
+      subtitle: 'Kişisel bilgilerinizi yönetin.',
+      personalInfo: 'Kişisel Bilgiler',
+      firstName: 'Ad',
+      lastName: 'Soyad',
+      email: 'E-posta',
+      saveButton: 'Kaydet',
+      security: 'Güvenlik',
+      securityDesc: 'Hesap güvenliğiniz için periyodik olarak şifrenizi güncellemenizi öneririz.',
+      resetPasswordButton: 'Şifre Sıfırlama Talep Et',
+      resetRequested: 'Sıfırlama Maili Gönderildi',
+      resetCheckEmail: 'Lütfen e-posta kutunuzu kontrol edin.',
+      logoutTitle: 'Oturumu Kapat',
+      logoutDesc: 'Hesabınızdan güvenli bir şekilde çıkış yapın.',
+      logoutButton: 'Çıkış Yap',
+      updateSuccess: 'Profil bilgileriniz başarıyla güncellendi!',
+      updateError: 'Profil güncellenirken bir hata oluştu.',
+      resetError: 'Sıfırlama talebi sırasında bir hata oluştu.',
+    },
+    analysis: {
+      historyTitle: 'Geçmiş Analizler',
+      totalLabel: 'Toplam',
+      noAnalyses: 'Henüz analiziniz yok',
+      startFirst: 'Hemen ilk analizinizi başlatarak sitenizin dönüşüm potansiyelini keşfedin.',
+      statusCompleted: 'Tamamlandı',
+      statusPending: 'Bekliyor',
+      statusProcessing: 'İşleniyor',
+      viewReport: 'Rapor',
+      loadError: 'Analizler yüklenemedi',
+      genericError: 'Bir hata oluştu',
+      documentsTitle: 'Dökümanlar & Linkler',
+    },
   },
 };
 

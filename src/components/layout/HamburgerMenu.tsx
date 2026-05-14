@@ -83,7 +83,7 @@ export default function HamburgerMenu({ open, onClose }: HamburgerMenuProps) {
               <button
                 onClick={onClose}
                 className="flex h-11 w-11 items-center justify-center rounded-2xl bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/5 text-[var(--color-text-muted)] transition-all hover:bg-black/10 dark:hover:bg-white/10 hover:rotate-90 active:scale-90"
-                aria-label="Kapat"
+                aria-label={t.nav.close}
               >
                 <X className="h-6 w-6" />
               </button>
@@ -91,7 +91,7 @@ export default function HamburgerMenu({ open, onClose }: HamburgerMenuProps) {
 
             {/* Menu Items - Staggered */}
             <div className="relative flex-1 overflow-y-auto px-6 py-4 space-y-2">
-              <div className="text-[10px] uppercase tracking-[0.2em] font-black text-slate-400 mb-6 px-3">Navigasyon</div>
+              <div className="text-[10px] uppercase tracking-[0.2em] font-black text-slate-400 mb-6 px-3">{t.nav.navigation}</div>
               <div className="space-y-3">
                 {menuItems.map((item, index) => (
                   <motion.div
@@ -113,7 +113,7 @@ export default function HamburgerMenu({ open, onClose }: HamburgerMenuProps) {
                       </div>
                       <div className="flex flex-col">
                         <span className="text-lg font-black text-[var(--color-text)] leading-none">{t.nav[item.id as keyof typeof t.nav]}</span>
-                        <span className="text-[10px] text-slate-400 uppercase tracking-wider font-bold mt-1">Keşfet</span>
+                        <span className="text-[10px] text-slate-400 uppercase tracking-wider font-bold mt-1">{t.workflow.exploreLabel}</span>
                       </div>
                     </Link>
                   </motion.div>
@@ -122,7 +122,7 @@ export default function HamburgerMenu({ open, onClose }: HamburgerMenuProps) {
 
               {/* Language Selector */}
               <div className="mt-12 pt-8 border-t border-black/5 dark:border-white/5">
-                <div className="text-[10px] uppercase tracking-[0.2em] font-black text-slate-400 mb-6 px-3">Tercihler</div>
+                <div className="text-[10px] uppercase tracking-[0.2em] font-black text-slate-400 mb-6 px-3">{t.nav.preferences}</div>
                 <div className="px-3">
                   <button
                     onClick={() => setLangOpen(!langOpen)}
@@ -136,7 +136,7 @@ export default function HamburgerMenu({ open, onClose }: HamburgerMenuProps) {
                         <Globe className="h-5 w-5" />
                       </div>
                       <div className="text-left">
-                        <div className="text-[10px] text-slate-400 uppercase font-black tracking-widest">Dil Seçimi</div>
+                        <div className="text-[10px] text-slate-400 uppercase font-black tracking-widest">{t.nav.languageSelection}</div>
                         <div className="text-sm font-black uppercase text-[var(--color-text)]">
                            {currentLang.label} ({currentLang.code})
                         </div>

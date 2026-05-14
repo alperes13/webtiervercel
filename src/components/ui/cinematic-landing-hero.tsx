@@ -157,6 +157,16 @@ export interface CinematicHeroProps extends React.HTMLAttributes<HTMLDivElement>
   metricLabel?: string;
   ctaHeading?: string;
   ctaDescription?: string;
+  badge1Title?: string;
+  badge1Sub?: string;
+  badge2Title?: string;
+  badge2Sub?: string;
+  ctaAnalysisLabel?: string;
+  ctaContactLabel?: string;
+  ctaAnalysisSub?: string;
+  ctaContactSub?: string;
+  storeLabel?: string;
+  salesLabel?: string;
 }
 
 export function CinematicHero({
@@ -173,6 +183,16 @@ export function CinematicHero({
   metricLabel = "Aylık Ciro ₺",
   ctaHeading = "E-Ticarette büyüyün.",
   ctaDescription = "Ücretsiz CRO analizi ile başlayın. E-ticaret sitenizin gerçek potansiyelini keşfedin.",
+  badge1Title = "+34.2% Büyüme",
+  badge1Sub = "Bu ay gerçekleşti",
+  badge2Title = "Sepet Optimizasyonu",
+  badge2Sub = "CRO aktif",
+  ctaAnalysisLabel = "CRO Analizi Al",
+  ctaContactLabel = "İletişime Geç",
+  ctaAnalysisSub = "Ücretsiz",
+  ctaContactSub = "Hemen",
+  storeLabel = "Mağaza",
+  salesLabel = "Satışlar",
   className,
   ...props
 }: CinematicHeroProps) {
@@ -305,14 +325,14 @@ export function CinematicHero({
         <div className="flex flex-col sm:flex-row gap-6">
           <a href="/iletisim" className="btn-modern-light flex items-center justify-center gap-3 px-8 py-4 rounded-[1.25rem] group">
             <div className="text-left">
-              <div className="text-[10px] font-bold tracking-wider text-neutral-500 uppercase mb-[-2px]">Ücretsiz</div>
-              <div className="text-xl font-bold leading-none tracking-tight">CRO Analizi Al</div>
+              <div className="text-[10px] font-bold tracking-wider text-neutral-500 uppercase mb-[-2px]">{ctaAnalysisSub}</div>
+              <div className="text-xl font-bold leading-none tracking-tight">{ctaAnalysisLabel}</div>
             </div>
           </a>
           <a href="/iletisim" className="btn-modern-dark flex items-center justify-center gap-3 px-8 py-4 rounded-[1.25rem] group">
             <div className="text-left">
-              <div className="text-[10px] font-bold tracking-wider text-neutral-400 uppercase mb-[-2px]">Hemen</div>
-              <div className="text-xl font-bold leading-none tracking-tight">İletişime Geç</div>
+              <div className="text-[10px] font-bold tracking-wider text-neutral-400 uppercase mb-[-2px]">{ctaContactSub}</div>
+              <div className="text-xl font-bold leading-none tracking-tight">{ctaContactLabel}</div>
             </div>
           </a>
         </div>
@@ -357,8 +377,8 @@ export function CinematicHero({
                     <div className="relative w-full h-full pt-12 px-5 pb-8 flex flex-col">
                       <div className="phone-widget flex justify-between items-center mb-6">
                         <div className="flex flex-col">
-                          <span className="text-[9px] text-neutral-400 uppercase tracking-widest font-bold mb-1">Mağaza</span>
-                          <span className="text-lg font-bold tracking-tight text-white">Satışlar</span>
+                          <span className="text-[9px] text-neutral-400 uppercase tracking-widest font-bold mb-1">{storeLabel}</span>
+                          <span className="text-lg font-bold tracking-tight text-white">{salesLabel}</span>
                         </div>
                         <div className="w-9 h-9 rounded-full bg-white/5 text-neutral-200 flex items-center justify-center font-bold text-sm border border-white/10 shadow-lg shadow-black/50">ST</div>
                       </div>
@@ -410,8 +430,8 @@ export function CinematicHero({
                     <span className="text-base lg:text-xl drop-shadow-lg" aria-hidden="true">🔥</span>
                   </div>
                   <div>
-                    <p className="text-white text-xs lg:text-sm font-bold tracking-tight">+34.2% Büyüme</p>
-                    <p className="text-blue-200/50 text-[10px] lg:text-xs font-medium">Bu ay gerçekleşti</p>
+                    <p className="text-white text-xs lg:text-sm font-bold tracking-tight">{badge1Title}</p>
+                    <p className="text-blue-200/50 text-[10px] lg:text-xs font-medium">{badge1Sub}</p>
                   </div>
                 </div>
 
@@ -420,8 +440,8 @@ export function CinematicHero({
                     <span className="text-base lg:text-lg drop-shadow-lg" aria-hidden="true">🛒</span>
                   </div>
                   <div>
-                    <p className="text-white text-xs lg:text-sm font-bold tracking-tight">Sepet Optimizasyonu</p>
-                    <p className="text-blue-200/50 text-[10px] lg:text-xs font-medium">CRO aktif</p>
+                    <p className="text-white text-xs lg:text-sm font-bold tracking-tight">{badge2Title}</p>
+                    <p className="text-blue-200/50 text-[10px] lg:text-xs font-medium">{badge2Sub}</p>
                   </div>
                 </div>
               </div>

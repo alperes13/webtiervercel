@@ -9,50 +9,9 @@ import { Card, CardContent, CardHeader } from "@/components/ui/Card";
 import { Sparkles as SparklesComp } from "@/components/ui/sparkles";
 import { TimelineContent } from "@/components/ui/timeline-animation";
 import { VerticalCutReveal } from "@/components/ui/vertical-cut-reveal";
+import { useLanguage } from "@/contexts/LanguageContext";
 
-const plans = [
-  {
-    name: "Starter",
-    description: "Küçük işletmeler ve yeni başlayanlar için ideal CRO başlangıç paketi.",
-    buttonText: "Teklif Al",
-    buttonVariant: "outline" as const,
-    includes: [
-      "Temel CRO Analizi",
-      "Ayda 1 A/B Testi",
-      "Isı Haritası Takibi",
-      "Haftalık Raporlama",
-    ],
-  },
-  {
-    name: "Professional",
-    description: "Büyüyen işletmeler için gelişmiş optimizasyon özellikleri.",
-    buttonText: "Teklif Al",
-    buttonVariant: "default" as const,
-    popular: true,
-    includes: [
-      "Starter Paketindeki Her Şey",
-      "Ayda 3 A/B Testi",
-      "Kullanıcı Kayıt Analizi",
-      "Dönüşüm Hunisi Optimizasyonu",
-      "Öncelikli Destek",
-    ],
-  },
-  {
-    name: "Enterprise",
-    description: "Büyük ölçekli operasyonlar için tam kapsamlı CRO çözümü.",
-    buttonText: "Teklif Al",
-    buttonVariant: "outline" as const,
-    includes: [
-      "Professional Paketindeki Her Şey",
-      "Sınırsız A/B Testi",
-      "Özel Strateji Danışmanlığı",
-      "7/24 Teknik Destek",
-      "Özel Entegrasyonlar",
-    ],
-  },
-];
-
-const PricingSwitch = ({ onSwitch }: { onSwitch: (value: string) => void }) => {
+const PricingSwitch = ({ onSwitch, monthly, yearly }: { onSwitch: (value: string) => void, monthly: string, yearly: string }) => {
   const [selected, setSelected] = useState("0");
 
   const handleSwitch = (value: string) => {
@@ -77,7 +36,7 @@ const PricingSwitch = ({ onSwitch }: { onSwitch: (value: string) => void }) => {
               transition={{ type: "spring", stiffness: 500, damping: 30 }}
             />
           )}
-          <span className="relative">Aylık</span>
+          <span className="relative">{monthly}</span>
         </button>
 
         <button
@@ -94,7 +53,7 @@ const PricingSwitch = ({ onSwitch }: { onSwitch: (value: string) => void }) => {
               transition={{ type: "spring", stiffness: 500, damping: 30 }}
             />
           )}
-          <span className="relative flex items-center gap-2">Yıllık</span>
+          <span className="relative flex items-center gap-2">{yearly}</span>
         </button>
       </div>
     </div>
@@ -102,6 +61,7 @@ const PricingSwitch = ({ onSwitch }: { onSwitch: (value: string) => void }) => {
 };
 
 export default function PricingSection() {
+  const { t } = useLanguage();
   const pricingRef = useRef<HTMLDivElement>(null);
 
   const revealVariants = {
@@ -122,6 +82,12 @@ export default function PricingSection() {
   };
 
   const [activeIntent, setActiveIntent] = useState("0");
+
+  const plans = t.pricing.plans.map((p, index) => ({
+    ...p,
+    buttonVariant: index === 1 ? "default" : "outline",
+    popular: index === 1
+  }));
 
   return (
     <div className="py-24 mx-auto relative bg-[var(--color-surface)] overflow-x-hidden" ref={pricingRef}>
@@ -158,7 +124,7 @@ export default function PricingSection() {
               delay: 0,
             }}
           >
-            Size En Uygun Planı Seçin
+            {t.pricing.title}
           </VerticalCutReveal>
         </h2>
 
@@ -169,11 +135,11 @@ export default function PricingSection() {
           customVariants={revealVariants}
           className="text-[var(--color-text-secondary)] text-lg"
         >
-          Şeffaf fiyatlandırma, maksimum dönüşüm. İşletmenizin ölçeğine göre optimize edilmiş paketler.
+          {t.pricing.subtitle}
         </TimelineContent>
 
         <TimelineContent as="div" animationNum={1} timelineRef={pricingRef} customVariants={revealVariants}>
-          <PricingSwitch onSwitch={setActiveIntent} />
+          <PricingSwitch onSwitch={setActiveIntent} monthly={t.pricing.monthly} yearly={t.pricing.yearly} />
         </TimelineContent>
       </article>
 
@@ -198,16 +164,16 @@ export default function PricingSection() {
                   <h3 className="text-2xl font-bold font-[family-name:var(--font-clash-display)]">{plan.name}</h3>
                   {plan.popular && (
                     <span className="bg-[var(--color-accent)]/20 text-[var(--color-accent)] text-[10px] uppercase tracking-wider font-bold px-2.5 py-1 rounded-full border border-[var(--color-accent)]/30">
-                      Popüler
+                      {t.pricing.popular}
                     </span>
                   )}
                 </div>
                 <div className="flex items-baseline gap-1">
                   <span className="text-3xl font-bold text-[var(--color-text)] sm:text-4xl">
-                    Teklif Al
+                    {t.pricing.getQuote}
                   </span>
                   <span className="text-[var(--color-text-secondary)] text-sm">
-                    {activeIntent === "1" ? "yıllık planlama için" : "paket detayları için"}
+                    {activeIntent === "1" ? t.pricing.yearlyNote : t.pricing.monthlyNote}
                   </span>
                 </div>
                 <p className="text-sm text-[var(--color-text-secondary)] mt-2 line-clamp-2">{plan.description}</p>
@@ -223,7 +189,7 @@ export default function PricingSection() {
                       : "border-[var(--color-border)] hover:bg-[var(--color-surface-card-hover)] text-[var(--color-text)]"
                   )}
                 >
-                  {plan.buttonText}
+                  {t.pricing.getQuote}
                 </Button>
 
                 <div className="space-y-4 pt-6 mt-6 border-t border-[var(--color-border)] flex-1">

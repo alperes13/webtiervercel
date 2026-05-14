@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import { Card, CardContent } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Check, ArrowUpRight } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export const Box = ({ 
   title = "CRO-X ULTRA", 
@@ -32,6 +33,7 @@ export const Box = ({
   href?: string;
   onCtaClick?: () => void;
 }) => {
+  const { t } = useLanguage();
   return (
     <div className="pricing-box-wrapper flex justify-center w-full">
       <Card className="pricing-box-card w-full max-w-[464px] rounded-[32px] border border-white/10 bg-zinc-900/50 backdrop-blur-xl text-white p-6 sm:p-8 flex flex-col gap-6 shadow-[0_20px_50px_rgba(0,0,0,0.5)] relative overflow-hidden group">
@@ -65,7 +67,7 @@ export const Box = ({
         <div className="pricing-box-footer flex items-center justify-between mt-auto pt-4 border-t border-white/5 relative z-10">
           <div className="flex flex-col">
             {creditText && <span className="text-[10px] text-zinc-400 font-bold mb-1 opacity-70">{creditText}</span>}
-            {showTotalLabel && <span className="text-xs text-zinc-500 uppercase tracking-wider font-semibold">Toplam Ücret</span>}
+            {showTotalLabel && <span className="text-xs text-zinc-500 uppercase tracking-wider font-semibold">{t.pricing.totalPrice}</span>}
             <span className={cn(
               "text-2xl sm:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-zinc-400",
               priceClassName

@@ -51,7 +51,24 @@ export default function EcommerceContent() {
   return (
     <div className="min-h-screen bg-[#060c1a] text-white selection:bg-blue-500/30">
       <div className="overflow-x-hidden w-full min-h-screen">
-        <CinematicHero />
+        <CinematicHero
+          brandName={t.ecommerce.hero.brandName}
+          tagline1={t.ecommerce.hero.tagline1}
+          tagline2={t.ecommerce.hero.tagline2}
+          cardHeading={t.ecommerce.hero.cardHeading}
+          cardDescription={t.ecommerce.hero.cardDescription}
+          metricLabel={t.ecommerce.hero.metricLabel}
+          ctaHeading={t.ecommerce.hero.ctaHeading}
+          ctaDescription={t.ecommerce.hero.ctaDescription}
+          ctaAnalysisLabel={t.ecommerce.hero.ctaAnalysisLabel}
+          ctaContactLabel={t.ecommerce.hero.ctaContactLabel}
+          badge1Title={t.ecommerce.hero.badge1Title}
+          badge1Sub={t.ecommerce.hero.badge1Sub}
+          badge2Title={t.ecommerce.hero.badge2Title}
+          badge2Sub={t.ecommerce.hero.badge2Sub}
+          storeLabel={t.ecommerce.hero.storeLabel}
+          salesLabel={t.ecommerce.hero.salesLabel}
+        />
       </div>
 
       {/* Problems */}
@@ -145,7 +162,7 @@ export default function EcommerceContent() {
                 </span>
               </h2>
               <p className="text-zinc-400 text-lg md:text-xl max-w-xl mx-auto">
-                Ücretsiz CRO analizi ile başlayın. E-ticaret sitenizin gerçek potansiyelini keşfedin.
+                {t.ecommerce.ctaDescription}
               </p>
               <div className="flex flex-col md:flex-row items-center justify-center gap-4 pt-4">
                 <Link href="/#hero">
@@ -159,7 +176,7 @@ export default function EcommerceContent() {
                   </Button>
                 </Link>
               </div>
-              <p className="text-xs text-zinc-600 font-medium">Kredi kartı gerekmez • 2 dakikada sonuç • Uzman analizi</p>
+              <p className="text-xs text-zinc-600 font-medium">{t.ecommerce.ctaTrustNote}</p>
             </div>
           </div>
         </div>

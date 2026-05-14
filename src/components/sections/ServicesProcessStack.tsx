@@ -3,45 +3,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { MousePointer2 } from "lucide-react";
 import React, { useState } from "react";
-
-const stepsData = [
-  {
-    id: "p1",
-    title: "CRO-X AI Analizi",
-    description:
-      "Geliştirdiğimiz CRO-X AI teknolojimizle web sitenizin kullanıcı deneyimini derinlemesine analiz ediyor, dönüşüm hunisindeki darboğazları milimetrik hassasiyetle belirliyoruz. Veri odaklı yaklaşımımızla, kullanıcılarınızın nerede ve neden sitenizi terk ettiğini ortaya çıkararak gelir kaybını anında durduruyoruz. Sektör lideri yapay zeka algoritmalarımız sayesinde, manuel gözle kaçan fırsatları yakalıyor; performansınızı zirveye taşıyacak somut, uygulanabilir ve etkili bir yol haritası sunuyoruz.",
-  },
-  {
-    id: "p2",
-    title: "CRO-X Ultra",
-    description:
-      "Dijital varlığınızın tam potansiyelini ortaya çıkaran kapsamlı strateji paketi. Rakip analizinden marka konumlandırmasına, 20 sayfalık özel raporumuzla dönüşüm yol haritanızı milimetrik hassasiyetle çiziyoruz. Sadece bir analiz değil, rakiplerinizden sıyrılmanızı sağlayacak 'Ultra' dokunuşlarla dolu bir stratejik tasarım.",
-  },
-  {
-    id: "p3",
-    title: "Webtier E-Ticaret",
-    description:
-      "Sadece bir web sitesi değil, yüksek cirolar ve sürdürülebilir büyüme için tasarlanmış bir satış makinesi. Her detayı satış psikolojisine göre optimize edilmiş profesyonel e-ticaret altyapıları, yüksek performanslı tasarım ve kusursuz kullanıcı deneyimi (UX) ile e-ticaret sitenizi gelire dönüştürüyoruz.",
-  },
-  {
-    id: "p4",
-    title: "Webtier CRO Optimizasyonu",
-    description:
-      "Sürekli gelişim, sürekli artış. Mevcut trafiğinizi reklamlara ek bütçe ayırmadan daha fazla müşteriye dönüştürmek için veri odaklı A/B testleri, ısı haritaları ve kullanıcı davranış analizleri ile sitenizi her gün daha iyiye taşıyoruz. Maksimum verimlilik, minimum kayıp.",
-  },
-  {
-    id: "p5",
-    title: "Danışmanlık ve Teklifler",
-    description:
-      "İşletmenize özel butik çözümler ve büyüme stratejileri. Mevcut dijital stratejinizi birlikte değerlendiriyor, büyüme hedeflerinize en hızlı ulaşmanızı sağlayacak performansa dayalı iş birliği modellerini ve markanıza özel büyüme odaklı teklifleri kurguluyoruz.",
-  },
-  {
-    id: "p6",
-    title: "Limitlerin Ötesinde",
-    description:
-      "Webtier, verinin gücüne ve yapay zekanın hassasiyetine inanan bir teknoloji ve strateji ajansıdır. 'Limitlerin ötesinde' mottomuzla, her işletmenin saklı kalmış potansiyelini verilere ve yapay zekaya dayanarak açığa çıkarıyor, dijital dünyada yeni standartlar belirliyoruz.",
-  },
-];
+import { useLanguage } from "@/contexts/LanguageContext";
 
 function StickyCard({
   step,
@@ -50,12 +12,13 @@ function StickyCard({
   isTop,
   onClick
 }: {
-  step: typeof stepsData[0];
+  step: { id: string; title: string; description: string };
   index: number;
   total: number;
   isTop: boolean;
   onClick: () => void;
 }) {
+  const { t } = useLanguage();
   const HEADER_OFFSET = 120; // Increased to make titles fully readable
 
   return (
@@ -90,7 +53,7 @@ function StickyCard({
             {!isTop && (
               <div className="flex items-center space-x-2 text-cyan-400/70 mb-2">
                 <MousePointer2 className="w-3 h-3 animate-pulse" />
-                <span className="text-[10px] uppercase font-bold tracking-widest font-mono">Keşfet</span>
+                <span className="text-[10px] uppercase font-bold tracking-widest font-mono">{t.workflow.exploreLabel}</span>
               </div>
             )}
             <h3 className={`text-lg md:text-2xl font-extrabold font-[family-name:var(--font-heading)] leading-tight transition-colors ${isTop ? 'text-white' : 'text-white/60'}`}>
@@ -116,24 +79,19 @@ function StickyCard({
 }
 
 export default function ServicesProcessStack() {
-  // Re-ordering to match the requested visual stack
-  const initialStack = [
-    stepsData[5],
-    stepsData[4],
-    stepsData[3],
-    stepsData[2],
-    stepsData[1],
-    stepsData[0]
-  ];
-  const [stack, setStack] = useState(initialStack);
+  const { t } = useLanguage();
+
+  const [stackIds, setStackIds] = useState(['p6', 'p5', 'p4', 'p3', 'p2', 'p1']);
+  
+  const stack = stackIds.map(id => t.workflow.steps.find(s => s.id === id)!);
 
   const bringToFront = (id: string) => {
-    setStack((prev) => {
-      const cardIdx = prev.findIndex((c) => c.id === id);
+    setStackIds((prev) => {
+      const cardIdx = prev.indexOf(id);
       if (cardIdx === -1 || cardIdx === prev.length - 1) return prev;
       const newStack = [...prev];
-      const [card] = newStack.splice(cardIdx, 1);
-      newStack.push(card);
+      const [removedId] = newStack.splice(cardIdx, 1);
+      newStack.push(removedId);
       return newStack;
     });
   };
@@ -156,8 +114,8 @@ export default function ServicesProcessStack() {
                   viewport={{ once: true }}
                   className="text-4xl md:text-6xl font-extrabold text-white font-[family-name:var(--font-heading)] leading-tight"
                 >
-                  <span className="text-red-500">Webtier</span> <br />
-                  Retrainer
+                  <span className="text-red-500">{t.workflow.highlight}</span> <br />
+                  {t.workflow.title}
                 </motion.h2>
 
                 <motion.div
@@ -168,20 +126,17 @@ export default function ServicesProcessStack() {
                   className="space-y-6"
                 >
                   <p className="text-zinc-400 text-lg md:text-xl leading-relaxed max-w-xl">
-                    Webtier olarak, dijital dünyadaki varlığınızı sadece bir web sitesi olmanın ötesine taşıyoruz.
-                    Geliştirdiğimiz CRO-X AI teknolojisi ve veri odaklı stratejilerimizle, markanızın büyüme potansiyelini
-                    maksimize eden uçtan uca bir dönüşüm yolculuğu kurguluyoruz.
+                    {t.workflow.subtitle1}
                   </p>
                   <p className="text-zinc-500 text-base md:text-lg leading-relaxed max-w-xl">
-                    Her projemizde, kullanıcı davranışlarını milimetrik hassasiyetle analiz ederek, stratejimizi sadece
-                    tahminlerle değil, somut verilerle şekillendiriyoruz.
+                    {t.workflow.subtitle2}
                   </p>
                 </motion.div>
               </div>
 
               <div className="flex items-center space-x-2 text-cyan-400/60 text-sm font-medium">
                 <MousePointer2 className="w-4 h-4 animate-bounce" />
-                <span>Kartlara tıklayarak süreci keşfedin</span>
+                <span>{t.workflow.exploreHint}</span>
               </div>
 
               <div className="w-24 h-1 bg-gradient-to-r from-cyan-500 to-transparent rounded-full" />
@@ -191,7 +146,7 @@ export default function ServicesProcessStack() {
           <div className="relative mt-0 lg:mt-16 h-[1000px] md:h-[1100px] lg:h-[1100px] overflow-x-hidden md:overflow-visible max-w-full">
             <div className="lg:sticky lg:top-32 w-full h-full max-w-full">
               <div className="relative w-full h-full max-w-full overflow-hidden">
-                <AnimatePresence mode="wait">
+                <AnimatePresence>
                   {stack.map((step, index) => (
                     <StickyCard
                       key={step.id}

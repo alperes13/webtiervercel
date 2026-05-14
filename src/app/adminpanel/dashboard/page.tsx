@@ -6,15 +6,17 @@ import AdminSidebar, { type AdminSection } from '@/components/admin/AdminSidebar
 import AnalysisTable from '@/components/admin/AnalysisTable';
 import UserSearch from '@/components/admin/UserSearch';
 import SettingsPanel from '@/components/admin/SettingsPanel';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function AdminDashboardPage() {
+  const { t } = useLanguage();
   const router = useRouter();
   const [activeSection, setActiveSection] = useState<AdminSection>('analyses');
   const [adminEmail, setAdminEmail] = useState('');
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('/api/admin/auth/verify', { credentials: 'include' })
+    fetch('/api/admin/verify', { credentials: 'include' })
       .then(r => r.json())
       .then(data => {
         if (!data.success) { router.replace('/adminpanel'); return; }
@@ -25,7 +27,7 @@ export default function AdminDashboardPage() {
   }, [router]);
 
   async function handleLogout() {
-    await fetch('/api/admin/auth/logout', { method: 'POST', credentials: 'include' });
+    await fetch('/api/admin/logout', { method: 'POST', credentials: 'include' });
     router.replace('/adminpanel');
   }
 
@@ -38,9 +40,9 @@ export default function AdminDashboardPage() {
   }
 
   const SECTION_TITLES: Record<AdminSection, string> = {
-    analyses: 'Analiz Siparişleri',
-    users: 'Kullanıcı Yönetimi',
-    settings: 'Ayarlar',
+    analyses: t.admin.analysesTitle,
+    users: t.admin.usersTitle,
+    settings: t.admin.settingsTitle,
   };
 
   return (

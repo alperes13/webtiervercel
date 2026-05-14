@@ -33,11 +33,11 @@ export default function CROXUltraSection() {
               className="crox-ultra-title-area lg:w-1/3 flex flex-col justify-center pt-[20px]"
             >
               <h2 className="crox-ultra-section-title text-4xl sm:text-5xl lg:text-7xl font-black text-white leading-[0.9] font-[family-name:var(--font-heading)] mb-6">
-                CRO-X Ultra Listenin Hepsi!
+                {t.croxUltra.title}
               </h2>
 
               <p className="text-zinc-400 text-lg leading-relaxed max-w-md">
-                İşletmenizin dijital varlığını 360° analiz eden, stratejik yol haritası çıkartan premium analiz motoru.
+                {t.croxUltra.subtitle}
               </p>
             </motion.div>
 
@@ -71,7 +71,7 @@ export default function CROXUltraSection() {
             </motion.div>
           </div>
 
-          <h3 className="text-3xl font-black text-white text-center mb-8">Daha Fazlası</h3>
+          <h3 className="text-3xl font-black text-white text-center mb-8">{t.croxUltra.moreTitle}</h3>
           <motion.div
             initial={{ opacity: 0, scale: 0.98 }}
             whileInView={{ opacity: 1, scale: 1 }}
@@ -95,11 +95,11 @@ export default function CROXUltraSection() {
             {/* Card 1: ULTRA */}
             <div className="w-full max-w-lg">
               <Box
-                title="CRO-X AI ULTRA"
-                subtitle="Geleceğinizi analiz ile tecrübe edin."
-                price="249 TL"
+                title={t.croxUltra.ultraBox.title}
+                subtitle={t.croxUltra.ultraBox.subtitle}
+                price={t.croxUltra.ultraBox.price}
                 ctaText={t.croxUltra.cta}
-                creditText="2 Kredi Hakkı."
+                creditText={t.croxUltra.ultraBox.credit}
                 href="/dashboard"
               />
             </div>
@@ -107,11 +107,11 @@ export default function CROXUltraSection() {
             {/* Card 2: RETRAINER */}
             <div className="w-full max-w-lg">
               <Box
-                title="Webtier Retrainer"
-                subtitle="KOBI'lere uygun yaklaşımlar, markalara çığır açtıracak temaslar."
-                price="Önce bir planlayalım"
+                title={t.retrainer.box.title}
+                subtitle={t.retrainer.box.subtitle}
+                price={t.retrainer.box.price}
                 priceClassName="!text-[23px]"
-                ctaText="BİLGİ AL"
+                ctaText={t.retrainer.box.cta}
                 creditText=""
                 showTotalLabel={false}
                 href="/retrainer"
@@ -121,11 +121,11 @@ export default function CROXUltraSection() {
             {/* Card 3: MINI */}
             <div className="w-full max-w-lg">
               <Box
-                title="CRO-X AI MINI"
-                subtitle="Dijital varlığınızı analiz edin, farkı görün."
-                price="Ücretsiz"
-                ctaText="ANALİZ AL"
-                creditText="1 Kredi Hakkı."
+                title={t.croxUltra.miniBox.title}
+                subtitle={t.croxUltra.miniBox.subtitle}
+                price={t.croxUltra.miniBox.price}
+                ctaText={t.croxUltra.miniBox.cta}
+                creditText={t.croxUltra.miniBox.credit}
                 href="/"
               />
             </div>

@@ -49,11 +49,11 @@ export default function HeroSection({ isMiniEnabled = true, isUltraEnabled = tru
 
     // Credit check
     if (selectedModel === 'CRO-X MINI' && session.creditsMini < 1) {
-      setUrlError('Yetersiz Mini kredi. Profilinizden ek kredi alabilirsiniz.');
+      setUrlError(t.hero.errors.insufficientMini);
       return;
     }
     if (selectedModel === 'CRO-X ULTRA' && session.creditsUltra < 1) {
-      setUrlError('Yetersiz Ultra kredi. Lütfen bakiye yükleyin.');
+      setUrlError(t.hero.errors.insufficientUltra);
       return;
     }
 
@@ -67,9 +67,9 @@ export default function HeroSection({ isMiniEnabled = true, isUltraEnabled = tru
         updateSession({ creditsUltra: session.creditsUltra - 1, analysisStatus: 'pending' });
       }
       setSiteUrl('');
-      alert('Analiz talebiniz başarıyla alındı. Raporunuz hazırlandığında bilgilendirileceksiniz.');
+      alert(t.hero.analysisSuccess);
     } catch (e) {
-      setUrlError(e instanceof Error ? e.message : 'Analiz başlatılamadı');
+      setUrlError(e instanceof Error ? e.message : t.hero.errors.analysisGenericError);
     } finally {
       setLoading(false);
     }

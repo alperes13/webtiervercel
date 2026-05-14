@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { Calendar, Tag, ChevronDown, ChevronUp } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface Task {
   id: string;
@@ -15,19 +16,19 @@ interface Task {
   created_at: string;
 }
 
-const PRIORITY_CONFIG: Record<string, { label: string; color: string; dot: string }> = {
-  low:      { label: 'Düşük',   color: 'bg-slate-100 text-slate-500 border-slate-200',      dot: 'bg-slate-400' },
-  medium:   { label: 'Orta',    color: 'bg-blue-50 text-blue-600 border-blue-200',           dot: 'bg-blue-500' },
-  high:     { label: 'Yüksek',  color: 'bg-amber-50 text-amber-600 border-amber-200',        dot: 'bg-amber-500' },
-  critical: { label: 'Kritik',  color: 'bg-red-50 text-red-600 border-red-200',              dot: 'bg-red-500' },
+const PRIORITY_STYLES: Record<string, { color: string; dot: string }> = {
+  low:      { color: 'bg-slate-100 text-slate-500 border-slate-200',      dot: 'bg-slate-400' },
+  medium:   { color: 'bg-blue-50 text-blue-600 border-blue-200',           dot: 'bg-blue-500' },
+  high:     { color: 'bg-amber-50 text-amber-600 border-amber-200',        dot: 'bg-amber-500' },
+  critical: { color: 'bg-red-50 text-red-600 border-red-200',              dot: 'bg-red-500' },
 };
 
-const STATUS_CONFIG: Record<string, { label: string; color: string }> = {
-  todo:        { label: 'Yapılacak',      color: 'text-slate-400' },
-  in_progress: { label: 'Devam Ediyor',   color: 'text-blue-500' },
-  review:      { label: 'İncelemede',     color: 'text-purple-500' },
-  done:        { label: 'Tamamlandı',     color: 'text-emerald-500' },
-  cancelled:   { label: 'İptal Edildi',   color: 'text-slate-300' },
+const STATUS_STYLES: Record<string, { color: string }> = {
+  todo:        { color: 'text-slate-400' },
+  in_progress: { color: 'text-blue-500' },
+  review:      { color: 'text-purple-500' },
+  done:        { color: 'text-emerald-500' },
+  cancelled:   { color: 'text-slate-300' },
 };
 
 interface TaskCardProps {
@@ -36,8 +37,13 @@ interface TaskCardProps {
 
 function TaskCard({ task }: TaskCardProps) {
   const [expanded, setExpanded] = useState(false);
-  const priority = PRIORITY_CONFIG[task.priority] || PRIORITY_CONFIG.medium;
-  const status = STATUS_CONFIG[task.status] || STATUS_CONFIG.todo;
+  const { t, language } = useLanguage();
+  
+  const priorityStyle = PRIORITY_STYLES[task.priority] || PRIORITY_STYLES.medium;
+  const statusStyle = STATUS_STYLES[task.status] || STATUS_STYLES.todo;
+
+  const priorityLabel = (t.dashboard.backlog.priorities as any)[task.priority] || t.dashboard.backlog.priorities.medium;
+  const statusLabel = (t.dashboard.backlog.statuses as any)[task.status === 'in_progress' ? 'inProgress' : task.status] || t.dashboard.backlog.statuses.todo;
 
   return (
     <div className="border border-black/8 rounded-2xl bg-white overflow-hidden hover:border-black/12 transition-colors">
@@ -45,7 +51,7 @@ function TaskCard({ task }: TaskCardProps) {
         className="w-full text-left p-4 flex items-start gap-3"
         onClick={() => (task.description || task.image_url) && setExpanded(e => !e)}
       >
-        <div className={`w-2 h-2 rounded-full mt-1.5 flex-shrink-0 ${priority.dot}`} />
+        <div className={`w-2 h-2 rounded-full mt-1.5 flex-shrink-0 ${priorityStyle.dot}`} />
         <div className="flex-1 min-w-0">
           <div className="flex items-start justify-between gap-2">
             <p className="text-sm font-medium text-[var(--color-text)] leading-snug">{task.title}</p>
@@ -57,16 +63,16 @@ function TaskCard({ task }: TaskCardProps) {
           </div>
 
           <div className="flex flex-wrap items-center gap-2 mt-2">
-            <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium border ${priority.color}`}>
-              {priority.label}
+            <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium border ${priorityStyle.color}`}>
+              {priorityLabel}
             </span>
-            <span className={`text-[10px] font-medium ${status.color}`}>
-              {status.label}
+            <span className={`text-[10px] font-medium ${statusStyle.color}`}>
+              {statusLabel}
             </span>
             {task.due_date && (
               <span className="flex items-center gap-1 text-[10px] text-slate-400">
                 <Calendar size={9} />
-                {new Date(task.due_date).toLocaleDateString('tr-TR')}
+                {new Date(task.due_date).toLocaleDateString(language === 'tr' ? 'tr-TR' : language)}
               </span>
             )}
           </div>
@@ -109,6 +115,7 @@ interface Props {
 export default function BacklogTasks({ token }: Props) {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(true);
+  const { t } = useLanguage();
 
   useEffect(() => {
     if (!token) return;
@@ -131,8 +138,8 @@ export default function BacklogTasks({ token }: Props) {
   if (tasks.length === 0) {
     return (
       <div className="text-center py-12">
-        <p className="text-sm text-slate-400">Henüz backlog task'ı yok.</p>
-        <p className="text-xs text-slate-300 mt-1">Ekibimiz yakında görevler ekleyecek.</p>
+        <p className="text-sm text-slate-400">{t.dashboard.backlog.noTasks}</p>
+        <p className="text-xs text-slate-300 mt-1">{t.dashboard.backlog.soon}</p>
       </div>
     );
   }

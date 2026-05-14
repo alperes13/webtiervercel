@@ -2,8 +2,10 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function AdminLoginPage() {
+  const { t } = useLanguage();
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -12,7 +14,7 @@ export default function AdminLoginPage() {
   const [checking, setChecking] = useState(true);
 
   useEffect(() => {
-    fetch('/api/admin/auth/verify', { credentials: 'include' })
+    fetch('/api/admin/verify', { credentials: 'include' })
       .then(r => { if (r.ok) router.replace('/adminpanel/dashboard'); })
       .finally(() => setChecking(false));
   }, [router]);
@@ -22,17 +24,17 @@ export default function AdminLoginPage() {
     setError('');
     setLoading(true);
     try {
-      const res = await fetch('/api/admin/auth/login', {
+      const res = await fetch('/api/admin/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
         body: JSON.stringify({ email, password }),
       });
       const data = await res.json();
-      if (!res.ok) { setError(data.error || 'Giriş başarısız.'); return; }
+      if (!res.ok) { setError(data.error || t.admin.loginFailed); return; }
       router.push('/adminpanel/dashboard');
     } catch {
-      setError('Sunucu hatası. Lütfen tekrar deneyin.');
+      setError(t.admin.serverError);
     } finally {
       setLoading(false);
     }
@@ -57,14 +59,14 @@ export default function AdminLoginPage() {
               <path d="M8 21L13 16L18 21L23 16" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" strokeOpacity="0.4"/>
             </svg>
           </div>
-          <h1 className="text-xl font-bold text-white">Webtier Admin</h1>
-          <p className="text-slate-500 text-sm mt-1">Yönetici paneline giriş yapın</p>
+          <h1 className="text-xl font-bold text-white">{t.admin.loginTitle}</h1>
+          <p className="text-slate-500 text-sm mt-1">{t.admin.loginSubtitle}</p>
         </div>
 
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-3">
           <div>
-            <label className="block text-xs font-medium text-slate-400 mb-1.5">E-posta</label>
+            <label className="block text-xs font-medium text-slate-400 mb-1.5">{t.admin.emailLabel}</label>
             <input
               type="email"
               value={email}
@@ -76,7 +78,7 @@ export default function AdminLoginPage() {
             />
           </div>
           <div>
-            <label className="block text-xs font-medium text-slate-400 mb-1.5">Şifre</label>
+            <label className="block text-xs font-medium text-slate-400 mb-1.5">{t.admin.passwordLabel}</label>
             <input
               type="password"
               value={password}
@@ -102,14 +104,14 @@ export default function AdminLoginPage() {
             {loading ? (
               <>
                 <div className="w-4 h-4 border-2 border-slate-400 border-t-slate-700 rounded-full animate-spin" />
-                Giriş yapılıyor...
+                {t.admin.loggingIn}
               </>
-            ) : 'Giriş Yap'}
+            ) : t.admin.loginButton}
           </button>
         </form>
 
         <p className="text-center text-slate-700 text-xs mt-8">
-          Webtier Admin Panel &mdash; Yetkisiz erişim yasaktır.
+          {t.admin.unauthorizedNote}
         </p>
       </div>
     </div>

@@ -22,6 +22,19 @@ interface SignInPageProps {
   onResetPassword?: () => void;
   onCreateAccount?: () => void;
   submitButtonText?: string;
+  emailLabel?: string;
+  passwordLabel?: string;
+  emailPlaceholder?: string;
+  passwordPlaceholder?: string;
+  rememberMeLabel?: string;
+  forgotPasswordLabel?: string;
+  orContinueWithLabel?: string;
+  googleContinueLabel?: string;
+  alreadyMemberLabel?: string;
+  noAccountLabel?: string;
+  createAccountButtonLabel?: string;
+  loginRedirectButtonLabel?: string;
+  trustedByLabel?: string;
   children?: React.ReactNode;
 }
 
@@ -66,6 +79,19 @@ export const SignInPage: React.FC<SignInPageProps> = ({
   onResetPassword,
   onCreateAccount,
   submitButtonText = "Sign In",
+  emailLabel = "Email Address",
+  passwordLabel = "Password",
+  emailPlaceholder = "Enter your email address",
+  passwordPlaceholder = "Enter your password",
+  rememberMeLabel = "Keep me signed in",
+  forgotPasswordLabel = "Forgot password",
+  orContinueWithLabel = "or continue with",
+  googleContinueLabel = "Continue with Google",
+  alreadyMemberLabel = "Already a member?",
+  noAccountLabel = "Don't have an account yet?",
+  createAccountButtonLabel = "Create Account",
+  loginRedirectButtonLabel = "Sign In Now",
+  trustedByLabel = "TRUSTED BY 10,000+ USERS",
   children,
 }) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -98,12 +124,12 @@ export const SignInPage: React.FC<SignInPageProps> = ({
                 <label className={cn(
                   "text-sm font-medium mb-1.5 block",
                   isLight ? "text-zinc-700" : "text-[var(--color-text-muted)]"
-                )}>Email Adresi</label>
+                )}>{emailLabel}</label>
                 <GlassInputWrapper theme={theme}>
                   <input 
                     name="email" 
                     type="email" 
-                    placeholder="E-posta adresinizi girin" 
+                    placeholder={emailPlaceholder} 
                     required 
                     className={cn(
                       "w-full bg-transparent text-sm p-4 rounded-2xl outline-none",
@@ -116,13 +142,13 @@ export const SignInPage: React.FC<SignInPageProps> = ({
                 <label className={cn(
                   "text-sm font-medium mb-1.5 block",
                   isLight ? "text-zinc-700" : "text-[var(--color-text-muted)]"
-                )}>Şifre</label>
+                )}>{passwordLabel}</label>
                 <GlassInputWrapper theme={theme}>
                   <div className="relative">
                     <input
                       name="password"
                       type={showPassword ? 'text' : 'password'}
-                      placeholder="Şifrenizi girin"
+                      placeholder={passwordPlaceholder}
                       required
                       className={cn(
                         "w-full bg-transparent text-sm p-4 pr-12 rounded-2xl outline-none",
@@ -148,7 +174,7 @@ export const SignInPage: React.FC<SignInPageProps> = ({
                 <div className="flex items-center gap-3 cursor-pointer">
                   <label className="flex items-center gap-2 cursor-pointer">
                     <input type="checkbox" name="rememberMe" className={cn("custom-checkbox", isLight && "border-zinc-300")} />
-                    <span className={isLight ? "text-zinc-500" : "text-[var(--color-text-secondary)]"}>Oturumu açık tut</span>
+                    <span className={isLight ? "text-zinc-500" : "text-[var(--color-text-secondary)]"}>{rememberMeLabel}</span>
                   </label>
                 </div>
                 <button
@@ -159,7 +185,7 @@ export const SignInPage: React.FC<SignInPageProps> = ({
                   }}
                   className={cn("hover:underline transition-colors", isLight ? "text-zinc-500" : "text-[#a78bfa]")}
                 >
-                  Şifremi unuttum
+                  {forgotPasswordLabel}
                 </button>
               </div>
 
@@ -176,7 +202,7 @@ export const SignInPage: React.FC<SignInPageProps> = ({
               <span className={cn(
                 "px-4 text-xs font-medium uppercase tracking-wider absolute",
                 isLight ? "text-zinc-400 bg-white" : "text-[var(--color-text-muted)] bg-[var(--color-background)]"
-              )}>veya şununla devam et</span>
+              )}>{orContinueWithLabel}</span>
             </div>
 
             <button
@@ -190,7 +216,7 @@ export const SignInPage: React.FC<SignInPageProps> = ({
               )}
             >
               <GoogleIcon />
-              <span className="font-medium">Google ile devam et</span>
+              <span className="font-medium">{googleContinueLabel}</span>
             </button>
 
             <div className={cn(
@@ -203,7 +229,7 @@ export const SignInPage: React.FC<SignInPageProps> = ({
                 "text-center text-base md:text-lg font-medium",
                 isLight ? "text-zinc-600" : "text-zinc-400"
               )}>
-                {submitButtonText === "Giriş Yap" ? "Henüz bir hesabınız yok mu?" : "Zaten üye misiniz?"}{" "}
+                {submitButtonText === createAccountButtonLabel ? alreadyMemberLabel : noAccountLabel}{" "}
                 <button
                   type="button"
                   onClick={(e) => {
@@ -212,7 +238,7 @@ export const SignInPage: React.FC<SignInPageProps> = ({
                   }}
                   className="text-[#a78bfa] font-black hover:scale-105 transition-all inline-block ml-1 underline decoration-2 underline-offset-4 hover:text-[#9061f9] animate-pulse-slow"
                 >
-                  {submitButtonText === "Giriş Yap" ? "Ücretsiz Hesap Oluştur" : "Hemen Giriş Yap"}
+                  {submitButtonText === createAccountButtonLabel ? loginRedirectButtonLabel : createAccountButtonLabel}
                 </button>
               </p>
             </div>
@@ -238,7 +264,7 @@ export const SignInPage: React.FC<SignInPageProps> = ({
             
             <div className="animate-element animate-delay-1000 flex items-center gap-4 text-white/40">
               <div className="h-px flex-1 bg-white/10" />
-              <p className="text-[10px] uppercase tracking-[0.2em] font-bold text-white/40">10,000+ KULLANICI TARAFINDAN GÜVENİLİR</p>
+              <p className="text-[10px] uppercase tracking-[0.2em] font-bold text-white/40">{trustedByLabel}</p>
               <div className="h-px flex-1 bg-white/10" />
             </div>
           </div>

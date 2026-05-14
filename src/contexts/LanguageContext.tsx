@@ -16,22 +16,32 @@ const STORAGE_KEY = 'webtier_lang';
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [language, setLanguageState] = useState<Language>('tr');
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     const saved = localStorage.getItem(STORAGE_KEY) as Language | null;
     if (saved && translations[saved]) {
       setLanguageState(saved);
+      document.documentElement.lang = saved;
     }
   }, []);
 
   const setLanguage = useCallback((lang: Language) => {
     setLanguageState(lang);
     localStorage.setItem(STORAGE_KEY, lang);
+    document.documentElement.lang = lang;
   }, []);
 
+  useEffect(() => {
+    if (mounted) {
+      document.documentElement.lang = language;
+    }
+  }, [language, mounted]);
+
   const value: LanguageContextValue = {
-    language,
-    t: translations[language],
+    language: mounted ? language : 'tr',
+    t: translations[mounted ? language : 'tr'],
     setLanguage,
     languages: LANGUAGES,
   };

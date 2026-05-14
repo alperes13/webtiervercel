@@ -45,64 +45,15 @@ export default function CorporateContent() {
 
   const glassCardColors = ['#06b6d4', '#3b82f6', '#8b5cf6', '#10b981', '#f59e0b', '#0ea5e9'];
 
-  const carouselSlides = [
-    {
-      id: 'design',
-      icon: <Palette className="w-6 h-6" />,
-      title: 'Premium Tasarım',
-      description:
-        'Marka kimliğinizi yansıtan, benzersiz ve modern kurumsal web tasarımı. İlk izlenim her şeydir.',
-      features: [
-        'Özel UI/UX tasarım süreci',
-        'Marka odaklı renk paleti',
-        'Profesyonel tipografi',
-        'Animasyonlu etkileşimler',
-        'Responsive tasarım',
-      ],
-    },
-    {
-      id: 'seo',
-      icon: <Search className="w-6 h-6" />,
-      title: 'SEO & Performans',
-      description:
-        "Google'da üst sıralarda yer almanız için teknik SEO ve sayfa performansı optimizasyonu.",
-      features: [
-        'On-page SEO optimizasyonu',
-        'Core Web Vitals uyumu',
-        'Schema markup entegrasyonu',
-        'Sitemap ve robots.txt',
-        'Sayfa hızı optimizasyonu',
-      ],
-    },
-    {
-      id: 'conversion',
-      icon: <BarChart3 className="w-6 h-6" />,
-      title: 'Dönüşüm Odaklı',
-      description:
-        'Ziyaretçileri müşteriye dönüştüren stratejik tasarım ve CTA optimizasyonu.',
-      features: [
-        'CTA stratejik yerleşimi',
-        'Lead yakalama formları',
-        'Güven sinyalleri entegrasyonu',
-        'Kullanıcı yolculuğu planlaması',
-        'A/B test altyapısı',
-      ],
-    },
-    {
-      id: 'tech',
-      icon: <SparklesIcon className="w-6 h-6" />,
-      title: 'Modern Teknoloji',
-      description:
-        'En güncel web teknolojileri ile hızlı, güvenli ve ölçeklenebilir altyapı.',
-      features: [
-        'Next.js / React altyapısı',
-        'Headless CMS entegrasyonu',
-        'SSL sertifikası',
-        'CDN üzerinden hızlı dağıtım',
-        'Otomatik yedekleme',
-      ],
-    },
-  ];
+  const carouselSlides = t.corporate.carouselSlides.map((slide, idx) => ({
+    ...slide,
+    icon: [
+      <Palette key="p" className="w-6 h-6" />,
+      <Search key="s" className="w-6 h-6" />,
+      <BarChart3 key="b" className="w-6 h-6" />,
+      <SparklesIcon key="sp" className="w-6 h-6" />,
+    ][idx],
+  }));
 
   return (
     <div className="min-h-screen bg-[#030303] text-white selection:bg-cyan-500/30">
@@ -129,7 +80,7 @@ export default function CorporateContent() {
               className="text-6xl md:text-8xl lg:text-9xl font-bold tracking-tighter font-[family-name:var(--font-heading)]"
             >
               <span className="bg-clip-text text-transparent bg-gradient-to-b from-white via-white to-white/40">
-                Marka Olmak Mı?
+                {t.corporate.heroTitle}
               </span>
             </motion.h1>
 
@@ -166,14 +117,13 @@ export default function CorporateContent() {
           <div className="max-w-4xl mx-auto text-center space-y-8">
             <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight font-[family-name:var(--font-heading)] leading-tight">
               <ShimmerText
-                text="Dijital dünyada fark yaratın."
+                text={t.corporate.shimmerTitle}
                 shimmerColor="rgba(6,182,212,0.75)"
                 duration={2.5}
               />
             </h2>
             <p className="text-lg md:text-xl text-zinc-500 max-w-2xl mx-auto leading-relaxed">
-              Profesyonel kurumsal web tasarımı ile markanızı dijitalde güçlü bir şekilde konumlandırın.
-              İlk izlenim, kalıcı etki.
+              {t.corporate.shimmerSubtitle}
             </p>
             <div className="flex items-center justify-center gap-4 pt-4">
               <Link href="/iletisim">
@@ -181,7 +131,7 @@ export default function CorporateContent() {
                   size="lg"
                   className="bg-cyan-500 hover:bg-cyan-600 text-white px-10 rounded-full h-14 text-base font-bold"
                 >
-                  Teklif Al
+                  {t.corporate.ctaButton}
                   <ArrowUpRight className="ml-2 w-4 h-4" />
                 </Button>
               </Link>
@@ -222,7 +172,7 @@ export default function CorporateContent() {
               {t.corporate.featuresTitle}
             </h2>
             <p className="mt-4 text-zinc-500 text-lg">
-              Kurumsal web sitenizde sunduğumuz kapsamlı hizmetler
+              {t.corporate.featuresSubtitle}
             </p>
           </div>
 
@@ -261,7 +211,7 @@ export default function CorporateContent() {
         <div className="container mx-auto px-6">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-5xl font-bold tracking-tight font-[family-name:var(--font-heading)]">
-              Her Paketin <span className="text-cyan-400">İçeriği</span>
+              {t.corporate.checklistTitle} <span className="text-cyan-400">{t.corporate.checklistHighlight}</span>
             </h2>
           </div>
 
@@ -324,8 +274,7 @@ export default function CorporateContent() {
                 <span className="text-cyan-400">{t.corporate.ctaTitleHighlight}</span>
               </h2>
               <p className="text-zinc-500 text-lg md:text-xl max-w-xl mx-auto">
-                Ücretsiz CRO analizi ile başlayın. Kurumsal sitenizin lead üretme potansiyelini
-                keşfedin.
+                {t.corporate.ctaDescription}
               </p>
               <div className="flex flex-col md:flex-row items-center justify-center gap-4 pt-4">
                 <Link href="/#hero">
@@ -342,7 +291,7 @@ export default function CorporateContent() {
                 </Link>
               </div>
               <p className="text-xs text-zinc-600 font-medium">
-                Kredi kartı gerekmez • 2 dakikada sonuç • Uzman analizi
+                {t.corporate.ctaTrustNote}
               </p>
             </motion.div>
           </div>

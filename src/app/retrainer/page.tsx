@@ -26,111 +26,20 @@ import { useLanguage } from '@/contexts/LanguageContext';
 export default function RetrainerPage() {
   const { t } = useLanguage();
 
-  const timelineData = [
-    {
-      id: 1,
-      title: 'CRO-X Raporu',
-      date: 'Adım 1',
-      content: 'CRO-X AI analizinden gelen kapsamlı rapor ve öneriler değerlendirilir, öncelikli aksiyonlar belirlenir.',
-      category: 'Analiz',
-      icon: BarChart3,
-      relatedIds: [2],
-      status: 'completed' as const,
-      energy: 100,
-    },
-    {
-      id: 2,
-      title: 'Uygulama',
-      date: 'Adım 2',
-      content: 'Rapordaki tüm aksiyonlar web sitenize ve dijital varlıklarınıza profesyonel ekibimizle uygulanır.',
-      category: 'Uygulama',
-      icon: Rocket,
-      relatedIds: [1, 3],
-      status: 'in-progress' as const,
-      energy: 75,
-    },
-    {
-      id: 3,
-      title: 'Takip & Analiz',
-      date: 'Adım 3',
-      content: 'Uygulanan değişikliklerin performansı aylık olarak takip edilir, raporlanır ve değerlendirilir.',
-      category: 'Takip',
-      icon: Target,
-      relatedIds: [2, 4],
-      status: 'pending' as const,
-      energy: 50,
-    },
-    {
-      id: 4,
-      title: 'Optimizasyon',
-      date: 'Adım 4',
-      content: 'Veriler ışığında yeni iyileştirme fırsatları tespit edilir ve sürekli olarak uygulanır.',
-      category: 'Optimizasyon',
-      icon: RefreshCw,
-      relatedIds: [3, 5],
-      status: 'pending' as const,
-      energy: 30,
-    },
-    {
-      id: 5,
-      title: 'Büyüme',
-      date: 'Adım 5',
-      content: 'Dönüşüm oranlarınız aydan aya artar, sürdürülebilir büyüme ve gelir artışı sağlanır.',
-      category: 'Büyüme',
-      icon: TrendingUp,
-      relatedIds: [4],
-      status: 'pending' as const,
-      energy: 10,
-    },
-  ];
+  const timelineData = t.retrainer.timelineItems.map((item, idx) => ({
+    ...item,
+    id: idx + 1,
+    icon: [BarChart3, Rocket, Target, RefreshCw, TrendingUp][idx] || CheckCircle,
+    relatedIds: idx === 0 ? [2] : idx === 4 ? [4] : [idx, idx + 2],
+    status: (idx === 0 ? 'completed' : idx === 1 ? 'in-progress' : 'pending') as any,
+    energy: [100, 75, 50, 30, 10][idx] || 0,
+  }));
 
-  const bentoTabs = [
-    {
-      id: 'implementation',
-      label: 'Uygulama',
-      icon: <Rocket className="w-4 h-4" />,
-      title: 'CRO-X Uygulama Hizmeti',
-      description:
-        'CRO-X AI raporundaki tüm önerileri web sitenize, e-ticaret altyapınıza ve dijital varlıklarınıza profesyonel ekibimizle uyguluyoruz.',
-      features: [
-        'Web sitesi teknik güncellemeler',
-        'UX/UI iyileştirmeleri',
-        'CTA optimizasyonu',
-        'Mobil uyumluluk düzenlemeleri',
-        'Sayfa hızı optimizasyonu',
-      ],
-    },
-    {
-      id: 'monthly',
-      label: 'Aylık Takip',
-      icon: <RefreshCw className="w-4 h-4" />,
-      title: 'Aylık Optimizasyon Döngüsü',
-      description:
-        'Her ay düzenli olarak performans takibi yapar, yeni iyileştirme fırsatlarını tespit eder ve dijital varlıklarınıza uygularız.',
-      features: [
-        'Aylık performans raporu',
-        'Yeni optimizasyon önerileri',
-        'A/B test stratejileri',
-        'Kullanıcı davranış analizi',
-        'Dönüşüm hunisi takibi',
-      ],
-    },
-    {
-      id: 'growth',
-      label: 'Büyüme',
-      icon: <TrendingUp className="w-4 h-4" />,
-      title: 'Sürekli Büyüme Motoru',
-      description:
-        'Abonelik süresi boyunca dijital varlıklarınız sürekli güncellenir, dönüşüm oranlarınız aydan aya artar.',
-      features: [
-        'Sürdürülebilir dönüşüm artışı',
-        'Rakip analizi ve kıyaslama',
-        'Trend adaptasyonu',
-        'Proaktif iyileştirmeler',
-        'Esnek abonelik modeli',
-      ],
-    },
-  ];
+  const bentoTabs = t.retrainer.bentoTabs.map((tab, idx) => ({
+    ...tab,
+    id: ['implementation', 'monthly', 'growth'][idx],
+    icon: [<Rocket className="w-4 h-4" />, <RefreshCw className="w-4 h-4" />, <TrendingUp className="w-4 h-4" />][idx],
+  }));
 
   const processItems = t.retrainer.processItems;
 
@@ -186,11 +95,11 @@ export default function RetrainerPage() {
         <div className="container mx-auto px-6">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-5xl font-bold tracking-tight font-[family-name:var(--font-heading)]">
-              Neler{' '}
-              <span className="text-[#a78bfa]">Dahil?</span>
+              {t.retrainer.includedTitle}{' '}
+              <span className="text-[#a78bfa]">{t.retrainer.includedHighlight}</span>
             </h2>
             <p className="mt-4 text-zinc-500 text-lg">
-              Retrainer hizmetinin kapsamını keşfedin
+              {t.retrainer.includedSubtitle}
             </p>
           </div>
           <AnimatedBentoCard tabs={bentoTabs} accentColor="#a78bfa" />

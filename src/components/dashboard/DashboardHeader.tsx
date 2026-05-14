@@ -6,6 +6,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { Card } from '@/components/ui/Card';
 import { cn } from '@/lib/utils';
 import { Zap, Target, LayoutDashboard } from 'lucide-react';
+import LanguageSwitcher from '@/components/shared/LanguageSwitcher';
 
 export default function DashboardHeader() {
   const { session, isHydrated } = useAuth();
@@ -23,13 +24,16 @@ export default function DashboardHeader() {
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-col">
-        <h1 className="text-xl font-bold tracking-tight text-slate-900">
-          Merhaba, {displayName}
-        </h1>
-        <p className="text-xs text-slate-500">
-          CRO-X AI Dashboard
-        </p>
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="flex flex-col">
+          <h1 className="text-xl font-bold tracking-tight text-slate-900">
+            {t.dashboard.header.greeting.replace('{name}', displayName)}
+          </h1>
+          <p className="text-xs text-slate-500">
+            CRO-X AI Dashboard
+          </p>
+        </div>
+        <LanguageSwitcher variant="dashboard" className="w-fit" />
       </div>
 
       <div className={cn(
@@ -43,7 +47,7 @@ export default function DashboardHeader() {
           <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Mini</p>
           <div className="mt-1 flex items-baseline gap-1.5">
             <span className="text-2xl font-black text-slate-900">{session.creditsMini}</span>
-            <span className="text-[10px] text-slate-400 font-bold">KREDİ</span>
+            <span className="text-[10px] text-slate-400 font-bold">{t.dashboard.header.credits}</span>
           </div>
         </Card>
 
@@ -54,7 +58,7 @@ export default function DashboardHeader() {
           <p className="text-[10px] font-bold text-cyan-600 uppercase tracking-wider">Ultra</p>
           <div className="mt-1 flex items-baseline gap-1.5">
             <span className="text-2xl font-black text-slate-900">{session.creditsUltra}</span>
-            <span className="text-[10px] text-cyan-600/60 font-bold">KREDİ</span>
+            <span className="text-[10px] text-cyan-600/60 font-bold">{t.dashboard.header.credits}</span>
           </div>
         </Card>
 
@@ -63,10 +67,10 @@ export default function DashboardHeader() {
             <div className="absolute top-0 right-0 p-2 opacity-5">
               <Target className="h-10 w-10" />
             </div>
-            <p className="text-[10px] font-bold uppercase tracking-wider">Doğrulama Durumu</p>
+            <p className="text-[10px] font-bold uppercase tracking-wider">{t.dashboard.header.verificationStatus}</p>
             <div className="mt-1 flex items-baseline gap-1.5">
               <span className="text-sm font-bold capitalize">
-                Doğrulama Bekliyor
+                {t.dashboard.header.pendingVerification}
               </span>
             </div>
           </Card>

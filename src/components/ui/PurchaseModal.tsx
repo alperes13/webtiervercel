@@ -13,18 +13,18 @@ interface PurchaseModalProps {
   onClose: () => void;
 }
 
-const PACKAGES = [
-  { amount: 1, price: '249 TL', label: '1 Ultra Analiz' },
-  { amount: 5, price: '999 TL', label: '5 Ultra Analiz', popular: true },
-  { amount: 10, price: '1.749 TL', label: '10 Ultra Analiz' },
-];
-
 export default function PurchaseModal({ open, onClose }: PurchaseModalProps) {
-  const [selectedAmount, setSelectedAmount] = useState(1);
-  const [loading, setLoading] = useState(false);
-  const [iframeUrl, setIframeUrl] = useState<string | null>(null);
   const { session } = useAuth();
   const { t } = useLanguage();
+  const [selectedAmount, setSelectedAmount] = useState(5);
+  const [loading, setLoading] = useState(false);
+  const [iframeUrl, setIframeUrl] = useState<string | null>(null);
+
+  const PACKAGES = [
+    { amount: 1, price: '249 TL', label: t.dashboard.purchaseModal.packageLabel.replace('{count}', '1') },
+    { amount: 5, price: '999 TL', label: t.dashboard.purchaseModal.packageLabel.replace('{count}', '5'), popular: true },
+    { amount: 10, price: '1.749 TL', label: t.dashboard.purchaseModal.packageLabel.replace('{count}', '10') },
+  ];
 
   const handlePurchase = async () => {
     if (!session?.token) return;
@@ -35,7 +35,7 @@ export default function PurchaseModal({ open, onClose }: PurchaseModalProps) {
         setIframeUrl(res.iframe_url);
       }
     } catch (e) {
-      alert(e instanceof Error ? e.message : 'Ödeme başlatılamadı');
+      alert(e instanceof Error ? e.message : t.dashboard.purchaseModal.errorGeneric);
     } finally {
       setLoading(false);
     }
@@ -43,12 +43,12 @@ export default function PurchaseModal({ open, onClose }: PurchaseModalProps) {
 
   if (iframeUrl) {
     return (
-      <Modal open={open} onClose={() => { setIframeUrl(null); onClose(); }} title="Güvenli Ödeme">
+      <Modal open={open} onClose={() => { setIframeUrl(null); onClose(); }} title={t.dashboard.purchaseModal.securePaymentTitle}>
         <div className="w-full aspect-[3/4] sm:aspect-square bg-white rounded-lg overflow-hidden">
           <iframe
             src={iframeUrl}
             className="w-full h-full border-none"
-            title="PayTR Ödeme"
+            title={t.dashboard.purchaseModal.paymentIframeTitle}
           />
         </div>
       </Modal>
@@ -56,10 +56,10 @@ export default function PurchaseModal({ open, onClose }: PurchaseModalProps) {
   }
 
   return (
-    <Modal open={open} onClose={onClose} title="Ultra Kredi Satın Al">
+    <Modal open={open} onClose={onClose} title={t.dashboard.purchaseModal.title}>
       <div className="space-y-6">
         <p className="text-sm text-[var(--color-text-secondary)]">
-          İşletmeniz için derinlemesine Ultra Analiz raporları oluşturmak üzere kredi bakiyenizi güncelleyin.
+          {t.dashboard.purchaseModal.subtitle}
         </p>
 
         <div className="grid grid-cols-1 gap-3">
@@ -84,7 +84,7 @@ export default function PurchaseModal({ open, onClose }: PurchaseModalProps) {
               </div>
               {pkg.popular && (
                 <span className="absolute -top-2 right-4 px-2 py-0.5 bg-cyan-500 text-[10px] font-bold text-white rounded-full">
-                  EN POPÜLER
+                  {t.dashboard.purchaseModal.popular}
                 </span>
               )}
               <div className={`h-5 w-5 rounded-full border-2 flex items-center justify-center ${selectedAmount === pkg.amount ? 'border-cyan-500 bg-cyan-500' : 'border-[var(--color-border)]'}`}>
@@ -96,12 +96,12 @@ export default function PurchaseModal({ open, onClose }: PurchaseModalProps) {
 
         <div className="space-y-4 pt-2">
           <Button size="lg" className="w-full" onClick={handlePurchase} disabled={loading}>
-            {loading ? 'Yükleniyor...' : 'Ödeme Yap'}
+            {loading ? t.dashboard.purchaseModal.loading : t.dashboard.purchaseModal.payButton}
           </Button>
           
           <div className="flex items-center justify-center gap-4 text-[10px] text-[var(--color-text-muted)] uppercase tracking-widest font-bold">
-            <span className="flex items-center gap-1"><ShieldCheck className="h-3 w-3" /> PayTR Güvencesi</span>
-            <span className="flex items-center gap-1"><CreditCard className="h-3 w-3" /> 256-bit SSL</span>
+            <span className="flex items-center gap-1"><ShieldCheck className="h-3 w-3" /> {t.dashboard.purchaseModal.securePayment}</span>
+            <span className="flex items-center gap-1"><CreditCard className="h-3 w-3" /> {t.dashboard.purchaseModal.sslInfo}</span>
           </div>
         </div>
       </div>

@@ -10,9 +10,9 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { cn } from '@/lib/utils';
 
 export default function Footer() {
-  const { t } = useLanguage();
+  const { t, languages } = useLanguage();
   const pathname = usePathname();
-  const isHome = pathname === '/' || pathname === '/tr' || pathname === '/en';
+  const isHome = pathname === '/' || languages.some(l => pathname === `/${l.code}`);
 
   const textClass = isHome ? "text-[var(--color-text-muted)]" : "text-slate-600";
   const linkClass = isHome ? "text-white" : "text-slate-900";

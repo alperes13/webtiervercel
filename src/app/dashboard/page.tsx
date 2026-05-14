@@ -84,9 +84,9 @@ export default function DashboardPage() {
   }
 
   const handleMiniSubmit = async () => {
-    if (!miniUrl.trim()) { setMiniError('URL gerekli'); return; }
-    if (!isValidUrl(miniUrl)) { setMiniError('Geçersiz URL'); return; }
-    if (session.creditsMini < 1) { setMiniError('Yetersiz Mini kredi'); return; }
+    if (!miniUrl.trim()) { setMiniError(t.dashboard.overview.urlRequired); return; }
+    if (!isValidUrl(miniUrl)) { setMiniError(t.dashboard.overview.invalidUrl); return; }
+    if (session.creditsMini < 1) { setMiniError(t.dashboard.overview.insufficientCredits); return; }
     
     setMiniLoading(true);
     setMiniError('');
@@ -94,7 +94,7 @@ export default function DashboardPage() {
       await createMiniAnalysis(session.token, { website_url: miniUrl });
       updateSession({ creditsMini: session.creditsMini - 1 });
       setMiniUrl('');
-      alert('Mini analiz talebiniz alındı!');
+      alert(t.dashboard.overview.analysisRequested);
       setActiveSection('analysis');
     } catch (e: any) {
       setMiniError(e.message);
@@ -104,9 +104,9 @@ export default function DashboardPage() {
   };
 
   const handleUltraSubmit = async () => {
-    if (!ultraUrl.trim()) { setUltraError('URL gerekli'); return; }
-    if (!isValidUrl(ultraUrl)) { setUltraError('Geçersiz URL'); return; }
-    if (session.creditsUltra < 1) { setUltraError('Yetersiz Ultra kredi. Lütfen bakiye yükleyin.'); return; }
+    if (!ultraUrl.trim()) { setUltraError(t.dashboard.overview.urlRequired); return; }
+    if (!isValidUrl(ultraUrl)) { setUltraError(t.dashboard.overview.invalidUrl); return; }
+    if (session.creditsUltra < 1) { setUltraError(t.dashboard.overview.insufficientCredits); return; }
     
     setUltraLoading(true);
     setUltraError('');
@@ -114,7 +114,7 @@ export default function DashboardPage() {
       await createUltraAnalysis(session.token, { website_url: ultraUrl });
       updateSession({ creditsUltra: session.creditsUltra - 1 });
       setUltraUrl('');
-      alert('Ultra analiz talebiniz alındı! Uzmanlarımız incelemeye başlıyor.');
+      alert(t.dashboard.overview.ultraAnalysisRequested);
       setActiveSection('analysis');
     } catch (e: any) {
       setUltraError(e.message);
@@ -128,9 +128,9 @@ export default function DashboardPage() {
     try {
       await updateProfile(session.token, firstName, lastName);
       updateSession({ firstName, lastName });
-      alert('Profil bilgileriniz başarıyla güncellendi!');
+      alert(t.dashboard.settings.updateSuccess);
     } catch (e) {
-      alert('Profil güncellenirken bir hata oluştu.');
+      alert(t.dashboard.settings.updateError);
     }
   };
 
@@ -141,7 +141,7 @@ export default function DashboardPage() {
       await forgotPassword(session.email);
       setResetSuccess(true);
     } catch (e) {
-      alert('Sıfırlama talebi sırasında bir hata oluştu.');
+      alert(t.dashboard.settings.resetError);
     } finally {
       setResetLoading(false);
     }
@@ -181,8 +181,8 @@ export default function DashboardPage() {
                       <Shield className="h-4 w-4 text-amber-600" />
                     </div>
                     <div>
-                      <p className="text-sm font-bold text-amber-900">E-posta Adresinizi Doğrulayın</p>
-                      <p className="text-xs text-amber-700">Analiz alabilmek için e-posta adresinizi doğrulayın.</p>
+                      <p className="text-sm font-bold text-amber-900">{t.dashboard.verification.bannerTitle}</p>
+                      <p className="text-xs text-amber-700">{t.dashboard.verification.bannerDesc}</p>
                     </div>
                   </div>
                   <Button
@@ -191,7 +191,7 @@ export default function DashboardPage() {
                     className="text-xs bg-amber-600 hover:bg-amber-700 text-white shrink-0 border-none shadow-sm"
                     onClick={() => setVerifyModalOpen(true)}
                   >
-                    Doğrulama Gönder
+                    {t.dashboard.verification.bannerButton}
                   </Button>
                 </div>
               </div>
@@ -207,14 +207,14 @@ export default function DashboardPage() {
                   {/* Analysis Start Block */}
                   <Card className="p-5 space-y-4 border-zinc-200 bg-white shadow-sm">
                     <div className="flex items-center justify-between">
-                      <h3 className="font-bold text-sm text-slate-900 uppercase tracking-tight">CRO-X MINI</h3>
-                      <span className="text-[10px] font-bold text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full uppercase tracking-widest">1 KREDİ</span>
+                      <h3 className="font-bold text-sm text-slate-900 uppercase tracking-tight">{t.dashboard.overview.miniTitle}</h3>
+                      <span className="text-[10px] font-bold text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full uppercase tracking-widest">{t.dashboard.overview.miniCredit}</span>
                     </div>
                     <HeroInput
                       value={miniUrl}
                       onChange={setMiniUrl}
                       onSubmit={handleMiniSubmit}
-                      placeholder="URL girin (Örn: example.com)"
+                      placeholder={t.dashboard.overview.placeholderMini}
                       selectedModel="CRO-X MINI"
                       onModelChange={() => {}}
                       inputHint=""
@@ -228,14 +228,14 @@ export default function DashboardPage() {
 
                   <Card className="p-5 space-y-4 border-zinc-200 bg-white shadow-sm">
                     <div className="flex items-center justify-between">
-                      <h3 className="font-bold text-sm text-slate-900 uppercase tracking-tight">CRO-X ULTRA</h3>
-                      <span className="text-[10px] font-bold text-amber-500 bg-amber-50 px-2 py-0.5 rounded-full uppercase tracking-widest">1 KREDİ</span>
+                      <h3 className="font-bold text-sm text-slate-900 uppercase tracking-tight">{t.dashboard.overview.ultraTitle}</h3>
+                      <span className="text-[10px] font-bold text-amber-500 bg-amber-50 px-2 py-0.5 rounded-full uppercase tracking-widest">{t.dashboard.overview.ultraCredit}</span>
                     </div>
                     <HeroInput
                       value={ultraUrl}
                       onChange={setUltraUrl}
                       onSubmit={handleUltraSubmit}
-                      placeholder="Detaylı analiz için URL girin..."
+                      placeholder={t.dashboard.overview.placeholderUltra}
                       selectedModel="CRO-X ULTRA"
                       onModelChange={() => {}}
                       inputHint=""
@@ -254,11 +254,11 @@ export default function DashboardPage() {
                       <Zap className="h-5 w-5 text-cyan-600" />
                     </div>
                     <div>
-                      <p className="text-sm font-black text-slate-900 uppercase tracking-tight">Ultra Analiz Paketleri</p>
-                      <p className="text-xs text-slate-500 font-medium">Sitenizi uzmanlarımız incelesin, dönüşümlerinizi uçurun.</p>
+                      <p className="text-sm font-black text-slate-900 uppercase tracking-tight">{t.dashboard.overview.ultraBannerTitle}</p>
+                      <p className="text-xs text-slate-500 font-medium">{t.dashboard.overview.ultraBannerDesc}</p>
                     </div>
                   </div>
-                  <Button onClick={() => setActiveSection('credits')} size="sm" className="bg-cyan-600 hover:bg-cyan-700 text-[11px] font-black px-6 uppercase tracking-wider rounded-xl">Hemen Yükle</Button>
+                  <Button onClick={() => setActiveSection('credits')} size="sm" className="bg-cyan-600 hover:bg-cyan-700 text-[11px] font-black px-6 uppercase tracking-wider rounded-xl">{t.dashboard.overview.ultraBannerButton}</Button>
                 </Card>
               </div>
             )}
@@ -275,8 +275,8 @@ export default function DashboardPage() {
             {activeSection === 'backlog' && (
               <div className="space-y-6">
                 <div className="space-y-1">
-                  <h2 className="text-xl font-bold text-slate-900">Backlog</h2>
-                  <p className="text-xs text-slate-500 font-medium">Planlanan ve devam eden geliştirme süreçleri.</p>
+                  <h2 className="text-xl font-bold text-slate-900">{t.dashboard.backlog.title}</h2>
+                  <p className="text-xs text-slate-500 font-medium">{t.dashboard.backlog.subtitle}</p>
                 </div>
                 <BacklogTasks token={session.token} />
               </div>
@@ -286,15 +286,15 @@ export default function DashboardPage() {
             {activeSection === 'credits' && (
               <div className="space-y-6">
                 <div className="space-y-1">
-                  <h2 className="text-xl font-bold text-slate-900">Kredi Yükle</h2>
-                  <p className="text-xs text-slate-500 font-medium">CRO-X Ultra paketleri ile profesyonel raporlar alın.</p>
+                  <h2 className="text-xl font-bold text-slate-900">{t.dashboard.credits.title}</h2>
+                  <p className="text-xs text-slate-500 font-medium">{t.dashboard.credits.subtitle}</p>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
                   {[
-                    { amount: 1, price: '249 TL', label: 'BAŞLANGIÇ', desc: '1 Adet Ultra Analiz', color: 'text-slate-900' },
-                    { amount: 5, price: '999 TL', label: 'POPÜLER', desc: '5 Adet Ultra Analiz', popular: true, color: 'text-cyan-600' },
-                    { amount: 10, price: '1.749 TL', label: 'AVANTAJLI', desc: '10 Adet Ultra Analiz', color: 'text-purple-600' },
+                    { amount: 1, price: '249 TL', label: t.dashboard.credits.starter, desc: t.dashboard.credits.packageDescription.replace('{count}', '1'), color: 'text-slate-900' },
+                    { amount: 5, price: '999 TL', label: t.dashboard.credits.popular, desc: t.dashboard.credits.packageDescription.replace('{count}', '5'), popular: true, color: 'text-cyan-600' },
+                    { amount: 10, price: '1.749 TL', label: t.dashboard.credits.advantage, desc: t.dashboard.credits.packageDescription.replace('{count}', '10'), color: 'text-purple-600' },
                   ].map((pkg) => (
                     <Card key={pkg.amount} className={cn(
                       "group p-6 flex flex-col justify-between space-y-6 relative transition-all duration-300 border-zinc-200 bg-white hover:shadow-2xl hover:-translate-y-1 overflow-hidden",
@@ -303,7 +303,7 @@ export default function DashboardPage() {
                       {pkg.popular && (
                         <div className="absolute top-0 right-0">
                           <div className="bg-cyan-500 text-[9px] font-black text-white px-8 py-1 rotate-45 translate-x-[24px] translate-y-[8px] uppercase tracking-widest shadow-sm">
-                            POPÜLER
+                            {t.dashboard.credits.popular}
                           </div>
                         </div>
                       )}
@@ -318,7 +318,7 @@ export default function DashboardPage() {
                         </div>
                         
                         <ul className="space-y-2 pt-2">
-                          {['Uzman İncelemesi', 'Görüntülü Rapor', 'Eylem Planı'].map((feat) => (
+                          {t.dashboard.credits.features.map((feat) => (
                             <li key={feat} className="flex items-center gap-2 text-[10px] font-bold text-slate-400 uppercase tracking-tight">
                               <Shield className="h-3 w-3 text-emerald-500" />
                               {feat}
@@ -336,7 +336,7 @@ export default function DashboardPage() {
                             : "bg-slate-50 hover:bg-slate-100 text-slate-900 border border-slate-200"
                         )}
                       >
-                        Paketi Seç
+                        {t.dashboard.credits.selectButton}
                       </Button>
                     </Card>
                   ))}
@@ -348,14 +348,14 @@ export default function DashboardPage() {
             {activeSection === 'notifications' && (
               <div className="space-y-6">
                 <div className="space-y-1">
-                  <h2 className="text-xl font-bold text-slate-900">Bildirimler</h2>
-                  <p className="text-xs text-slate-500 font-medium">Önemli güncellemeler ve analiz sonuçları.</p>
+                  <h2 className="text-xl font-bold text-slate-900">{t.dashboard.notifications.title}</h2>
+                  <p className="text-xs text-slate-500 font-medium">{t.dashboard.notifications.subtitle}</p>
                 </div>
                 <Card className="p-8 border-dashed border-2 flex flex-col items-center justify-center text-center space-y-3 bg-white">
                   <div className="p-3 bg-slate-50 rounded-full">
                     <Bell className="h-6 w-6 text-slate-400" />
                   </div>
-                  <p className="text-sm font-medium text-slate-600">Henüz bildiriminiz bulunmuyor.</p>
+                  <p className="text-sm font-medium text-slate-600">{t.dashboard.notifications.empty}</p>
                 </Card>
               </div>
             )}
@@ -364,8 +364,8 @@ export default function DashboardPage() {
             {activeSection === 'settings' && (
               <div className="space-y-6">
                  <div className="space-y-1">
-                  <h2 className="text-xl font-bold text-slate-900">Hesap Ayarları</h2>
-                  <p className="text-xs text-slate-500 font-medium">Kişisel bilgilerinizi yönetin.</p>
+                  <h2 className="text-xl font-bold text-slate-900">{t.dashboard.settings.title}</h2>
+                  <p className="text-xs text-slate-500 font-medium">{t.dashboard.settings.subtitle}</p>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -374,34 +374,34 @@ export default function DashboardPage() {
                       <div className="p-2.5 rounded-xl bg-cyan-50 text-cyan-600">
                         <Mail className="h-5 w-5" />
                       </div>
-                      <h3 className="font-bold text-slate-900 uppercase tracking-tight">Kişisel Bilgiler</h3>
+                      <h3 className="font-bold text-slate-900 uppercase tracking-tight">{t.dashboard.settings.personalInfo}</h3>
                     </div>
                     
                     <div className="space-y-4">
                       <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-1.5">
-                          <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.15em]">Ad</label>
+                          <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.15em]">{t.dashboard.settings.firstName}</label>
                           <input 
                             type="text" 
                             value={firstName}
                             onChange={(e) => setFirstName(e.target.value)}
-                            placeholder="Adınız"
+                            placeholder={t.dashboard.settings.firstName}
                             className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-sm font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 transition-all font-inter" 
                           />
                         </div>
                         <div className="space-y-1.5">
-                          <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.15em]">Soyad</label>
+                          <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.15em]">{t.dashboard.settings.lastName}</label>
                           <input 
                             type="text" 
                             value={lastName}
                             onChange={(e) => setLastName(e.target.value)}
-                            placeholder="Soyadınız"
+                            placeholder={t.dashboard.settings.lastName}
                             className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-sm font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 transition-all font-inter" 
                           />
                         </div>
                       </div>
                       <div className="space-y-1.5">
-                        <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.15em]">E-posta</label>
+                        <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.15em]">{t.dashboard.settings.email}</label>
                         <div className="px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl text-sm font-bold text-slate-400 select-none">
                           {session.email}
                         </div>
@@ -410,7 +410,7 @@ export default function DashboardPage() {
                         onClick={handleProfileUpdate}
                         className="w-full h-11 bg-slate-900 hover:bg-black text-[11px] font-black uppercase tracking-[0.1em] rounded-xl"
                       >
-                        Kaydet
+                        {t.dashboard.settings.saveButton}
                       </Button>
                     </div>
                   </Card>
@@ -420,12 +420,12 @@ export default function DashboardPage() {
                       <div className="p-2.5 rounded-xl bg-purple-50 text-purple-600">
                         <Shield className="h-5 w-5" />
                       </div>
-                      <h3 className="font-bold text-slate-900 uppercase tracking-tight">Güvenlik</h3>
+                      <h3 className="font-bold text-slate-900 uppercase tracking-tight">{t.dashboard.settings.security}</h3>
                     </div>
                     
                     <div className="space-y-4">
                       <p className="text-xs text-slate-500 font-medium leading-relaxed">
-                        Hesap güvenliğiniz için periyodik olarak şifrenizi güncellemenizi öneririz. Şifre değişikliği için sıfırlama bağlantısı talep edebilirsiniz.
+                        {t.dashboard.settings.securityDesc}
                       </p>
                       <div className="pt-2">
                         <Button 
@@ -438,11 +438,11 @@ export default function DashboardPage() {
                               : "bg-slate-900 hover:bg-black text-white"
                           )}
                         >
-                          {resetLoading ? 'Gönderiliyor...' : resetSuccess ? 'Sıfırlama Maili Gönderildi' : 'Şifre Sıfırlama Talep Et'}
+                          {resetLoading ? t.emailVerification.resending : resetSuccess ? t.dashboard.settings.resetRequested : t.dashboard.settings.resetPasswordButton}
                         </Button>
                         {resetSuccess && (
                           <p className="mt-3 text-[10px] text-emerald-600 font-bold text-center">
-                            Lütfen e-posta kutunuzu kontrol edin.
+                            {t.dashboard.settings.resetCheckEmail}
                           </p>
                         )}
                       </div>
@@ -452,10 +452,10 @@ export default function DashboardPage() {
 
                 <div className="flex items-center justify-between p-6 bg-red-50/30 border border-red-100 rounded-2xl">
                   <div>
-                    <h4 className="text-sm font-bold text-red-900 uppercase tracking-tight">Oturumu Kapat</h4>
-                    <p className="text-xs text-red-700/70 font-medium">Hesabınızdan güvenli bir şekilde çıkış yapın.</p>
+                    <h4 className="text-sm font-bold text-red-900 uppercase tracking-tight">{t.dashboard.settings.logoutTitle}</h4>
+                    <p className="text-xs text-red-700/70 font-medium">{t.dashboard.settings.logoutDesc}</p>
                   </div>
-                  <Button onClick={logout} variant="outline" className="h-10 px-6 border-red-200 text-red-600 hover:bg-red-50 font-black text-[11px] uppercase tracking-wider rounded-xl">Çıkış Yap</Button>
+                  <Button onClick={logout} variant="outline" className="h-10 px-6 border-red-200 text-red-600 hover:bg-red-50 font-black text-[11px] uppercase tracking-wider rounded-xl">{t.dashboard.settings.logoutButton}</Button>
                 </div>
               </div>
             )}
