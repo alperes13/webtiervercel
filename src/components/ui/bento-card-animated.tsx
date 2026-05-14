@@ -10,7 +10,7 @@ interface BentoTab {
   icon: React.ReactNode;
   title: string;
   description: string;
-  features: string[];
+  features: readonly string[];
 }
 
 interface AnimatedBentoCardProps {
