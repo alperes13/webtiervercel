@@ -44,7 +44,7 @@ export async function POST(
   await queryOne(
     `INSERT INTO credits (user_id, credit_type, amount, transaction_type, description, balance_after)
      VALUES ($1, $2, $3, 'admin_grant', $4, $5)`,
-    [userId, body.type, amount, `Admin tarafından eklendi: ${admin.email}`, balanceAfter]
+    [userId, body.type, amount, 'Admin tarafından eklendi', balanceAfter]
   );
 
   return NextResponse.json({

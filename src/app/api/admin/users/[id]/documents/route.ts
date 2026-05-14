@@ -64,7 +64,7 @@ export async function POST(
       body.name.trim(),
       body.url.trim(),
       body.file_extension || null,
-      admin.email,
+      'admin',
     ]
   );
 

@@ -74,7 +74,7 @@ export async function POST(
       body.labels && body.labels.length > 0 ? body.labels : null,
       body.image_url || null,
       body.due_date || null,
-      admin.email,
+      'admin',
     ]
   );
 
