@@ -13,30 +13,35 @@ interface Props {
 export default function ChatBubble({ msg, loginHref }: Props) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 6 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.25, ease: 'easeOut' }}
+      layout
+      initial={{ opacity: 0, y: 24, scale: 0.96 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      exit={{ opacity: 0, y: -8, scale: 0.96 }}
+      transition={{ type: 'spring', damping: 22, stiffness: 220 }}
       className="flex justify-center w-full"
     >
-      <div className="flex items-center gap-2 max-w-[90%]">
-        <div
-          className={cn(
-            'inline-block rounded-full px-5 py-3 text-[12px] sm:text-[13px] leading-snug',
-            msg.kind === 'success'
-              ? 'bg-zinc-900/90 text-white/90 border border-emerald-700/40'
-              : 'bg-zinc-900/90 text-white/90 border border-white/8',
-          )}
-        >
-          {msg.text}
-        </div>
-        {msg.inlineLoginLink && loginHref && (
-          <Link
-            href={loginHref}
-            className="shrink-0 inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider px-3 py-1.5 rounded-full bg-white/10 border border-white/20 text-white hover:bg-white/15 transition"
-          >
-            Giriş Yap →
-          </Link>
+      <div
+        className={cn(
+          'inline-block rounded-full px-4 py-2.5 sm:px-5 sm:py-3 text-[12px] sm:text-[13px] leading-snug max-w-[92%] text-center',
+          msg.kind === 'success'
+            ? 'bg-zinc-900/95 text-white/90 border border-emerald-700/40'
+            : 'bg-zinc-900/95 text-white/90 border border-white/8',
         )}
+      >
+        <span>
+          {msg.text}
+          {msg.inlineLoginLink && loginHref && (
+            <>
+              {' '}
+              <Link
+                href={loginHref}
+                className="underline underline-offset-2 font-bold text-cyan-400 hover:text-cyan-300 transition"
+              >
+                Giriş Yap →
+              </Link>
+            </>
+          )}
+        </span>
       </div>
     </motion.div>
   );

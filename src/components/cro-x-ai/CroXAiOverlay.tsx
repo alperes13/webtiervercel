@@ -50,7 +50,7 @@ export default function CroXAiOverlay({ open, onClose, defaultModel = 'mini' }: 
   const inputRef = useRef<HTMLInputElement>(null);
   const chatScrollRef = useRef<HTMLDivElement>(null);
 
-  // Reset state on open and seed bot messages
+  // Reset state on open and seed bot messages SEQUENTIALLY with timing
   useEffect(() => {
     if (!open) return;
     setModel(defaultModel);
@@ -60,31 +60,68 @@ export default function CroXAiOverlay({ open, onClose, defaultModel = 'mini' }: 
     setConfirmOpen(false);
     setSubmitError(null);
     setSubmitting(false);
+    setChatLog([]); // Start empty: shows hero "CRO-X AI / Limitlerine dokun."
 
-    const seeded: ChatMessage[] = [];
+    const timers: number[] = [];
+
+    // Hero stays centered for 3s, then slides up — bot messages start arriving after.
+    const HERO_HOLD_MS = 3000;
+
     if (!isAuthenticated) {
-      seeded.push({
-        id: `bot-login-${Date.now()}`,
-        kind: 'bot',
-        text: 'Analiz almadan önce giriş yapman gerektiğini unutma.',
-        inlineLoginLink: true,
-      });
+      timers.push(
+        window.setTimeout(() => {
+          setChatLog((prev) => [
+            ...prev,
+            {
+              id: `bot-login-${Date.now()}`,
+              kind: 'bot',
+              text: 'Analiz almadan önce giriş yapman gerektiğini unutma.',
+              inlineLoginLink: true,
+            },
+          ]);
+        }, HERO_HOLD_MS),
+      );
+      timers.push(
+        window.setTimeout(() => {
+          setChatLog((prev) => [
+            ...prev,
+            {
+              id: `bot-intro-${Date.now()}`,
+              kind: 'bot',
+              text: 'Herhangi bir dijital adresini gir. Ne kadar adres yazarsan o kadar iyi.',
+            },
+          ]);
+        }, HERO_HOLD_MS + 800),
+      );
+    } else {
+      timers.push(
+        window.setTimeout(() => {
+          setChatLog((prev) => [
+            ...prev,
+            {
+              id: `bot-intro-${Date.now()}`,
+              kind: 'bot',
+              text: 'Herhangi bir dijital adresini gir. Ne kadar adres yazarsan o kadar iyi.',
+            },
+          ]);
+        }, HERO_HOLD_MS),
+      );
     }
-    seeded.push({
-      id: `bot-intro-${Date.now()}`,
-      kind: 'bot',
-      text: 'Herhangi bir dijital adresini gir. Ne kadar adres yazarsan o kadar iyi.',
-    });
-    setChatLog(seeded);
+
+    return () => {
+      timers.forEach((t) => window.clearTimeout(t));
+    };
   }, [open, isAuthenticated, defaultModel]);
 
-  // Body scroll lock
+  // Body scroll lock + navbar hide via body class
   useEffect(() => {
     if (!open) return;
-    const original = document.body.style.overflow;
+    const originalOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
+    document.body.classList.add('crox-overlay-open');
     return () => {
-      document.body.style.overflow = original;
+      document.body.style.overflow = originalOverflow;
+      document.body.classList.remove('crox-overlay-open');
     };
   }, [open]);
 
@@ -100,7 +137,7 @@ export default function CroXAiOverlay({ open, onClose, defaultModel = 'mini' }: 
     return () => document.removeEventListener('keydown', handler);
   }, [open, confirmOpen, submitting, onClose]);
 
-  // Auto-scroll chat to bottom on new message
+  // Auto-scroll chat to bottom on new message (since we use justify-end)
   useEffect(() => {
     const el = chatScrollRef.current;
     if (el) el.scrollTop = el.scrollHeight;
@@ -170,7 +207,6 @@ export default function CroXAiOverlay({ open, onClose, defaultModel = 'mini' }: 
       return;
     }
 
-    // Pre-flight credit check (UX only — server is source of truth)
     const balance = model === 'ultra' ? session.creditsUltra : session.creditsMini;
     if (balance < 1) {
       setSubmitError(
@@ -219,7 +255,6 @@ export default function CroXAiOverlay({ open, onClose, defaultModel = 'mini' }: 
         return;
       }
 
-      // Success: update session credits, append success bubble, reset
       if (model === 'ultra') {
         updateSession({ creditsUltra: Math.max(0, session.creditsUltra - 1), analysisStatus: 'pending' });
       } else {
@@ -248,6 +283,8 @@ export default function CroXAiOverlay({ open, onClose, defaultModel = 'mini' }: 
 
   const loginHref = `/auth/login?redirect=${encodeURIComponent(pathname || '/')}`;
 
+  const showHero = chatLog.length === 0;
+
   return (
     <AnimatePresence>
       {open && (
@@ -260,72 +297,96 @@ export default function CroXAiOverlay({ open, onClose, defaultModel = 'mini' }: 
           aria-modal="true"
           role="dialog"
         >
-          {/* Top bar with back button + title */}
-          <div className="absolute top-4 left-4 right-4 flex items-center justify-between pointer-events-none">
+          {/* Top bar — back button always; CRO-X AI title appears once messages start */}
+          <div className="absolute top-3 left-3 right-3 sm:top-4 sm:left-4 sm:right-4 flex items-center justify-between pointer-events-none z-10">
             <button
               type="button"
               onClick={onClose}
               aria-label="Geri"
-              className="pointer-events-auto h-10 w-10 rounded-full bg-white text-black flex items-center justify-center hover:bg-zinc-200 transition shadow-lg"
+              className="pointer-events-auto h-9 w-9 sm:h-10 sm:w-10 rounded-full bg-white text-black flex items-center justify-center hover:bg-zinc-200 transition shadow-lg"
             >
-              <ArrowLeft className="w-5 h-5" />
+              <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5" />
             </button>
-            <div className="text-white text-sm font-semibold tracking-wide pointer-events-auto">
+            <motion.div
+              animate={{ opacity: showHero ? 0 : 1 }}
+              transition={{ duration: 0.3 }}
+              className="text-white text-xs sm:text-sm font-semibold tracking-wide pointer-events-auto"
+            >
               CRO-X AI
-            </div>
-            <div className="w-10" />
+            </motion.div>
+            <div className="w-9 sm:w-10" />
           </div>
 
-          <div className="h-full w-full flex flex-col pt-20 pb-6 px-4 sm:px-6">
-            {/* Chat area */}
-            <div
-              ref={chatScrollRef}
-              className="flex-1 overflow-y-auto space-y-3 pb-4 max-w-3xl w-full mx-auto"
-            >
-              {chatLog.length === 0 && (
-                <div className="flex flex-col items-center justify-center min-h-[40vh] text-center">
-                  <h1 className="text-white text-3xl sm:text-4xl font-bold">CRO-X AI</h1>
-                  <p className="text-white/60 text-sm mt-2">Limitlerine dokun.</p>
-                </div>
-              )}
-              {chatLog.map((m) => (
-                <ChatBubble key={m.id} msg={m} loginHref={loginHref} />
-              ))}
+          {/* Main vertical layout: chat (top, growing) + bottom dock */}
+          <div className="h-full w-full flex flex-col pt-14 sm:pt-16 pb-3 sm:pb-5 px-3 sm:px-6">
+            {/* Chat region: grows to fill, content aligns to bottom */}
+            <div className="flex-1 min-h-0 max-w-2xl w-full mx-auto relative">
+              {/* Hero (empty state) — fades out as soon as a bot message arrives */}
+              <AnimatePresence>
+                {showHero && (
+                  <motion.div
+                    key="hero"
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -60 }}
+                    transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+                    className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none"
+                  >
+                    <h1 className="text-white text-2xl sm:text-3xl font-bold tracking-tight">CRO-X AI</h1>
+                    <p className="text-white/60 text-xs sm:text-sm mt-2">Limitlerine dokun.</p>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              {/* Chat scroll: justify-end so bubbles stack from bottom */}
+              <div
+                ref={chatScrollRef}
+                className="absolute inset-0 overflow-y-auto flex flex-col justify-end space-y-2.5 sm:space-y-3 pb-2"
+              >
+                <AnimatePresence initial={false}>
+                  {chatLog.map((m) => (
+                    <ChatBubble key={m.id} msg={m} loginHref={loginHref} />
+                  ))}
+                </AnimatePresence>
+              </div>
             </div>
 
-            {/* Bottom action area */}
-            <div className="max-w-3xl w-full mx-auto pt-3 border-t border-white/10 space-y-4">
-              {/* TEMIZLE / ANALIZE GONDER row (only when at least 1 address) */}
-              {filledCount > 0 && (
-                <motion.div
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="flex items-center justify-end gap-3"
-                >
-                  <button
-                    type="button"
-                    onClick={handleClear}
-                    disabled={submitting}
-                    className="px-5 py-2 rounded-full text-[12px] font-bold uppercase tracking-wider bg-white text-rose-600 border border-white hover:bg-zinc-100 transition disabled:opacity-50"
+            {/* Bottom dock: action buttons + pills + input */}
+            <div className="max-w-2xl w-full mx-auto pt-3 border-t border-white/10 space-y-3 sm:space-y-4">
+              {/* Action buttons (TEMİZLE / ANALİZE GÖNDER) appear once user added an address */}
+              <AnimatePresence>
+                {filledCount > 0 && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 8, height: 0 }}
+                    animate={{ opacity: 1, y: 0, height: 'auto' }}
+                    exit={{ opacity: 0, y: 8, height: 0 }}
+                    className="flex flex-wrap items-center justify-end gap-2 sm:gap-3"
                   >
-                    TEMİZLE
-                  </button>
-                  <button
-                    type="button"
-                    onClick={handleAnalyzeClick}
-                    disabled={submitting}
-                    className="px-5 py-2 rounded-full text-[12px] font-bold uppercase tracking-wider bg-white text-rose-700 border border-rose-700 hover:bg-rose-50 transition inline-flex items-center gap-2 disabled:opacity-50"
-                  >
-                    ANALİZE GÖNDER
-                    <span className="inline-flex items-center justify-center h-7 w-7 rounded-full bg-rose-900 text-white">
-                      <ArrowRight className="w-3.5 h-3.5" />
-                    </span>
-                  </button>
-                </motion.div>
-              )}
+                    <button
+                      type="button"
+                      onClick={handleClear}
+                      disabled={submitting}
+                      className="px-4 py-1.5 sm:px-5 sm:py-2 rounded-full text-[11px] sm:text-[12px] font-bold uppercase tracking-wider bg-white text-rose-600 border border-white hover:bg-zinc-100 transition disabled:opacity-50"
+                    >
+                      TEMİZLE
+                    </button>
+                    <button
+                      type="button"
+                      onClick={handleAnalyzeClick}
+                      disabled={submitting}
+                      className="px-4 py-1.5 sm:px-5 sm:py-2 rounded-full text-[11px] sm:text-[12px] font-bold uppercase tracking-wider bg-white text-rose-700 border border-rose-700 hover:bg-rose-50 transition inline-flex items-center gap-2 disabled:opacity-50"
+                    >
+                      ANALİZE GÖNDER
+                      <span className="inline-flex items-center justify-center h-6 w-6 sm:h-7 sm:w-7 rounded-full bg-rose-900 text-white">
+                        <ArrowRight className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+                      </span>
+                    </button>
+                  </motion.div>
+                )}
+              </AnimatePresence>
 
-              {/* Platform pills */}
-              <div className="flex gap-3 overflow-x-auto pb-1 sm:flex-wrap sm:justify-center sm:overflow-visible">
+              {/* Platform pills — wrap on all viewports, never overflow */}
+              <div className="flex flex-wrap justify-center gap-1.5 sm:gap-2">
                 {PLATFORMS.map((p) => (
                   <PlatformPill
                     key={p.key}
@@ -339,9 +400,14 @@ export default function CroXAiOverlay({ open, onClose, defaultModel = 'mini' }: 
 
               {/* Address input bar */}
               <div className="rounded-2xl border border-white/15 bg-zinc-950/60 backdrop-blur-md overflow-hidden">
-                <div className="px-5 pt-4 pb-2">
-                  <div className="flex items-center gap-3">
-                    <span className={cn('text-[13px] font-semibold whitespace-nowrap', placeholderColor)}>
+                <div className="px-3 sm:px-5 pt-3 sm:pt-4 pb-1.5 sm:pb-2">
+                  <div className="flex items-center gap-2 sm:gap-3">
+                    <span
+                      className={cn(
+                        'text-[12px] sm:text-[13px] font-semibold whitespace-nowrap',
+                        placeholderColor,
+                      )}
+                    >
                       {placeholder}
                     </span>
                     <input
@@ -358,19 +424,19 @@ export default function CroXAiOverlay({ open, onClose, defaultModel = 'mini' }: 
                       disabled={!activePlatform}
                       placeholder=""
                       className={cn(
-                        'flex-1 bg-transparent outline-none text-white text-[13px] font-medium',
+                        'flex-1 min-w-0 bg-transparent outline-none text-white text-[12px] sm:text-[13px] font-medium',
                         'placeholder:text-white/30',
                       )}
                     />
                   </div>
                 </div>
-                <div className="flex items-center justify-between px-3 pb-3 pt-1">
+                <div className="flex items-center justify-between px-2 sm:px-3 pb-2 sm:pb-3 pt-1 gap-2">
                   {/* Model selector */}
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <button
                         type="button"
-                        className="flex items-center gap-1.5 h-8 pl-2 pr-2.5 text-[10.5px] font-bold uppercase tracking-wider rounded-full text-white/70 hover:text-white hover:bg-white/5 transition"
+                        className="flex items-center gap-1.5 h-8 pl-1.5 pr-2 sm:pl-2 sm:pr-2.5 text-[10px] sm:text-[10.5px] font-bold uppercase tracking-wider rounded-full text-white/70 hover:text-white hover:bg-white/5 transition"
                       >
                         <ArrowLeftRight className="w-3 h-3 opacity-60" />
                         <span>{modelLabel(model)}</span>
@@ -400,7 +466,7 @@ export default function CroXAiOverlay({ open, onClose, defaultModel = 'mini' }: 
                     onClick={handleAddAddress}
                     disabled={!ekleEnabled}
                     className={cn(
-                      'inline-flex items-center gap-2 pl-4 pr-2 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider transition',
+                      'inline-flex items-center gap-1.5 sm:gap-2 pl-3 pr-1.5 py-1 sm:pl-4 sm:pr-2 sm:py-1.5 rounded-full text-[10.5px] sm:text-[11px] font-bold uppercase tracking-wider transition shrink-0',
                       ekleEnabled
                         ? 'bg-white text-zinc-900 hover:bg-zinc-100'
                         : 'bg-white/20 text-white/50 cursor-not-allowed',
@@ -409,11 +475,11 @@ export default function CroXAiOverlay({ open, onClose, defaultModel = 'mini' }: 
                     EKLE
                     <span
                       className={cn(
-                        'inline-flex items-center justify-center h-6 w-6 rounded-full',
+                        'inline-flex items-center justify-center h-5 w-5 sm:h-6 sm:w-6 rounded-full',
                         ekleEnabled ? 'bg-zinc-900 text-white' : 'bg-white/30 text-white/70',
                       )}
                     >
-                      <ArrowRight className="w-3 h-3" />
+                      <ArrowRight className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
                     </span>
                   </button>
                 </div>

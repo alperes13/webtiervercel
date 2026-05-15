@@ -193,6 +193,12 @@ body {
   position: relative !important;
 }
 
+/* Hide site navbar while CRO-X AI overlay is open (front pages) */
+body.crox-overlay-open > nav,
+body.crox-overlay-open nav.fixed {
+  display: none !important;
+}
+
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading), system-ui, sans-serif;
   font-weight: 700;

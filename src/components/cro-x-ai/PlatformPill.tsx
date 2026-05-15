@@ -17,7 +17,8 @@ export default function PlatformPill({ platform, isActive, hasValue, onClick }: 
       type="button"
       onClick={onClick}
       className={cn(
-        'shrink-0 px-4 py-2 rounded-full text-[11px] font-bold tracking-wider uppercase',
+        'shrink-0 rounded-full font-bold tracking-wider uppercase',
+        'px-3 py-1.5 text-[9.5px] sm:px-4 sm:py-2 sm:text-[11px]',
         'transition-all duration-200 whitespace-nowrap',
         filled
           ? 'bg-blue-600 text-white border border-blue-500 shadow-[0_0_18px_rgba(37,99,235,0.45)]'
