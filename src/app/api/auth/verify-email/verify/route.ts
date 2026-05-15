@@ -69,7 +69,7 @@ export async function POST(request: Request) {
     await query('UPDATE users SET email_verified = TRUE WHERE id = $1', [user.sub]);
 
     return NextResponse.json({ success: true, message: 'E-posta başarıyla doğrulandı' });
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error('[verify-email] verify error:', err);
     return NextResponse.json({ success: false, error: 'Sunucu hatası oluştu' }, { status: 500 });
   }

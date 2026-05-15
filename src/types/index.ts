@@ -19,6 +19,17 @@ export interface AnalysisRequest {
   phone: string;
 }
 
+export interface AnalysisRecord {
+  id: string;
+  user_id: string;
+  model_type: 'mini' | 'ultra';
+  site_url: string;
+  status: 'pending' | 'processing' | 'completed' | 'failed';
+  result?: string;
+  created_at: string;
+  updated_at?: string;
+}
+
 export interface NavItem {
   label: string;
   href: string;

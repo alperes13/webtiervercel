@@ -87,7 +87,7 @@ export async function POST(
         userId,
         'Yeni Backlog Görevi Atandı',
         `"${body.title.trim()}" başlıklı yeni bir görev size atandı.`,
-        JSON.stringify({ task_id: (task as any)?.id, priority, status }),
+        JSON.stringify({ task_id: (task as { id?: string })?.id, priority, status }),
       ]
     );
   } catch (notifErr) {

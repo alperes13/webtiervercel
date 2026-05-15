@@ -39,8 +39,8 @@ function ResetPasswordForm() {
       await resetPassword(token, newPassword);
       setSuccess(true);
       setTimeout(() => router.push('/auth/login?reset=success'), 2500);
-    } catch (e: any) {
-      setError(e.message ?? 'Bir hata oluştu. Lütfen tekrar deneyin.');
+    } catch (e: unknown) {
+      setError(e instanceof Error ? e.message : 'Bir hata oluştu. Lütfen tekrar deneyin.');
     } finally {
       setLoading(false);
     }

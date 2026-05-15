@@ -2,7 +2,7 @@ import dynamic from 'next/dynamic';
 import HeroSection from '@/components/sections/HeroSection';
 import SharedBackgroundWrapper from '@/components/layout/SharedBackgroundWrapper';
 import Footer from '@/components/layout/Footer';
-import { pool, queryOne } from '@/lib/db';
+import { pool } from '@/lib/db';
 import { ensureMigrations } from '@/lib/migrate';
 
 const CROXUltraSection = dynamic(() => import('@/components/sections/CROXUltraSection'), {

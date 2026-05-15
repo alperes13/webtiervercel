@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
 const { pool } = require('./db');
 
 async function checkSchema() {

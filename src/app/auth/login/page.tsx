@@ -5,7 +5,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { loginUser, redirectToGoogleOAuth } from '@/lib/api';
 import { SignInPage, type Testimonial } from "@/components/ui/sign-in";
-import { useState, useEffect, Suspense } from 'react';
+import { useState, useEffect, Suspense, startTransition } from 'react';
 
 function LoginPageInner() {
   const { t } = useLanguage();
@@ -30,8 +30,11 @@ function LoginPageInner() {
   useEffect(() => {
     const code = searchParams.get('error');
     if (code) {
-      setError(OAUTH_ERRORS[code] ?? t.auth.oauthErrors.generic);
+      startTransition(() => {
+        setError(OAUTH_ERRORS[code] ?? t.auth.oauthErrors.generic);
+      });
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);
 
   const handleSignIn = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -50,8 +53,8 @@ function LoginPageInner() {
       const res = await loginUser(email, password);
       login(res.session);
       router.push('/dashboard');
-    } catch (e: any) {
-      setError(e.message || t.auth.loginFailedText);
+    } catch (e: unknown) {
+      setError(e instanceof Error ? e.message : t.auth.loginFailedText);
     }
   };
 

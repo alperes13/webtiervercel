@@ -26,7 +26,7 @@ export default function FeatureGrid() {
 
   const colSpans = [2, 1, 1, 2, 1, 2];
 
-  const items = t.featureGrid.items.map((item: any, index: number) => ({
+  const items = t.featureGrid.items.map((item, index: number) => ({
     ...item,
     icon: icons[index],
     colSpan: colSpans[index],

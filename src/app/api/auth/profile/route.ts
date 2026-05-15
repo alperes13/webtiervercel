@@ -22,12 +22,13 @@ export async function PATCH(request: NextRequest) {
       success: true,
       message: 'Profil güncellendi'
     });
-  } catch (err: any) {
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : 'Unknown error';
     console.error('[profile-update] error:', err);
-    return NextResponse.json({ 
-      success: false, 
+    return NextResponse.json({
+      success: false,
       error: 'Profil güncellenirken bir hata oluştu',
-      details: err.message 
+      details: message,
     }, { status: 500 });
   }
 }

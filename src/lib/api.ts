@@ -87,7 +87,7 @@ export async function createPayment(
   return postJson(ENDPOINTS.paymentCreate, { credit_amount: creditAmount }, token);
 }
 
-export async function getAnalyses(token: string): Promise<{ success: boolean; analyses: any[] }> {
+export async function getAnalyses(token: string): Promise<{ success: boolean; analyses: import('@/types').AnalysisRecord[] }> {
   return getJson(ENDPOINTS.analysisList, token);
 }
 

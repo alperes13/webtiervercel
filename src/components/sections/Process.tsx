@@ -4,7 +4,6 @@ import Link from 'next/link';
 import { Search, MessageCircle, Target, Rocket, ArrowUpRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/Button';
-import { PROCESS_STEPS } from '@/lib/constants';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 const iconMap: Record<string, React.ReactNode> = {

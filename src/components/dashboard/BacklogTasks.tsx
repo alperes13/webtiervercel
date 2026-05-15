@@ -43,8 +43,8 @@ function TaskCard({ task }: TaskCardProps) {
   const priorityStyle = PRIORITY_STYLES[task.priority] || PRIORITY_STYLES.medium;
   const statusStyle = STATUS_STYLES[task.status] || STATUS_STYLES.todo;
 
-  const priorityLabel = (t.dashboard.backlog.priorities as any)[task.priority] || t.dashboard.backlog.priorities.medium;
-  const statusLabel = (t.dashboard.backlog.statuses as any)[task.status === 'in_progress' ? 'inProgress' : task.status] || t.dashboard.backlog.statuses.todo;
+  const priorityLabel = (t.dashboard.backlog.priorities as Record<string, string>)[task.priority] || t.dashboard.backlog.priorities.medium;
+  const statusLabel = (t.dashboard.backlog.statuses as Record<string, string>)[task.status === 'in_progress' ? 'inProgress' : task.status] || t.dashboard.backlog.statuses.todo;
 
   return (
     <div className="border border-black/8 rounded-lg bg-white overflow-hidden hover:border-black/12 transition-colors">

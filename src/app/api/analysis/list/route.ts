@@ -23,13 +23,15 @@ export async function GET(request: NextRequest) {
       success: true,
       analyses: analyses?.rows || []
     });
-  } catch (err: any) {
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : 'Unknown error';
+    const stack = err instanceof Error ? err.stack : undefined;
     console.error('[analysis-list] error:', err);
-    return NextResponse.json({ 
-      success: false, 
+    return NextResponse.json({
+      success: false,
       error: 'Analizler listelenirken bir hata oluştu',
-      details: err.message,
-      stack: process.env.NODE_ENV === 'development' ? err.stack : undefined
+      details: message,
+      stack: process.env.NODE_ENV === 'development' ? stack : undefined
     }, { status: 500 });
   }
 }

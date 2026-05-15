@@ -4,7 +4,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { MessageCircle, Mail, Phone } from 'lucide-react';
 import { SITE_CONFIG } from '@/lib/constants';
-import { getWhatsAppUrl } from '@/lib/utils';
 import { usePathname } from 'next/navigation';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { cn } from '@/lib/utils';

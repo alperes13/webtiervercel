@@ -1,11 +1,10 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { X, MessageCircle, Mail, Globe, ChevronDown, Rocket, ShoppingBag, Landmark, Sparkles } from 'lucide-react';
+import { X, MessageCircle, Mail, Rocket, ShoppingBag, Landmark, Sparkles } from 'lucide-react';
 import { SITE_CONFIG } from '@/lib/constants';
-import { getWhatsAppUrl } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { cn } from '@/lib/utils';
@@ -23,22 +22,14 @@ const menuItems = [
 ];
 
 export default function HamburgerMenu({ open, onClose }: HamburgerMenuProps) {
-  const { t, language, setLanguage, languages } = useLanguage();
-  const [langOpen, setLangOpen] = useState(false);
+  const { t } = useLanguage();
 
   useEffect(() => {
-    if (open) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-      setLangOpen(false);
-    }
+    document.body.style.overflow = open ? 'hidden' : '';
     return () => {
       document.body.style.overflow = '';
     };
   }, [open]);
-
-  const currentLang = languages.find(l => l.code === language) ?? languages[0];
 
   return (
     <AnimatePresence>

@@ -25,7 +25,6 @@ export default function HeroSection({ isMiniEnabled = true, isUltraEnabled = tru
   const [urlError, setUrlError] = useState('');
   const [isFocused, setIsFocused] = useState(false);
   const [selectedModel, setSelectedModel] = useState<CROModel>('CRO-X MINI');
-  const [loading, setLoading] = useState(false);
 
   const { isAuthenticated, session, updateSession } = useAuth();
   const { t } = useLanguage();
@@ -57,7 +56,6 @@ export default function HeroSection({ isMiniEnabled = true, isUltraEnabled = tru
       return;
     }
 
-    setLoading(true);
     try {
       if (selectedModel === 'CRO-X MINI') {
         await createMiniAnalysis(session.token, { website_url: trimmed });
@@ -70,8 +68,6 @@ export default function HeroSection({ isMiniEnabled = true, isUltraEnabled = tru
       alert(t.hero.analysisSuccess);
     } catch (e) {
       setUrlError(e instanceof Error ? e.message : t.hero.errors.analysisGenericError);
-    } finally {
-      setLoading(false);
     }
   };
 

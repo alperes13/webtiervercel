@@ -1,7 +1,7 @@
 "use client";
 
 import { ArrowRight, Check, ChevronDown, ArrowLeftRight, Hourglass } from "lucide-react";
-import { useState, useRef, useCallback, useEffect } from "react";
+import { useState, useRef, useCallback, useEffect, startTransition } from "react";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -100,12 +100,12 @@ export function HeroInput({
   const isFocused = externalIsFocused ?? internalIsFocused;
 
   useEffect(() => {
-    setIsMounted(true);
+    startTransition(() => setIsMounted(true));
     if (!isEnabled) {
-      setStatus("maintenance");
+      startTransition(() => setStatus("maintenance"));
       return;
     }
-    setStatus("loading");
+    startTransition(() => setStatus("loading"));
     // Random delay between 3 and 7 seconds
     const delay = Math.floor(Math.random() * 4000) + 3000;
     const timer = setTimeout(() => {
@@ -219,11 +219,11 @@ export function HeroInput({
                   onChange(e.target.value);
                   adjustHeight();
                 }}
-                onFocus={(e) => {
+                onFocus={() => {
                   setInternalIsFocused(true);
                   onFocus?.();
                 }}
-                onBlur={(e) => {
+                onBlur={() => {
                   setInternalIsFocused(false);
                   onBlur?.();
                 }}

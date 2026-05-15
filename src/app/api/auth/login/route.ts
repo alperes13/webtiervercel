@@ -80,13 +80,15 @@ export async function POST(request: Request) {
         lastName: user.last_name,
       },
     });
-  } catch (err: any) {
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : 'Unknown error';
+    const code = (err as { code?: string }).code;
     console.error('[auth] login error:', err);
     return NextResponse.json({
       success: false,
       error: 'Giriş sırasında sunucu hatası oluştu',
-      details: err.message,
-      code: err.code,
+      details: message,
+      code,
     }, { status: 500 });
   }
 }

@@ -52,7 +52,7 @@ export default function TrustSignals() {
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-2 gap-y-12 sm:grid-cols-4 sm:gap-x-12 sm:gap-y-0 text-center">
-          {t.trustSignals.stats.map((stat: any, index: number) => (
+          {t.trustSignals.stats.map((stat, index: number) => (
             <motion.div
               key={stat.label}
               initial={{ opacity: 0, y: 20 }}

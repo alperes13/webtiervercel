@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Zap, X, CheckCircle, RefreshCw, Mail } from 'lucide-react';
+import { Zap, X, CheckCircle, RefreshCw } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { sendVerificationEmail, verifyEmailOTP } from '@/lib/api';
 
@@ -60,8 +60,8 @@ export default function EmailVerificationModal({
     setError('');
     try {
       await sendVerificationEmail(token);
-    } catch (e: any) {
-      setError(e.message);
+    } catch (e: unknown) {
+      setError(e instanceof Error ? e.message : 'Bir hata oluştu');
     } finally {
       setSending(false);
     }
@@ -125,8 +125,8 @@ export default function EmailVerificationModal({
         onVerified();
         onClose();
       }, 1500);
-    } catch (e: any) {
-      setError(e.message ?? tv.errorInvalidCode);
+    } catch (e: unknown) {
+      setError(e instanceof Error ? e.message : tv.errorInvalidCode);
       setDigits(['', '', '', '', '', '']);
       setTimeout(() => inputRefs.current[0]?.focus(), 50);
     } finally {

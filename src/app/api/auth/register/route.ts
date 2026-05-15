@@ -74,13 +74,15 @@ export async function POST(request: Request) {
         emailVerified: false,
       },
     });
-  } catch (err: any) {
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : 'Unknown error';
+    const code = (err as { code?: string }).code;
     console.error('[auth] register error:', err);
-    return NextResponse.json({ 
-      success: false, 
+    return NextResponse.json({
+      success: false,
       error: 'Kayıt sırasında sunucu hatası oluştu',
-      details: err.message,
-      code: err.code 
+      details: message,
+      code,
     }, { status: 500 });
   }
 }

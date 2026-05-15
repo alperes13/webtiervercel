@@ -52,7 +52,7 @@ export default function AnalysisHistory() {
         } else {
           setError(t.dashboard.analysis.loadError);
         }
-      } catch (err) {
+      } catch {
         setError(t.dashboard.analysis.genericError);
       } finally {
         setLoading(false);

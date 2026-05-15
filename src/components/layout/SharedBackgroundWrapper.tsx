@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, startTransition } from "react";
 import dynamic from "next/dynamic";
 
 const MeshGradient = dynamic(
@@ -22,7 +22,7 @@ export default function SharedBackgroundWrapper({ children }: SharedBackgroundWr
     const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const isMobile = window.matchMedia("(max-width: 768px)").matches;
     if (!isMobile && !prefersReduced) {
-      setShowShader(true);
+      startTransition(() => setShowShader(true));
     }
   }, []);
 

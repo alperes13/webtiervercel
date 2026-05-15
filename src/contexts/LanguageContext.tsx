@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, useCallback, startTransition, type ReactNode } from 'react';
 import { translations, LANGUAGES, type Language, type Translations } from '@/lib/i18n';
 
 interface LanguageContextValue {
@@ -19,12 +19,14 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
     const saved = localStorage.getItem(STORAGE_KEY) as Language | null;
-    if (saved && translations[saved]) {
-      setLanguageState(saved);
-      document.documentElement.lang = saved;
-    }
+    startTransition(() => {
+      setMounted(true);
+      if (saved && translations[saved]) {
+        setLanguageState(saved);
+        document.documentElement.lang = saved;
+      }
+    });
   }, []);
 
   const setLanguage = useCallback((lang: Language) => {

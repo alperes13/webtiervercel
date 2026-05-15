@@ -1,19 +1,16 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Menu, UserRound, Globe } from 'lucide-react';
+import { UserRound } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import HamburgerMenu from './HamburgerMenu';
 import { Button } from '@/components/ui/Button';
 import { MenuToggleIcon } from '@/components/ui/MenuToggleIcon';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { usePathname } from 'next/navigation';
-
 export default function Navbar() {
-  const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   
   const [menuOpen, setMenuOpen] = useState(false);

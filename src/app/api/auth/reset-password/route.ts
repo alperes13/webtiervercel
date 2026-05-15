@@ -45,7 +45,7 @@ export async function POST(request: Request) {
     await query('UPDATE password_reset_tokens SET used = TRUE WHERE id = $1', [resetToken.id]);
 
     return NextResponse.json({ success: true, message: 'Şifreniz başarıyla güncellendi' });
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error('[reset-password] unexpected error:', err);
     return NextResponse.json({ success: false, error: 'Sunucu hatası' }, { status: 500 });
   }

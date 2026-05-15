@@ -60,8 +60,9 @@ export async function POST(request: Request) {
          VALUES ($1, $2, NOW() + INTERVAL '10 minutes')`,
         [user.email, otpCode]
       );
-    } catch (insertErr: any) {
-      console.error('[verify-email/send] otp insert error:', insertErr?.message);
+    } catch (insertErr: unknown) {
+      const msg = insertErr instanceof Error ? insertErr.message : String(insertErr);
+      console.error('[verify-email/send] otp insert error:', msg);
     }
 
     // Send email — get the real error back
@@ -81,11 +82,12 @@ export async function POST(request: Request) {
     }
 
     return NextResponse.json({ success: true, message: 'Doğrulama kodu gönderildi' });
-  } catch (err: any) {
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : 'Sunucu hatası oluştu';
     console.error('[verify-email/send] unexpected error:', err);
     return NextResponse.json({
       success: false,
-      error: err?.message ?? 'Sunucu hatası oluştu',
+      error: message,
     }, { status: 500 });
   }
 }

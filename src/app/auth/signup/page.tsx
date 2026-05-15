@@ -36,8 +36,8 @@ export default function SignupPage() {
       login(res.session);
       alert(t.auth.welcomeMessage);
       router.push('/dashboard');
-    } catch (e: any) {
-      alert(e.message || t.auth.signupFailedText);
+    } catch (e: unknown) {
+      setError(e instanceof Error ? e.message : t.auth.signupFailedText);
     }
   };
 

@@ -1,6 +1,7 @@
 export const runtime = 'nodejs';
 
 import { NextRequest, NextResponse } from 'next/server';
+import { revalidateTag } from 'next/cache';
 import { getAdminFromRequest } from '@/lib/admin-auth';
 import { query, queryOne } from '@/lib/db';
 import { ensureMigrations } from '@/lib/migrate';
@@ -49,15 +50,9 @@ export async function PATCH(request: NextRequest) {
 
   const response = NextResponse.json({ success: true });
 
-  // For maintenance_mode, set the wt_maintenance cookie so proxy.ts can read it
+  // For maintenance_mode, trigger a revalidate to clear the middleware cache
   if (body.key === 'maintenance_mode') {
-    response.cookies.set('wt_maintenance', body.value.toString(), {
-      httpOnly: false,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      path: '/',
-      maxAge: 60 * 60 * 24 * 365, // 1 year
-    });
+    revalidateTag('maintenance');
   }
 
   return response;

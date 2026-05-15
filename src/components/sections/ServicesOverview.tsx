@@ -5,12 +5,6 @@ import { ArrowRight, BarChart3, ShoppingCart, Building2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useLanguage } from '@/contexts/LanguageContext';
 
-const iconMap: Record<string, React.ReactNode> = {
-  BarChart3: <BarChart3 className="h-6 w-6" />,
-  ShoppingCart: <ShoppingCart className="h-6 w-6" />,
-  Building2: <Building2 className="h-6 w-6" />,
-};
-
 const containerVariants = {
   hidden: {},
   visible: { transition: { staggerChildren: 0.12 } },

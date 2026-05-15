@@ -161,7 +161,7 @@ export default function BrandContent() {
                 Vizyonumuz
               </h3>
               <p className="mt-3 text-sm leading-relaxed text-[var(--color-text-secondary)]">
-                CRO odaklı web tasarımın bir standart haline geleceği bir Türkiye'de, bu dönüşümün öncü ajansı olmak. Müşterilerimizin dijital başarısı aracılığıyla sektörde kalıcı bir iz bırakmak.
+                CRO odaklı web tasarımın bir standart haline geleceği bir Türkiye&apos;de, bu dönüşümün öncü ajansı olmak. Müşterilerimizin dijital başarısı aracılığıyla sektörde kalıcı bir iz bırakmak.
               </p>
             </motion.div>
           </div>

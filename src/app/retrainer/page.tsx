@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import { motion } from 'framer-motion';
 import {
   Rocket,
   RefreshCw,
@@ -31,14 +30,14 @@ export default function RetrainerPage() {
     id: idx + 1,
     icon: [BarChart3, Rocket, Target, RefreshCw, TrendingUp][idx] || CheckCircle,
     relatedIds: idx === 0 ? [2] : idx === 4 ? [4] : [idx, idx + 2],
-    status: (idx === 0 ? 'completed' : idx === 1 ? 'in-progress' : 'pending') as any,
+    status: (idx === 0 ? 'completed' : idx === 1 ? 'in-progress' : 'pending') as 'completed' | 'in-progress' | 'pending',
     energy: [100, 75, 50, 30, 10][idx] || 0,
   }));
 
   const bentoTabs = t.retrainer.bentoTabs.map((tab, idx) => ({
     ...tab,
     id: ['implementation', 'monthly', 'growth'][idx],
-    icon: [<Rocket className="w-4 h-4" />, <RefreshCw className="w-4 h-4" />, <TrendingUp className="w-4 h-4" />][idx],
+    icon: [<Rocket key="rocket" className="w-4 h-4" />, <RefreshCw key="refresh" className="w-4 h-4" />, <TrendingUp key="trending" className="w-4 h-4" />][idx],
   }));
 
   const processItems = t.retrainer.processItems;

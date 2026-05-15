@@ -41,6 +41,7 @@ function AuthCallbackInner() {
     login(session);
     // Use replace so the token URL is not kept in browser history
     router.replace('/dashboard');
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

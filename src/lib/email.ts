@@ -72,15 +72,15 @@ export async function sendPasswordResetEmail(to: string, resetUrl: string): Prom
     });
 
     if (error) {
-      const msg = (error as any).message ?? JSON.stringify(error);
+      const msg = (error as { message?: string }).message ?? JSON.stringify(error);
       console.error('[email] Resend error (reset):', msg);
       return { ok: false, error: msg };
     }
 
     console.log('[email] Reset email sent, id:', data?.id);
     return { ok: true };
-  } catch (err: any) {
-    const msg = err?.message ?? String(err);
+  } catch (err: unknown) {
+    const msg = err instanceof Error ? err.message : String(err);
     console.error('[email] Resend exception (reset):', msg);
     return { ok: false, error: msg };
   }
@@ -110,15 +110,15 @@ export async function sendOTPEmail(to: string, otpCode: string): Promise<{ ok: b
     });
 
     if (error) {
-      const msg = (error as any).message ?? JSON.stringify(error);
+      const msg = (error as { message?: string }).message ?? JSON.stringify(error);
       console.error('[email] Resend error:', msg);
       return { ok: false, error: msg };
     }
 
     console.log('[email] OTP sent, id:', data?.id);
     return { ok: true };
-  } catch (err: any) {
-    const msg = err?.message ?? String(err);
+  } catch (err: unknown) {
+    const msg = err instanceof Error ? err.message : String(err);
     console.error('[email] Resend exception:', msg);
     return { ok: false, error: msg };
   }

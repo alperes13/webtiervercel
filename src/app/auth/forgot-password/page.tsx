@@ -22,8 +22,8 @@ export default function ForgotPasswordPage() {
     try {
       await forgotPassword(email.trim().toLowerCase());
       setSent(true);
-    } catch (e: any) {
-      setError(e.message ?? 'Bir hata oluştu. Lütfen tekrar deneyin.');
+    } catch (e: unknown) {
+      setError(e instanceof Error ? e.message : 'Bir hata oluştu. Lütfen tekrar deneyin.');
     } finally {
       setLoading(false);
     }

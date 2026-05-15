@@ -68,7 +68,7 @@ export async function POST(request: Request) {
     }
 
     return NextResponse.json({ success: true });
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error('[forgot-password] unexpected error:', err);
     return NextResponse.json({ success: false, error: 'Sunucu hatası' }, { status: 500 });
   }

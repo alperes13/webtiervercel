@@ -6,7 +6,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
-import { HeroInput, type CROModel } from '@/components/ui/animated-ai-input';
+import { HeroInput } from '@/components/ui/animated-ai-input';
 import { isValidUrl } from '@/lib/validators';
 import { createMiniAnalysis, createUltraAnalysis, forgotPassword, updateProfile } from '@/lib/api';
 import { cn } from '@/lib/utils';
@@ -19,7 +19,7 @@ import UserDocuments from '@/components/dashboard/UserDocuments';
 import Notifications from '@/components/dashboard/Notifications';
 import PurchaseModal from '@/components/ui/PurchaseModal';
 import EmailVerificationModal from '@/components/ui/EmailVerificationModal';
-import { Zap, Mail, Shield, Bell } from 'lucide-react';
+import { Zap, Mail, Shield } from 'lucide-react';
 
 export default function DashboardPage() {
   const { session, isAuthenticated, isHydrated, updateSession, logout } = useAuth();
@@ -97,8 +97,8 @@ export default function DashboardPage() {
       setMiniUrl('');
       alert(t.dashboard.overview.analysisRequested);
       setActiveSection('analysis');
-    } catch (e: any) {
-      setMiniError(e.message);
+    } catch (e: unknown) {
+      setMiniError(e instanceof Error ? e.message : 'Bir hata oluştu');
     } finally {
       setMiniLoading(false);
     }
@@ -117,8 +117,8 @@ export default function DashboardPage() {
       setUltraUrl('');
       alert(t.dashboard.overview.ultraAnalysisRequested);
       setActiveSection('analysis');
-    } catch (e: any) {
-      setUltraError(e.message);
+    } catch (e: unknown) {
+      setUltraError(e instanceof Error ? e.message : 'Bir hata oluştu');
     } finally {
       setUltraLoading(false);
     }
@@ -130,7 +130,7 @@ export default function DashboardPage() {
       await updateProfile(session.token, firstName, lastName);
       updateSession({ firstName, lastName });
       alert(t.dashboard.settings.updateSuccess);
-    } catch (e) {
+    } catch {
       alert(t.dashboard.settings.updateError);
     }
   };
@@ -141,7 +141,7 @@ export default function DashboardPage() {
     try {
       await forgotPassword(session.email);
       setResetSuccess(true);
-    } catch (e) {
+    } catch {
       alert(t.dashboard.settings.resetError);
     } finally {
       setResetLoading(false);

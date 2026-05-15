@@ -2,12 +2,10 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { X, Mail, BarChart3, CreditCard, LogOut, Eye, EyeOff, MessageCircle } from 'lucide-react';
+import { X, Mail, BarChart3, CreditCard, LogOut, Eye, EyeOff } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '@/contexts/AuthContext';
 import { maskEmail } from '@/lib/validators';
-import { SITE_CONFIG } from '@/lib/constants';
-import { getWhatsAppUrl } from '@/lib/utils';
 import { Button } from './Button';
 
 import { useLanguage } from '@/contexts/LanguageContext';

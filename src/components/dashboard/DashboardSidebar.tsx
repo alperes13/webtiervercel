@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, startTransition } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useAuth } from '@/contexts/AuthContext';
@@ -39,6 +40,7 @@ interface SidebarProps {
 export default function DashboardSidebar({ activeSection, onSectionChange }: SidebarProps) {
   const { session, logout } = useAuth();
   const { t } = useLanguage();
+  const router = useRouter();
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
@@ -48,9 +50,9 @@ export default function DashboardSidebar({ activeSection, onSectionChange }: Sid
     if (!session?.token) return;
     try {
       const res = await getNotifications(session.token);
-      if (res.success) setUnreadCount(res.unreadCount);
+      if (res.success) startTransition(() => setUnreadCount(res.unreadCount));
     } catch { /* ignore */ }
-  }, [session?.token]);
+  }, [session]);
 
   useEffect(() => {
     fetchUnreadCount();
@@ -60,7 +62,7 @@ export default function DashboardSidebar({ activeSection, onSectionChange }: Sid
 
   // Reset badge when user opens notifications tab
   useEffect(() => {
-    if (activeSection === 'notifications') setUnreadCount(0);
+    if (activeSection === 'notifications') startTransition(() => setUnreadCount(0));
   }, [activeSection]);
 
   const MENU_ITEMS = [
@@ -85,7 +87,7 @@ export default function DashboardSidebar({ activeSection, onSectionChange }: Sid
   // Close mobile menu on section change
   const handleSectionChange = (section: DashboardSection | 'home') => {
     if (section === 'home') {
-      window.location.href = '/';
+      router.push('/');
       return;
     }
     onSectionChange(section as DashboardSection);

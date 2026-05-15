@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback, startTransition } from "react";
 import { ArrowRight, Link as LinkIcon, Zap } from "lucide-react";
 
 interface TimelineItem {
@@ -20,13 +20,13 @@ interface RadialOrbitalTimelineProps {
 
 export default function RadialOrbitalTimeline({ timelineData }: RadialOrbitalTimelineProps) {
   const firstNodeId = timelineData[0]?.id ?? null;
-  const buildExpandedState = (openId: number | null) => {
+  const buildExpandedState = useCallback((openId: number | null) => {
     const state: Record<number, boolean> = {};
     timelineData.forEach((item) => {
       state[item.id] = item.id === openId;
     });
     return state;
-  };
+  }, [timelineData]);
 
   const [expandedItems, setExpandedItems] = useState<Record<number, boolean>>(() => buildExpandedState(firstNodeId));
   const [rotationAngle, setRotationAngle] = useState<number>(0);
@@ -61,9 +61,11 @@ export default function RadialOrbitalTimeline({ timelineData }: RadialOrbitalTim
 
   useEffect(() => {
     if (!timelineData.length) {
-      setExpandedItems({});
-      setActiveNodeId(null);
-      setPulseEffect({});
+      startTransition(() => {
+        setExpandedItems({});
+        setActiveNodeId(null);
+        setPulseEffect({});
+      });
       return;
     }
 
@@ -77,11 +79,13 @@ export default function RadialOrbitalTimeline({ timelineData }: RadialOrbitalTim
       pulse[rid] = true;
     });
 
-    setExpandedItems(buildExpandedState(fallbackId));
-    setActiveNodeId(fallbackId);
-    setPulseEffect(pulse);
-    setAutoRotate(false);
-  }, [activeNodeId, timelineData]);
+    startTransition(() => {
+      setExpandedItems(buildExpandedState(fallbackId));
+      setActiveNodeId(fallbackId);
+      setPulseEffect(pulse);
+      setAutoRotate(false);
+    });
+  }, [activeNodeId, timelineData, buildExpandedState]);
 
   const handleContainerClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === containerRef.current || e.target === orbitRef.current) {

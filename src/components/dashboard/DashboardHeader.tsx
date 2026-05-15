@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Card } from '@/components/ui/Card';
@@ -9,7 +8,6 @@ import { Zap, Target, LayoutDashboard } from 'lucide-react';
 
 export default function DashboardHeader() {
   const { session, isHydrated } = useAuth();
-  const [isVerifyModalOpen, setVerifyModalOpen] = useState(false);
   const { t, language, setLanguage } = useLanguage();
 
   // Hydration and safety guard

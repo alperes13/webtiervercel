@@ -226,7 +226,7 @@ export default function UserDetailPanel({ user, onClose }: Props) {
           {tab === 'tasks' && (
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <h3 className="text-sm font-medium text-slate-300">Backlog Task'ları</h3>
+                <h3 className="text-sm font-medium text-slate-300">Backlog Task&apos;ları</h3>
                 <button
                   onClick={() => { setEditingTask(null); setShowTaskForm(true); }}
                   className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/8 border border-white/10 text-white text-xs hover:bg-white/12 transition-colors"

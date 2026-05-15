@@ -216,7 +216,7 @@ export default function CorporateContent() {
           </div>
 
           <div className="max-w-3xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {t.corporate.features.map((feature, i) => (
+            {t.corporate.features.map((feature) => (
               <div
                 key={feature}
                 className="flex items-center gap-3 p-4 rounded-lg bg-white/[0.02] border border-white/5 hover:border-cyan-500/20 transition-all"
