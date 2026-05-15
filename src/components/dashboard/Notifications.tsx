@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
-import { Bell, CheckCheck, ListTodo, AlertCircle, CheckCircle2, XCircle } from 'lucide-react';
+import { Bell, CheckCheck, ListTodo, AlertCircle, CheckCircle2, XCircle, Hourglass } from 'lucide-react';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -10,7 +10,7 @@ import { cn } from '@/lib/utils';
 
 export interface Notification {
   id: string;
-  type: 'analysis_completed' | 'analysis_failed' | 'analysis_rejected' | 'task_assigned';
+  type: 'analysis_pending' | 'analysis_completed' | 'analysis_failed' | 'analysis_rejected' | 'task_assigned';
   title: string;
   body: string;
   is_read: boolean;
@@ -23,6 +23,7 @@ const TYPE_CONFIG: Record<string, {
   iconClass: string;
   bgClass: string;
 }> = {
+  analysis_pending:   { icon: Hourglass,    iconClass: 'text-cyan-500',    bgClass: 'bg-cyan-50'    },
   analysis_completed: { icon: CheckCircle2, iconClass: 'text-emerald-600', bgClass: 'bg-emerald-50' },
   analysis_failed:    { icon: AlertCircle,  iconClass: 'text-red-500',     bgClass: 'bg-red-50'     },
   analysis_rejected:  { icon: XCircle,      iconClass: 'text-amber-500',   bgClass: 'bg-amber-50'   },

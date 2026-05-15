@@ -28,6 +28,11 @@ export interface AnalysisRecord {
   result?: string;
   created_at: string;
   updated_at?: string;
+  instagram_url?: string;
+  linkedin_url?: string;
+  tiktok_url?: string;
+  facebook_url?: string;
+  google_business_url?: string;
 }
 
 export interface NavItem {

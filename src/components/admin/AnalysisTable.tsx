@@ -12,7 +12,37 @@ interface Analysis {
   analysis_type: string;
   status: string;
   website_url: string;
+  instagram_url: string | null;
+  linkedin_url: string | null;
+  tiktok_url: string | null;
+  additional_notes: string | null;
   created_at: string;
+}
+
+function parseExtras(notes: string | null): { google_business?: string; facebook?: string } {
+  if (!notes) return {};
+  try {
+    const parsed = JSON.parse(notes);
+    if (parsed && typeof parsed === 'object') {
+      return parsed as { google_business?: string; facebook?: string };
+    }
+  } catch {
+    // not JSON — treat as plain text additional notes (legacy)
+  }
+  return {};
+}
+
+function buildAddressList(a: Analysis): Array<{ label: string; value: string }> {
+  const extras = parseExtras(a.additional_notes);
+  const all: Array<{ label: string; value: string | null | undefined }> = [
+    { label: 'Web', value: a.website_url && a.website_url !== 'empty' ? a.website_url : null },
+    { label: 'IG', value: a.instagram_url },
+    { label: 'GBP', value: extras.google_business ?? null },
+    { label: 'IN', value: a.linkedin_url },
+    { label: 'FB', value: extras.facebook ?? null },
+    { label: 'TT', value: a.tiktok_url },
+  ];
+  return all.flatMap((x) => (x.value ? [{ label: x.label, value: x.value }] : []));
 }
 
 const STATUS_LABELS: Record<string, { label: string; color: string }> = {
@@ -112,7 +142,7 @@ export default function AnalysisTable() {
           <thead>
             <tr className="border-b border-slate-800 bg-slate-900/50">
               <th className="text-left px-4 py-3 text-xs font-medium text-slate-500 uppercase tracking-wide">Kullanıcı</th>
-              <th className="text-left px-4 py-3 text-xs font-medium text-slate-500 uppercase tracking-wide">URL</th>
+              <th className="text-left px-4 py-3 text-xs font-medium text-slate-500 uppercase tracking-wide">Adresler</th>
               <th className="text-left px-4 py-3 text-xs font-medium text-slate-500 uppercase tracking-wide">Tip</th>
               <th className="text-left px-4 py-3 text-xs font-medium text-slate-500 uppercase tracking-wide">Durum</th>
               <th className="text-left px-4 py-3 text-xs font-medium text-slate-500 uppercase tracking-wide">Tarih</th>
@@ -129,11 +159,46 @@ export default function AnalysisTable() {
               return (
                 <tr key={a.id} className="hover:bg-slate-900/30">
                   <td className="px-4 py-3 text-slate-300">{a.user_email}</td>
-                  <td className="px-4 py-3 max-w-[180px]">
-                    <a href={a.website_url} target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline flex items-center gap-1 truncate">
-                      {a.website_url.replace(/^https?:\/\//, '')}
-                      <ExternalLink size={10} className="flex-shrink-0" />
-                    </a>
+                  <td className="px-4 py-3 max-w-[260px]">
+                    <div className="space-y-0.5">
+                      {(() => {
+                        const addrs = buildAddressList(a);
+                        if (addrs.length === 0) {
+                          return <span className="text-slate-600 text-xs">—</span>;
+                        }
+                        return addrs.slice(0, 3).map((addr) => {
+                          const isUrl = /^https?:\/\//i.test(addr.value);
+                          return (
+                            <div key={addr.label} className="flex items-center gap-1.5 text-xs truncate">
+                              <span className="text-[9px] font-bold uppercase tracking-wider text-slate-500 shrink-0">
+                                {addr.label}
+                              </span>
+                              {isUrl ? (
+                                <a
+                                  href={addr.value}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-blue-400 hover:underline flex items-center gap-1 truncate"
+                                >
+                                  {addr.value.replace(/^https?:\/\//, '')}
+                                  <ExternalLink size={9} className="flex-shrink-0" />
+                                </a>
+                              ) : (
+                                <span className="text-slate-300 truncate">{addr.value}</span>
+                              )}
+                            </div>
+                          );
+                        }).concat(
+                          addrs.length > 3
+                            ? [
+                                <div key="more" className="text-[10px] text-slate-500 italic">
+                                  +{addrs.length - 3} adres daha
+                                </div>,
+                              ]
+                            : [],
+                        );
+                      })()}
+                    </div>
                   </td>
                   <td className="px-4 py-3">
                     <span className={`px-2 py-0.5 rounded-full text-xs font-medium border ${

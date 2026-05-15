@@ -6,9 +6,8 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
-import { HeroInput } from '@/components/ui/animated-ai-input';
-import { isValidUrl } from '@/lib/validators';
-import { createMiniAnalysis, createUltraAnalysis, forgotPassword, updateProfile } from '@/lib/api';
+import CroXAiTrigger from '@/components/cro-x-ai/CroXAiTrigger';
+import { forgotPassword, updateProfile } from '@/lib/api';
 import { cn } from '@/lib/utils';
 
 import DashboardSidebar, { type DashboardSection } from '@/components/dashboard/DashboardSidebar';
@@ -30,37 +29,11 @@ export default function DashboardPage() {
   const [purchaseModalOpen, setPurchaseModalOpen] = useState(false);
   const [verifyModalOpen, setVerifyModalOpen] = useState(false);
 
-  // Analysis states for Mini
-  const [miniUrl, setMiniUrl] = useState('');
-  const [miniError, setMiniError] = useState('');
-  const [miniLoading, setMiniLoading] = useState(false);
-
-  // Analysis states for Ultra
-  const [ultraUrl, setUltraUrl] = useState('');
-  const [ultraError, setUltraError] = useState('');
-  const [ultraLoading, setUltraLoading] = useState(false);
-
   // Profile states
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [resetLoading, setResetLoading] = useState(false);
   const [resetSuccess, setResetSuccess] = useState(false);
-
-  // AI input enabled states (from app settings)
-  const [isMiniEnabled, setIsMiniEnabled] = useState(true);
-  const [isUltraEnabled, setIsUltraEnabled] = useState(true);
-
-  useEffect(() => {
-    fetch('/api/settings/public')
-      .then(r => r.json())
-      .then(data => {
-        if (data.success) {
-          setIsMiniEnabled(data.cro_mini_enabled);
-          setIsUltraEnabled(data.cro_ultra_enabled);
-        }
-      })
-      .catch(() => {});
-  }, []);
 
   // Sync profile fields when session hydrates
   useEffect(() => {
@@ -83,46 +56,6 @@ export default function DashboardPage() {
       </main>
     );
   }
-
-  const handleMiniSubmit = async () => {
-    if (!miniUrl.trim()) { setMiniError(t.dashboard.overview.urlRequired); return; }
-    if (!isValidUrl(miniUrl)) { setMiniError(t.dashboard.overview.invalidUrl); return; }
-    if (session.creditsMini < 1) { setMiniError(t.dashboard.overview.insufficientCredits); return; }
-    
-    setMiniLoading(true);
-    setMiniError('');
-    try {
-      await createMiniAnalysis(session.token, { website_url: miniUrl });
-      updateSession({ creditsMini: session.creditsMini - 1 });
-      setMiniUrl('');
-      alert(t.dashboard.overview.analysisRequested);
-      setActiveSection('analysis');
-    } catch (e: unknown) {
-      setMiniError(e instanceof Error ? e.message : 'Bir hata oluştu');
-    } finally {
-      setMiniLoading(false);
-    }
-  };
-
-  const handleUltraSubmit = async () => {
-    if (!ultraUrl.trim()) { setUltraError(t.dashboard.overview.urlRequired); return; }
-    if (!isValidUrl(ultraUrl)) { setUltraError(t.dashboard.overview.invalidUrl); return; }
-    if (session.creditsUltra < 1) { setUltraError(t.dashboard.overview.insufficientCredits); return; }
-    
-    setUltraLoading(true);
-    setUltraError('');
-    try {
-      await createUltraAnalysis(session.token, { website_url: ultraUrl });
-      updateSession({ creditsUltra: session.creditsUltra - 1 });
-      setUltraUrl('');
-      alert(t.dashboard.overview.ultraAnalysisRequested);
-      setActiveSection('analysis');
-    } catch (e: unknown) {
-      setUltraError(e instanceof Error ? e.message : 'Bir hata oluştu');
-    } finally {
-      setUltraLoading(false);
-    }
-  };
 
   const handleProfileUpdate = async () => {
     if (!session?.token) return;
@@ -203,51 +136,25 @@ export default function DashboardPage() {
               <div className="space-y-6">
                 <DashboardHeader />
                 
-                {/* Compact Stats Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {/* Analysis Start Block */}
-                  <Card className="p-5 space-y-4 border-zinc-200 bg-white shadow-sm">
-                    <div className="flex items-center justify-between">
-                      <h3 className="font-bold text-sm text-slate-900 uppercase tracking-tight">{t.dashboard.overview.miniTitle}</h3>
-                      <span className="text-[10px] font-bold text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full uppercase tracking-widest">{t.dashboard.overview.miniCredit}</span>
-                    </div>
-                    <HeroInput
-                      value={miniUrl}
-                      onChange={setMiniUrl}
-                      onSubmit={handleMiniSubmit}
-                      placeholder={t.dashboard.overview.placeholderMini}
-                      selectedModel="CRO-X MINI"
-                      onModelChange={() => {}}
-                      inputHint=""
-                      disabled={miniLoading || !session.emailVerified}
-                      showModelSelector={false}
-                      isEnabled={isMiniEnabled}
-                      className="dashboard-crox-mini"
-                    />
-                    {miniError && <p className="text-[10px] text-red-500 font-medium">{miniError}</p>}
-                  </Card>
-
-                  <Card className="p-5 space-y-4 border-zinc-200 bg-white shadow-sm">
-                    <div className="flex items-center justify-between">
-                      <h3 className="font-bold text-sm text-slate-900 uppercase tracking-tight">{t.dashboard.overview.ultraTitle}</h3>
-                      <span className="text-[10px] font-bold text-amber-500 bg-amber-50 px-2 py-0.5 rounded-full uppercase tracking-widest">{t.dashboard.overview.ultraCredit}</span>
-                    </div>
-                    <HeroInput
-                      value={ultraUrl}
-                      onChange={setUltraUrl}
-                      onSubmit={handleUltraSubmit}
-                      placeholder={t.dashboard.overview.placeholderUltra}
-                      selectedModel="CRO-X ULTRA"
-                      onModelChange={() => {}}
-                      inputHint=""
-                      disabled={ultraLoading || !session.emailVerified}
-                      showModelSelector={false}
-                      isEnabled={isUltraEnabled}
-                      className="dashboard-crox-ultra"
-                    />
-                    {ultraError && <p className="text-[10px] text-red-500 font-medium">{ultraError}</p>}
-                  </Card>
-                </div>
+                {/* Single CRO-X AI input — opens animated chat overlay */}
+                <Card className="p-5 space-y-4 border-zinc-200 bg-white shadow-sm">
+                  <div className="flex items-center justify-between">
+                    <h3 className="font-bold text-sm text-slate-900 uppercase tracking-tight">CRO-X AI</h3>
+                    <span className="text-[10px] font-bold text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full uppercase tracking-widest">
+                      {t.dashboard.overview.miniCredit}
+                    </span>
+                  </div>
+                  <CroXAiTrigger
+                    defaultModel="mini"
+                    placeholder={t.dashboard.overview.placeholderMini}
+                    className="dashboard-crox"
+                  />
+                  {!session.emailVerified && (
+                    <p className="text-[10px] text-amber-600 font-semibold">
+                      {t.dashboard.verification.bannerDesc}
+                    </p>
+                  )}
+                </Card>
 
                 <Card className="p-4 flex items-center justify-between border-cyan-100 bg-cyan-50/10">
                   <div className="flex items-center gap-4">

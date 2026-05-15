@@ -1,75 +1,21 @@
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
 import { AuroraBackground } from '@/components/ui/aurora-background';
 import { GradientText } from '@/components/ui/gradient-text';
-import { HeroInput, type CROModel } from '@/components/ui/animated-ai-input';
-import { isValidUrl } from '@/lib/validators';
-import { useAuth } from '@/contexts/AuthContext';
+import CroXAiTrigger from '@/components/cro-x-ai/CroXAiTrigger';
 import { useLanguage } from '@/contexts/LanguageContext';
-
-import { createMiniAnalysis, createUltraAnalysis } from '@/lib/api';
 
 interface HeroSectionProps {
   isMiniEnabled?: boolean;
   isUltraEnabled?: boolean;
 }
 
-export default function HeroSection({ isMiniEnabled = true, isUltraEnabled = true }: HeroSectionProps) {
-  const router = useRouter();
-  const [siteUrl, setSiteUrl] = useState('');
-  const [urlError, setUrlError] = useState('');
-  const [isFocused, setIsFocused] = useState(false);
-  const [selectedModel, setSelectedModel] = useState<CROModel>('CRO-X MINI');
-
-  const { isAuthenticated, session, updateSession } = useAuth();
+export default function HeroSection(_props: HeroSectionProps) {
+  void _props;
   const { t } = useLanguage();
-
-  const handleAnalyze = async () => {
-    const trimmed = siteUrl.trim();
-    if (!trimmed) {
-      setUrlError(t.hero.errors.emptyUrl);
-      return;
-    }
-    if (!isValidUrl(trimmed)) {
-      setUrlError(t.hero.errors.invalidUrl);
-      return;
-    }
-    setUrlError('');
-
-    if (!isAuthenticated || !session) {
-      router.push('/auth/login');
-      return;
-    }
-
-    // Credit check
-    if (selectedModel === 'CRO-X MINI' && session.creditsMini < 1) {
-      setUrlError(t.hero.errors.insufficientMini);
-      return;
-    }
-    if (selectedModel === 'CRO-X ULTRA' && session.creditsUltra < 1) {
-      setUrlError(t.hero.errors.insufficientUltra);
-      return;
-    }
-
-    try {
-      if (selectedModel === 'CRO-X MINI') {
-        await createMiniAnalysis(session.token, { website_url: trimmed });
-        updateSession({ creditsMini: session.creditsMini - 1, analysisStatus: 'pending' });
-      } else {
-        await createUltraAnalysis(session.token, { website_url: trimmed });
-        updateSession({ creditsUltra: session.creditsUltra - 1, analysisStatus: 'pending' });
-      }
-      setSiteUrl('');
-      alert(t.hero.analysisSuccess);
-    } catch (e) {
-      setUrlError(e instanceof Error ? e.message : t.hero.errors.analysisGenericError);
-    }
-  };
 
   const containerVariants = {
     hidden: {},
@@ -142,40 +88,18 @@ export default function HeroSection({ isMiniEnabled = true, isUltraEnabled = tru
           {/* Right Column: Input & Scroll */}
           <div className="hero-down-part flex flex-col items-center justify-center space-y-12 lg:space-y-16 my-[75px]">
             <div className="w-full">
-              {/* Input block — HeroInput from animated-ai-input */}
+              {/* CRO-X AI single trigger — opens animated chat overlay */}
               <motion.div variants={itemVariants} className="hero-input-form-container flex justify-center w-full px-[5px]">
-                <HeroInput
-                  value={siteUrl}
-                  onChange={(v) => {
-                    setSiteUrl(v);
-                    if (urlError) setUrlError('');
-                  }}
-                  onSubmit={handleAnalyze}
-                  isFocused={isFocused}
-                  onFocus={() => setIsFocused(true)}
-                  onBlur={() => setIsFocused(false)}
+                <CroXAiTrigger
+                  defaultModel="mini"
                   placeholder={t.hero.placeholderPrefix}
-                  inputHint={t.hero.inputHint}
-                  selectedModel={selectedModel}
-                  onModelChange={setSelectedModel}
-                  isEnabled={selectedModel === 'CRO-X MINI' ? isMiniEnabled : isUltraEnabled}
                   className="anasayfa-crox"
                 />
               </motion.div>
 
-              {/* Server hint */}
-              <motion.p
-                initial={{ opacity: 0 }}
-                animate={{ opacity: isFocused ? 0.7 : 0 }}
-                transition={{ duration: 0.3 }}
-                className="hero-hint-message mt-3 text-[var(--color-text)] text-[10px] sm:text-xs text-center pointer-events-none h-4"
-              >
+              <p className="hero-hint-message mt-3 text-[var(--color-text)] text-[10px] sm:text-xs text-center pointer-events-none h-4 opacity-0">
                 {t.hero.serverHint}
-              </motion.p>
-
-              {urlError && (
-                <p className="mt-2 text-center text-sm text-[var(--color-error)]">{urlError}</p>
-              )}
+              </p>
             </div>
 
             {/* Scroll indicator */}
