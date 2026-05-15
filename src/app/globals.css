@@ -193,9 +193,10 @@ body {
   position: relative !important;
 }
 
-/* Hide site navbar while CRO-X AI overlay is open (front pages) */
+/* Hide site navbar + scroll-to-top while CRO-X AI overlay is open (front pages) */
 body.crox-overlay-open > nav,
-body.crox-overlay-open nav.fixed {
+body.crox-overlay-open nav.fixed,
+body.crox-overlay-open .scroll-to-top-btn {
   display: none !important;
 }
 

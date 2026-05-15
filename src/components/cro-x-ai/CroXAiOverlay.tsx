@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useAnimation } from 'framer-motion';
 import { ArrowLeft, ArrowRight, ArrowLeftRight, ChevronDown, Check } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import {
@@ -49,6 +49,14 @@ export default function CroXAiOverlay({ open, onClose, defaultModel = 'mini' }: 
 
   const inputRef = useRef<HTMLInputElement>(null);
   const chatScrollRef = useRef<HTMLDivElement>(null);
+  const pillsControls = useAnimation();
+
+  function flashPills() {
+    pillsControls.start({
+      x: [0, -8, 8, -6, 6, -3, 3, 0],
+      transition: { duration: 0.55, ease: 'easeInOut' },
+    });
+  }
 
   // Reset state on open and seed bot messages SEQUENTIALLY with timing
   useEffect(() => {
@@ -113,15 +121,28 @@ export default function CroXAiOverlay({ open, onClose, defaultModel = 'mini' }: 
     };
   }, [open, isAuthenticated, defaultModel]);
 
-  // Body scroll lock + navbar hide via body class
+  // Body scroll lock (iOS-safe via position: fixed) + navbar hide via body class
   useEffect(() => {
     if (!open) return;
-    const originalOverflow = document.body.style.overflow;
+    const scrollY = window.scrollY;
+    const original = {
+      overflow: document.body.style.overflow,
+      position: document.body.style.position,
+      top: document.body.style.top,
+      width: document.body.style.width,
+    };
     document.body.style.overflow = 'hidden';
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${scrollY}px`;
+    document.body.style.width = '100%';
     document.body.classList.add('crox-overlay-open');
     return () => {
-      document.body.style.overflow = originalOverflow;
+      document.body.style.overflow = original.overflow;
+      document.body.style.position = original.position;
+      document.body.style.top = original.top;
+      document.body.style.width = original.width;
       document.body.classList.remove('crox-overlay-open');
+      window.scrollTo(0, scrollY);
     };
   }, [open]);
 
@@ -342,6 +363,7 @@ export default function CroXAiOverlay({ open, onClose, defaultModel = 'mini' }: 
               <div
                 ref={chatScrollRef}
                 className="absolute inset-0 overflow-y-auto flex flex-col justify-end space-y-2.5 sm:space-y-3 pb-2"
+                style={{ overscrollBehavior: 'contain', WebkitOverflowScrolling: 'touch' }}
               >
                 <AnimatePresence initial={false}>
                   {chatLog.map((m) => (
@@ -386,7 +408,10 @@ export default function CroXAiOverlay({ open, onClose, defaultModel = 'mini' }: 
               </AnimatePresence>
 
               {/* Platform pills — wrap on all viewports, never overflow */}
-              <div className="flex flex-wrap justify-center gap-1.5 sm:gap-2">
+              <motion.div
+                animate={pillsControls}
+                className="flex flex-wrap justify-center gap-1.5 sm:gap-2"
+              >
                 {PLATFORMS.map((p) => (
                   <PlatformPill
                     key={p.key}
@@ -396,15 +421,26 @@ export default function CroXAiOverlay({ open, onClose, defaultModel = 'mini' }: 
                     onClick={() => handlePlatformClick(p.key)}
                   />
                 ))}
-              </div>
+              </motion.div>
 
               {/* Address input bar */}
-              <div className="rounded-2xl border border-white/15 bg-zinc-950/60 backdrop-blur-md overflow-hidden">
-                <div className="px-3 sm:px-5 pt-3 sm:pt-4 pb-1.5 sm:pb-2">
+              <div
+                className="rounded-2xl border border-white/15 bg-zinc-950/60 backdrop-blur-md overflow-hidden"
+                onClickCapture={(e) => {
+                  // If user clicks input area before picking a platform, shake the pills as a hint.
+                  if (!activePlatform) {
+                    const target = e.target as HTMLElement;
+                    if (target.closest('input') || target.closest('[data-input-row]')) {
+                      flashPills();
+                    }
+                  }
+                }}
+              >
+                <div className="px-3 sm:px-5 pt-3 sm:pt-4 pb-1.5 sm:pb-2" data-input-row>
                   <div className="flex items-center gap-2 sm:gap-3">
                     <span
                       className={cn(
-                        'text-[12px] sm:text-[13px] font-semibold whitespace-nowrap',
+                        'text-[13px] sm:text-[13px] font-semibold whitespace-nowrap',
                         placeholderColor,
                       )}
                     >
@@ -421,10 +457,22 @@ export default function CroXAiOverlay({ open, onClose, defaultModel = 'mini' }: 
                           handleAddAddress();
                         }
                       }}
-                      disabled={!activePlatform}
+                      onMouseDown={(e) => {
+                        // Block native focus when no platform is picked — prevents iOS keyboard + zoom.
+                        if (!activePlatform) {
+                          e.preventDefault();
+                        }
+                      }}
+                      onFocus={() => {
+                        if (!activePlatform) {
+                          inputRef.current?.blur();
+                        }
+                      }}
+                      readOnly={!activePlatform}
                       placeholder=""
                       className={cn(
-                        'flex-1 min-w-0 bg-transparent outline-none text-white text-[12px] sm:text-[13px] font-medium',
+                        // 16px (text-base) on mobile prevents iOS Safari auto-zoom on focus; sm shrinks back.
+                        'flex-1 min-w-0 bg-transparent outline-none text-white text-base sm:text-[13px] font-medium',
                         'placeholder:text-white/30',
                       )}
                     />
