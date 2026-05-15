@@ -113,18 +113,21 @@ void main(){gl_Position=position;}`;
       this.fs = gl.createShader(gl.FRAGMENT_SHADER)!;
       this.compile(this.vs, this.vertexSrc);
       this.compile(this.fs, this.shaderSource);
-      this.program = gl.createProgram()!;
-      gl.attachShader(this.program, this.vs);
-      gl.attachShader(this.program, this.fs);
-      gl.linkProgram(this.program);
-      if (!gl.getProgramParameter(this.program, gl.LINK_STATUS)) {
+      this.program = gl.createProgram() as ProgramWithUniforms;
+      if (this.program) {
+        gl.attachShader(this.program, this.vs);
+        gl.attachShader(this.program, this.fs);
+        gl.linkProgram(this.program);
+      }
+      if (this.program && !gl.getProgramParameter(this.program, gl.LINK_STATUS)) {
         console.error(gl.getProgramInfoLog(this.program));
       }
     }
 
     init() {
       const gl = this.gl;
-      const program = this.program!;
+      const program = this.program;
+      if (!program) return;
 
       this.buffer = gl.createBuffer();
       gl.bindBuffer(gl.ARRAY_BUFFER, this.buffer);

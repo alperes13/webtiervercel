@@ -28,11 +28,13 @@ const formatDate = (dateStr: string, lang: string) => {
 
 interface Analysis {
   id: string;
-  website_url: string;
-  analysis_type: 'mini' | 'ultra';
-  status: 'pending' | 'completed' | 'failed' | 'processing';
+  user_id: string;
+  model_type: 'mini' | 'ultra';
+  site_url: string;
+  status: 'pending' | 'processing' | 'completed' | 'failed';
+  result?: string;
   created_at: string;
-  completed_at: string | null;
+  updated_at?: string;
 }
 
 export default function AnalysisHistory() {
@@ -105,13 +107,13 @@ export default function AnalysisHistory() {
           <Card key={analysis.id} className="p-3 hover:border-cyan-500/30 transition-colors group border-zinc-200 bg-white shadow-sm">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div className="flex items-start gap-3">
-                <div className={`p-2 rounded-lg ${analysis.analysis_type === 'ultra' ? 'bg-cyan-50 text-cyan-600' : 'bg-zinc-50 text-zinc-400'}`}>
+                <div className={`p-2 rounded-lg ${analysis.model_type === 'ultra' ? 'bg-cyan-50 text-cyan-600' : 'bg-zinc-50 text-zinc-400'}`}>
                   <BarChart3 className="h-4 w-4" />
                 </div>
                 <div className="space-y-0.5">
                   <div className="flex items-center gap-2">
                     <h4 className="text-[13px] font-bold text-slate-900 break-all truncate max-w-[200px] sm:max-w-md">
-                      {analysis.website_url}
+                      {analysis.site_url}
                     </h4>
                     <ExternalLink className="h-3 w-3 text-slate-300 opacity-0 group-hover:opacity-100 transition-opacity" />
                   </div>
@@ -121,7 +123,7 @@ export default function AnalysisHistory() {
                       {formatDate(analysis.created_at, language)}
                     </span>
                     <span className="bg-zinc-100 px-1.5 py-0.5 rounded text-zinc-600">
-                      {analysis.analysis_type}
+                      {analysis.model_type}
                     </span>
                   </div>
                 </div>

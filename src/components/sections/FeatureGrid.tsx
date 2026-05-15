@@ -1,6 +1,6 @@
 'use client';
 
-import { BentoGrid } from "@/components/ui/bento-grid";
+import { BentoGrid, type BentoItem } from "@/components/ui/bento-grid";
 import { 
   TrendingUp, 
   BarChart3, 
@@ -26,8 +26,12 @@ export default function FeatureGrid() {
 
   const colSpans = [2, 1, 1, 2, 1, 2];
 
-  const items = t.featureGrid.items.map((item, index: number) => ({
-    ...item,
+  const items: BentoItem[] = t.featureGrid.items.map((item, index: number) => ({
+    title: item.title,
+    description: item.description,
+    meta: item.meta,
+    status: item.status,
+    tags: [...item.tags], // Convert readonly string[] to string[]
     icon: icons[index],
     colSpan: colSpans[index],
     hasPersistentHover: index === 0,

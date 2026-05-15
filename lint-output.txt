@@ -1,0 +1,286 @@
+
+> webtier-temp@0.1.0 lint
+> eslint
+
+
+/Users/alperes/Desktop/webtier/src/app/api/admin/users/[id]/tasks/route.ts
+  90:44  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/alperes/Desktop/webtier/src/app/api/analysis/list/route.ts
+  26:17  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/alperes/Desktop/webtier/src/app/api/auth/forgot-password/route.ts
+  71:17  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/alperes/Desktop/webtier/src/app/api/auth/login/route.ts
+  83:17  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/alperes/Desktop/webtier/src/app/api/auth/profile/route.ts
+  25:17  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/alperes/Desktop/webtier/src/app/api/auth/register/route.ts
+  77:17  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/alperes/Desktop/webtier/src/app/api/auth/reset-password/route.ts
+  48:17  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/alperes/Desktop/webtier/src/app/api/auth/verify-email/send/route.ts
+  63:25  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  84:17  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/alperes/Desktop/webtier/src/app/api/auth/verify-email/verify/route.ts
+  72:17  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/alperes/Desktop/webtier/src/app/auth/callback/page.tsx
+  44:6  warning  React Hook useEffect has missing dependencies: 'login', 'params', and 'router'. Either include them or remove the dependency array  react-hooks/exhaustive-deps
+
+/Users/alperes/Desktop/webtier/src/app/auth/forgot-password/page.tsx
+  25:17  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/alperes/Desktop/webtier/src/app/auth/login/page.tsx
+  33:7   error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/alperes/Desktop/webtier/src/app/auth/login/page.tsx:33:7
+  31 |     const code = searchParams.get('error');
+  32 |     if (code) {
+> 33 |       setError(OAUTH_ERRORS[code] ?? t.auth.oauthErrors.generic);
+     |       ^^^^^^^^ Avoid calling setState() directly within an effect
+  34 |     }
+  35 |   }, [searchParams]);
+  36 |  react-hooks/set-state-in-effect
+  35:6   warning  React Hook useEffect has missing dependencies: 'OAUTH_ERRORS' and 't.auth.oauthErrors.generic'. Either include them or remove the dependency array                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               react-hooks/exhaustive-deps
+  53:17  error    Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         @typescript-eslint/no-explicit-any
+
+/Users/alperes/Desktop/webtier/src/app/auth/reset-password/page.tsx
+  42:17  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/alperes/Desktop/webtier/src/app/auth/signup/page.tsx
+  14:17  warning  'setError' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  39:17  error    Unexpected any. Specify a different type       @typescript-eslint/no-explicit-any
+
+/Users/alperes/Desktop/webtier/src/app/dashboard/page.tsx
+    9:26  warning  'CROModel' is defined but never used      @typescript-eslint/no-unused-vars
+   22:29  warning  'Bell' is defined but never used          @typescript-eslint/no-unused-vars
+  100:17  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  120:17  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  133:14  warning  'e' is defined but never used             @typescript-eslint/no-unused-vars
+  144:14  warning  'e' is defined but never used             @typescript-eslint/no-unused-vars
+
+/Users/alperes/Desktop/webtier/src/app/hakkimizda/markamiz/BrandContent.tsx
+  164:82  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+
+/Users/alperes/Desktop/webtier/src/app/kurumsal/CorporateContent.tsx
+  219:49  warning  'i' is defined but never used  @typescript-eslint/no-unused-vars
+
+/Users/alperes/Desktop/webtier/src/app/page.tsx
+  5:16  warning  'queryOne' is defined but never used  @typescript-eslint/no-unused-vars
+
+/Users/alperes/Desktop/webtier/src/app/retrainer/page.tsx
+   4:10  warning  'motion' is defined but never used        @typescript-eslint/no-unused-vars
+  34:82  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  41:12  error    Missing "key" prop for element in array   react/jsx-key
+  41:44  error    Missing "key" prop for element in array   react/jsx-key
+  41:79  error    Missing "key" prop for element in array   react/jsx-key
+
+/Users/alperes/Desktop/webtier/src/components/admin/UserDetailPanel.tsx
+  229:80  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+
+/Users/alperes/Desktop/webtier/src/components/dashboard/AnalysisHistory.tsx
+  55:16  warning  'err' is defined but never used  @typescript-eslint/no-unused-vars
+
+/Users/alperes/Desktop/webtier/src/components/dashboard/BacklogTasks.tsx
+  46:60  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  47:56  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/alperes/Desktop/webtier/src/components/dashboard/DashboardHeader.tsx
+  12:10  warning  'isVerifyModalOpen' is assigned a value but never used   @typescript-eslint/no-unused-vars
+  12:29  warning  'setVerifyModalOpen' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/Users/alperes/Desktop/webtier/src/components/dashboard/DashboardSidebar.tsx
+  88:7  error  Error: This value cannot be modified
+
+Modifying a variable defined outside a component or hook is not allowed. Consider using an effect.
+
+/Users/alperes/Desktop/webtier/src/components/dashboard/DashboardSidebar.tsx:88:7
+  86 |   const handleSectionChange = (section: DashboardSection | 'home') => {
+  87 |     if (section === 'home') {
+> 88 |       window.location.href = '/';
+     |       ^^^^^^^^^^^^^^^ value cannot be modified
+  89 |       return;
+  90 |     }
+  91 |     onSectionChange(section as DashboardSection);  react-hooks/immutability
+
+/Users/alperes/Desktop/webtier/src/components/layout/Footer.tsx
+  7:10  warning  'getWhatsAppUrl' is defined but never used  @typescript-eslint/no-unused-vars
+
+/Users/alperes/Desktop/webtier/src/components/layout/HamburgerMenu.tsx
+   6:34  warning  'Globe' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       @typescript-eslint/no-unused-vars
+   6:41  warning  'ChevronDown' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 @typescript-eslint/no-unused-vars
+   8:10  warning  'getWhatsAppUrl' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              @typescript-eslint/no-unused-vars
+  26:24  warning  'setLanguage' is assigned a value but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        @typescript-eslint/no-unused-vars
+  27:10  warning  'langOpen' is assigned a value but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           @typescript-eslint/no-unused-vars
+  34:7   error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/alperes/Desktop/webtier/src/components/layout/HamburgerMenu.tsx:34:7
+  32 |     } else {
+  33 |       document.body.style.overflow = '';
+> 34 |       setLangOpen(false);
+     |       ^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  35 |     }
+  36 |     return () => {
+  37 |       document.body.style.overflow = '';  react-hooks/set-state-in-effect
+  41:9   warning  'currentLang' is assigned a value but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        @typescript-eslint/no-unused-vars
+
+/Users/alperes/Desktop/webtier/src/components/layout/Navbar.tsx
+   3:31  warning  'useRef' is defined but never used             @typescript-eslint/no-unused-vars
+   6:10  warning  'Menu' is defined but never used               @typescript-eslint/no-unused-vars
+   6:27  warning  'Globe' is defined but never used              @typescript-eslint/no-unused-vars
+  16:9   warning  'pathname' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/Users/alperes/Desktop/webtier/src/components/layout/SharedBackgroundWrapper.tsx
+  25:7  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/alperes/Desktop/webtier/src/components/layout/SharedBackgroundWrapper.tsx:25:7
+  23 |     const isMobile = window.matchMedia("(max-width: 768px)").matches;
+  24 |     if (!isMobile && !prefersReduced) {
+> 25 |       setShowShader(true);
+     |       ^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  26 |     }
+  27 |   }, []);
+  28 |  react-hooks/set-state-in-effect
+
+/Users/alperes/Desktop/webtier/src/components/sections/FeatureGrid.tsx
+  29:48  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/alperes/Desktop/webtier/src/components/sections/HeroSection.tsx
+  28:10  warning  'loading' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/Users/alperes/Desktop/webtier/src/components/sections/Process.tsx
+  7:10  warning  'PROCESS_STEPS' is defined but never used  @typescript-eslint/no-unused-vars
+
+/Users/alperes/Desktop/webtier/src/components/sections/ServicesOverview.tsx
+  8:7  warning  'iconMap' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/Users/alperes/Desktop/webtier/src/components/sections/TrustSignals.tsx
+  55:44  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/alperes/Desktop/webtier/src/components/ui/EmailVerificationModal.tsx
+    5:42  warning  'Mail' is defined but never used          @typescript-eslint/no-unused-vars
+   63:17  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  128:17  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/alperes/Desktop/webtier/src/components/ui/Input.tsx
+  5:18  error  An interface declaring no members is equivalent to its supertype  @typescript-eslint/no-empty-object-type
+
+/Users/alperes/Desktop/webtier/src/components/ui/ProfilePopup.tsx
+   5:63  warning  'MessageCircle' is defined but never used   @typescript-eslint/no-unused-vars
+   9:10  warning  'SITE_CONFIG' is defined but never used     @typescript-eslint/no-unused-vars
+  10:10  warning  'getWhatsAppUrl' is defined but never used  @typescript-eslint/no-unused-vars
+
+/Users/alperes/Desktop/webtier/src/components/ui/animated-ai-input.tsx
+  103:5   error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/alperes/Desktop/webtier/src/components/ui/animated-ai-input.tsx:103:5
+  101 |
+  102 |   useEffect(() => {
+> 103 |     setIsMounted(true);
+      |     ^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  104 |     if (!isEnabled) {
+  105 |       setStatus("maintenance");
+  106 |       return;  react-hooks/set-state-in-effect
+  222:27  warning  'e' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                @typescript-eslint/no-unused-vars
+  226:26  warning  'e' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                @typescript-eslint/no-unused-vars
+
+/Users/alperes/Desktop/webtier/src/components/ui/animated-shader-hero.tsx
+  128:19  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  129:19  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  130:19  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  131:19  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  132:19  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  133:19  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  146:32  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  147:32  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  148:32  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  149:32  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  150:32  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  151:33  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/alperes/Desktop/webtier/src/components/ui/radial-orbital-timeline.tsx
+  64:7  error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/alperes/Desktop/webtier/src/components/ui/radial-orbital-timeline.tsx:64:7
+  62 |   useEffect(() => {
+  63 |     if (!timelineData.length) {
+> 64 |       setExpandedItems({});
+     |       ^^^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  65 |       setActiveNodeId(null);
+  66 |       setPulseEffect({});
+  67 |       return;  react-hooks/set-state-in-effect
+  84:6  warning  React Hook useEffect has a missing dependency: 'buildExpandedState'. Either include it or remove the dependency array                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 react-hooks/exhaustive-deps
+
+/Users/alperes/Desktop/webtier/src/components/ui/ruixen-stats.tsx
+  3:10  warning  'cn' is defined but never used          @typescript-eslint/no-unused-vars
+  5:23  warning  'ArrowRight' is defined but never used  @typescript-eslint/no-unused-vars
+
+/Users/alperes/Desktop/webtier/src/contexts/LanguageContext.tsx
+  22:5  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/alperes/Desktop/webtier/src/contexts/LanguageContext.tsx:22:5
+  20 |
+  21 |   useEffect(() => {
+> 22 |     setMounted(true);
+     |     ^^^^^^^^^^ Avoid calling setState() directly within an effect
+  23 |     const saved = localStorage.getItem(STORAGE_KEY) as Language | null;
+  24 |     if (saved && translations[saved]) {
+  25 |       setLanguageState(saved);  react-hooks/set-state-in-effect
+
+/Users/alperes/Desktop/webtier/src/lib/api.ts
+  90:89  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/alperes/Desktop/webtier/src/lib/check_schema.js
+  1:18  error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+
+/Users/alperes/Desktop/webtier/src/lib/email.ts
+   75:29  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   82:17  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  113:29  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  120:17  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+✖ 90 problems (54 errors, 36 warnings)
+

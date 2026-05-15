@@ -52,7 +52,7 @@ export async function PATCH(request: NextRequest) {
 
   // For maintenance_mode, trigger a revalidate to clear the middleware cache
   if (body.key === 'maintenance_mode') {
-    revalidateTag('maintenance');
+    revalidateTag('maintenance', 'max');
   }
 
   return response;
