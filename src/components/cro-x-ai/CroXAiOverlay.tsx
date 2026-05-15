@@ -47,6 +47,8 @@ export default function CroXAiOverlay({ open, onClose, defaultModel = 'mini' }: 
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [serviceStatus, setServiceStatus] = useState<'bekleniyor' | 'canlı' | 'bakımda'>('bekleniyor');
+  const [miniEnabled, setMiniEnabled] = useState(true);
+  const [ultraEnabled, setUltraEnabled] = useState(true);
 
   const inputRef = useRef<HTMLInputElement>(null);
   const chatScrollRef = useRef<HTMLDivElement>(null);
@@ -59,7 +61,7 @@ export default function CroXAiOverlay({ open, onClose, defaultModel = 'mini' }: 
     });
   }
 
-  // Reset state on open and seed bot messages SEQUENTIALLY with timing
+  // Reset + fetch model/maintenance status + seed bot messages (all in one effect for data consistency)
   useEffect(() => {
     if (!open) return;
     setModel(defaultModel);
@@ -69,54 +71,88 @@ export default function CroXAiOverlay({ open, onClose, defaultModel = 'mini' }: 
     setConfirmOpen(false);
     setSubmitError(null);
     setSubmitting(false);
-    setChatLog([]); // Start empty: shows hero "CRO-X AI / Limitlerine dokun."
+    setChatLog([]);
+    setMiniEnabled(true);
+    setUltraEnabled(true);
+    setServiceStatus('bekleniyor');
 
     const timers: number[] = [];
-
-    // Hero stays centered for 3s, then bot messages arrive with 1–2s random gaps.
     const HERO_HOLD_MS = 3000;
-    const rand = () => 1000 + Math.random() * 1000; // 1000–2000ms
+    const rand = () => 1000 + Math.random() * 1000;
 
-    let cursor = HERO_HOLD_MS;
-    function addMsg(msg: Omit<ChatMessage, 'id'>, delay: number) {
+    function scheduleMsg(msg: Omit<ChatMessage, 'id'>, delayFromNow: number) {
       timers.push(
         window.setTimeout(() => {
           setChatLog((prev) => [...prev, { ...msg, id: `${msg.kind}-${Date.now()}` }]);
-        }, delay),
+        }, delayFromNow),
       );
     }
 
-    if (!isAuthenticated) {
-      addMsg({ kind: 'bot', text: 'Hoşgeldin, ücretsiz analiz almadan önce giriş yapman gerektiğini unutma. Her hesapta 1 CRO-X Mini kredisi tanımlıdır.', inlineLoginLink: true }, cursor);
-      cursor += rand();
-      addMsg({ kind: 'bot', text: 'Herhangi bir dijital adresi seçebilirsin. Ne kadar adres yazarsan o kadar iyi. Doğru girdiğinden emin ol. Her analiz 1 kredi kullanır.' }, cursor);
-      cursor += rand();
-      addMsg({ kind: 'bot', text: 'CRO-X AI Ultra analizleri server yoğunluğuna bağlı olarak 0-2 saat içerisinde teslim edilir.' }, cursor);
-    } else {
-      addMsg({ kind: 'bot', text: 'Hoşgeldin, herhangi bir dijital adresi seçebilirsin. Ne kadar adres yazarsan o kadar iyi. Doğru girdiğinden emin ol. Her analiz 1 kredi kullanır.' }, cursor);
-      cursor += rand();
-      addMsg({ kind: 'bot', text: 'CRO-X AI Ultra analizleri server yoğunluğuna bağlı olarak 0-2 saat içerisinde teslim edilir.' }, cursor);
-    }
+    // Fetch at hero-hold time, then seed messages based on live data
+    timers.push(
+      window.setTimeout(() => {
+        fetch('/api/public/maintenance')
+          .then((r) => r.json())
+          .then((d: { maintenance_mode?: boolean; cro_mini_enabled?: boolean; cro_ultra_enabled?: boolean }) => {
+            const mini = d.cro_mini_enabled !== false;
+            const ultra = d.cro_ultra_enabled !== false;
+            const bothDown = !mini && !ultra;
+            const isMaintenance = !!(d.maintenance_mode || bothDown);
 
-    return () => {
-      timers.forEach((t) => window.clearTimeout(t));
-    };
+            setMiniEnabled(mini);
+            setUltraEnabled(ultra);
+            setServiceStatus(isMaintenance ? 'bakımda' : 'canlı');
+
+            let c = 0; // delay cursor relative to fetch completion
+
+            if (isMaintenance) {
+              // Both models down or full maintenance — only 2 messages
+              const greet = isAuthenticated
+                ? { kind: 'bot' as const, text: 'Hoşgeldin, seni görmek güzel.' }
+                : { kind: 'bot' as const, text: 'Hoşgeldin, ücretsiz analiz almadan önce giriş yapman gerektiğini unutma. Her hesapta 1 CRO-X Mini kredisi tanımlıdır.', inlineLoginLink: true };
+              scheduleMsg(greet, c);
+              c += rand();
+              scheduleMsg({ kind: 'bot', text: 'CRO-X AI modelleri şu an bakımda.' }, c);
+            } else {
+              // Normal flow
+              const greet = isAuthenticated
+                ? { kind: 'bot' as const, text: 'Hoşgeldin, aşağıdaki platformlardan herhangi bir dijital adresi seçebilirsin. Ne kadar çok adres yazarsan o kadar iyi sonuç alırsın. Doğru adreslerini girdiğinden emin ol. Her analiz 1 kredi kullanır.' }
+                : { kind: 'bot' as const, text: 'Hoşgeldin, ücretsiz analiz almadan önce giriş yapman gerektiğini unutma. Her hesapta 1 CRO-X Mini kredisi tanımlıdır.', inlineLoginLink: true };
+              scheduleMsg(greet, c);
+              c += rand();
+              if (!isAuthenticated) {
+                scheduleMsg({ kind: 'bot', text: 'Aşağıdaki platformlardan herhangi bir dijital adresi seçebilirsin. Ne kadar çok adres yazarsan o kadar iyi sonuç alırsın. Doğru adreslerini girdiğinden emin ol. Her analiz 1 kredi kullanır.' }, c);
+                c += rand();
+              }
+              scheduleMsg({ kind: 'bot', text: 'CRO-X Ultra modelinin analizleri server yoğunluğuna bağlı olarak 0-2 saat içerisinde teslim edilir.', inlineAnalizLink: true }, c);
+              // One model down: add partial notice as last message
+              if (!mini || !ultra) {
+                c += rand();
+                const activeModel = mini ? 'CRO-X Mini' : 'CRO-X Ultra';
+                scheduleMsg({ kind: 'bot', text: `Şu anda sadece ${activeModel} modeli analiz üretmektedir.` }, c);
+              }
+            }
+          })
+          .catch(() => {
+            // Fallback: assume all live
+            setServiceStatus('canlı');
+            let c = 0;
+            const greet = isAuthenticated
+              ? { kind: 'bot' as const, text: 'Hoşgeldin, aşağıdaki platformlardan herhangi bir dijital adresi seçebilirsin. Ne kadar çok adres yazarsan o kadar iyi sonuç alırsın. Doğru adreslerini girdiğinden emin ol. Her analiz 1 kredi kullanır.' }
+              : { kind: 'bot' as const, text: 'Hoşgeldin, ücretsiz analiz almadan önce giriş yapman gerektiğini unutma. Her hesapta 1 CRO-X Mini kredisi tanımlıdır.', inlineLoginLink: true };
+            scheduleMsg(greet, c);
+            c += rand();
+            if (!isAuthenticated) {
+              scheduleMsg({ kind: 'bot', text: 'Aşağıdaki platformlardan herhangi bir dijital adresi seçebilirsin.' }, c);
+              c += rand();
+            }
+            scheduleMsg({ kind: 'bot', text: 'CRO-X Ultra modelinin analizleri server yoğunluğuna bağlı olarak 0-2 saat içerisinde teslim edilir.', inlineAnalizLink: true }, c);
+          });
+      }, HERO_HOLD_MS),
+    );
+
+    return () => timers.forEach((t) => window.clearTimeout(t));
   }, [open, isAuthenticated, defaultModel]);
-
-  // Fetch real maintenance status after 3s delay; shows "bekleniyor" until resolved
-  useEffect(() => {
-    if (!open) return;
-    setServiceStatus('bekleniyor');
-    const t = window.setTimeout(() => {
-      fetch('/api/public/maintenance')
-        .then((r) => r.json())
-        .then((d: { maintenance_mode?: boolean }) => {
-          setServiceStatus(d.maintenance_mode ? 'bakımda' : 'canlı');
-        })
-        .catch(() => setServiceStatus('canlı'));
-    }, 3000);
-    return () => window.clearTimeout(t);
-  }, [open]);
 
   // Body scroll lock (iOS-safe: lock both <html> and <body>) + navbar hide via body class
   useEffect(() => {
@@ -179,6 +215,49 @@ export default function CroXAiOverlay({ open, onClose, defaultModel = 'mini' }: 
     return () => document.removeEventListener('keydown', handler);
   }, [open, confirmOpen, submitting, onClose]);
 
+  // 30s polling: refresh model/maintenance status while overlay is open
+  useEffect(() => {
+    if (!open) return;
+    const poll = () => {
+      fetch('/api/public/maintenance')
+        .then((r) => r.json())
+        .then((d: { maintenance_mode?: boolean; cro_mini_enabled?: boolean; cro_ultra_enabled?: boolean }) => {
+          const mini = d.cro_mini_enabled !== false;
+          const ultra = d.cro_ultra_enabled !== false;
+          setMiniEnabled(mini);
+          setUltraEnabled(ultra);
+          // serviceStatus is re-derived below via model effect — just store raw values here
+        })
+        .catch(() => {/* keep current values on error */});
+    };
+    const interval = window.setInterval(poll, 30_000);
+    return () => window.clearInterval(interval);
+  }, [open]);
+
+  // Derive model-specific status + inject chat message when model goes into maintenance
+  const prevModelStatusRef = useRef<boolean | null>(null);
+  useEffect(() => {
+    if (!open) return;
+    const currentModelEnabled = model === 'mini' ? miniEnabled : ultraEnabled;
+    const bothDown = !miniEnabled && !ultraEnabled;
+    const isMaintenance = bothDown || !currentModelEnabled;
+    setServiceStatus(isMaintenance ? 'bakımda' : 'canlı');
+
+    // Only inject the maintenance notice message after initial load (prevModelStatusRef tracks previous value)
+    if (prevModelStatusRef.current !== null && prevModelStatusRef.current !== currentModelEnabled) {
+      if (!currentModelEnabled) {
+        const modelName = model === 'mini' ? 'CRO-X Mini' : 'CRO-X Ultra';
+        setChatLog((prev) => {
+          // Avoid duplicate
+          const alreadyHas = prev.some((m) => m.kind === 'bot' && m.text.includes('bakımda'));
+          if (alreadyHas) return prev;
+          return [...prev, { id: `bot-maintenance-${Date.now()}`, kind: 'bot', text: `${modelName} şu an bakımda. Lütfen modeli değiştiriniz veya daha sonra tekrar deneyiniz.` }];
+        });
+      }
+    }
+    prevModelStatusRef.current = currentModelEnabled;
+  }, [open, model, miniEnabled, ultraEnabled]);
+
   // Auto-scroll chat to bottom on new message (since we use justify-end)
   useEffect(() => {
     const el = chatScrollRef.current;
@@ -197,13 +276,23 @@ export default function CroXAiOverlay({ open, onClose, defaultModel = 'mini' }: 
     [addresses],
   );
 
-  const placeholder = activePlatform
-    ? getPlatform(activePlatform).inputLabel
-    : 'Dijital adres seçiniz:';
+  const currentModelEnabled = model === 'mini' ? miniEnabled : ultraEnabled;
 
-  const placeholderColor = activePlatform ? 'text-blue-400' : 'text-white/45';
+  const bothModelsDown = !miniEnabled && !ultraEnabled;
 
-  const ekleEnabled = !!activePlatform && draftValue.trim().length > 0;
+  const placeholder = bothModelsDown
+    ? ''
+    : !currentModelEnabled
+      ? 'Lütfen aşağıdan modeli değiştiriniz.'
+      : activePlatform
+        ? getPlatform(activePlatform).inputLabel
+        : 'Dijital adres seçiniz:';
+
+  const placeholderColor = !currentModelEnabled
+    ? 'text-red-400/70'
+    : activePlatform ? 'text-blue-400' : 'text-white/45';
+
+  const ekleEnabled = !!activePlatform && draftValue.trim().length > 0 && currentModelEnabled;
 
   function handlePlatformClick(key: PlatformKey) {
     setActivePlatform(key);
@@ -246,6 +335,16 @@ export default function CroXAiOverlay({ open, onClose, defaultModel = 'mini' }: 
       setConfirmOpen(false);
       const redirect = encodeURIComponent(pathname || '/');
       router.push(`/auth/login?redirect=${redirect}`);
+      return;
+    }
+
+    // Block if selected model is disabled
+    if (model === 'mini' && !miniEnabled) {
+      setSubmitError('CRO-X Mini şu an bakımda. Lütfen daha sonra tekrar deneyin.');
+      return;
+    }
+    if (model === 'ultra' && !ultraEnabled) {
+      setSubmitError('CRO-X Ultra şu an bakımda. Lütfen daha sonra tekrar deneyin.');
       return;
     }
 
@@ -427,11 +526,11 @@ export default function CroXAiOverlay({ open, onClose, defaultModel = 'mini' }: 
                   <motion.button
                     type="button"
                     onClick={handleAnalyzeClick}
-                    disabled={submitting}
+                    disabled={submitting || serviceStatus === 'bakımda' || (model === 'mini' && !miniEnabled) || (model === 'ultra' && !ultraEnabled)}
                     initial={{ opacity: 0, y: 8, height: 0 }}
                     animate={{ opacity: 1, y: 0, height: 'auto' }}
                     exit={{ opacity: 0, y: 8, height: 0 }}
-                    className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-full text-[11px] sm:text-[12px] font-bold uppercase tracking-wider bg-white text-black hover:bg-zinc-100 transition shadow-lg disabled:opacity-50"
+                    className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-full text-[11px] sm:text-[12px] font-bold uppercase tracking-wider bg-white text-black hover:bg-zinc-100 transition shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     ANALİZE GÖNDER
                     <span className="inline-flex items-center justify-center h-6 w-6 rounded-full bg-black text-white">
@@ -442,27 +541,40 @@ export default function CroXAiOverlay({ open, onClose, defaultModel = 'mini' }: 
               </AnimatePresence>
 
               {/* Platform pills — wrap on all viewports, never overflow */}
-              <motion.div
-                animate={pillsControls}
-                className="flex flex-wrap justify-center gap-1.5 sm:gap-2"
-              >
-                {PLATFORMS.map((p) => (
-                  <PlatformPill
-                    key={p.key}
-                    platform={p}
-                    isActive={activePlatform === p.key}
-                    hasValue={!!(addresses[p.key] && addresses[p.key]!.trim())}
-                    onClick={() => handlePlatformClick(p.key)}
-                  />
-                ))}
-              </motion.div>
+              <AnimatePresence>
+                {currentModelEnabled && (
+                  <motion.div
+                    key="pills"
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.2 }}
+                    style={{ overflow: 'hidden' }}
+                  >
+                    <motion.div
+                      animate={pillsControls}
+                      className="flex flex-wrap justify-center gap-1.5 sm:gap-2"
+                    >
+                      {PLATFORMS.map((p) => (
+                        <PlatformPill
+                          key={p.key}
+                          platform={p}
+                          isActive={activePlatform === p.key}
+                          hasValue={!!(addresses[p.key] && addresses[p.key]!.trim())}
+                          onClick={() => handlePlatformClick(p.key)}
+                        />
+                      ))}
+                    </motion.div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
 
               {/* Address input bar */}
               <div
                 className="rounded-2xl border border-white/15 bg-zinc-950/60 backdrop-blur-md overflow-hidden"
                 onClickCapture={(e) => {
                   // If user clicks input area before picking a platform, shake the pills as a hint.
-                  if (!activePlatform) {
+                  if (!activePlatform && currentModelEnabled) {
                     const target = e.target as HTMLElement;
                     if (target.closest('input') || target.closest('[data-input-row]')) {
                       flashPills();

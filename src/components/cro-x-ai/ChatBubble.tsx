@@ -41,9 +41,20 @@ export default function ChatBubble({ msg, loginHref }: Props) {
               {' '}
               <Link
                 href={loginHref}
-                className="underline underline-offset-2 font-bold text-[#1e3a5f] hover:text-[#2a4f7f] transition"
+                className="underline underline-offset-2 font-bold text-[#0f64d6] hover:text-[#2a4f7f] transition"
               >
                 Giriş Yap
+              </Link>
+            </>
+          )}
+          {msg.inlineAnalizLink && (
+            <>
+              {' '}
+              <Link
+                href="/analiz-kamsamları"
+                className="underline underline-offset-2 font-bold text-[#0f64d6] hover:text-[#2a4f7f] transition"
+              >
+                Analiz kapsamları
               </Link>
             </>
           )}

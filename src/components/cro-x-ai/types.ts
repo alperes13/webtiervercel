@@ -16,6 +16,7 @@ export interface ChatMessage {
   text: string;
   platform?: PlatformKey;
   inlineLoginLink?: boolean;
+  inlineAnalizLink?: boolean;
 }
 
 export type AddressMap = Partial<Record<PlatformKey, string>>;

@@ -1213,10 +1213,10 @@ const tr: Translations = {
   },
   auth: {
     signupTitle: 'Hesap Oluştur',
-    signupSubtitle: 'Webtier ailesine katılın ve dijital varlığınızı analiz etmeye bugün başlayın.',
+    signupSubtitle: 'Webtier ailesine katılın ve dijital varlığınızı analiz etmeye bugün başlayın. Her üye için 1 CRO-X Mini kredisi tanımlanır.',
     signupButtonText: 'Hesap Oluştur',
     loginTitleText: 'Giriş Yap',
-    loginSubtitle: 'Hoş geldiniz! Hesabınıza giriş yaparak analizlerinizi yönetin.',
+    loginSubtitle: 'Hoş geldiniz! Hesabınıza giriş yaparak analizlerinizi yönetin. Her üye için 1 CRO-X Mini kredisi tanımlanır.',
     loginButtonText: 'Giriş Yap',
     emailLabel: 'Email Adresi',
     passwordLabel: 'Şifre',
