@@ -35,7 +35,7 @@ export const PLATFORMS: PlatformDef[] = [
   {
     key: 'linkedin',
     label: 'LINKEDIN',
-    inputLabel: 'LınkedIn sayfa veya profil bağlantısı :',
+    inputLabel: 'LinkedIn sayfa veya profil bağlantısı :',
     bubblePrefix: 'Analiz edilecek LinkedIn profili veya şirket adresi :',
     validate: nonEmpty,
   },

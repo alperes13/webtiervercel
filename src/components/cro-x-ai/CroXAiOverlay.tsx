@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { motion, AnimatePresence, useAnimation } from 'framer-motion';
-import { ArrowLeft, ArrowRight, ArrowLeftRight, ChevronDown, Check } from 'lucide-react';
+import { ArrowLeft, ArrowRight, ArrowLeftRight, ChevronDown, Check, Trash2 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import {
   DropdownMenu,
@@ -73,10 +73,11 @@ export default function CroXAiOverlay({ open, onClose, defaultModel = 'mini' }: 
 
     const timers: number[] = [];
 
-    // Hero stays centered for 3s, then slides up — bot messages start arriving after.
+    // Hero stays centered for 3s, then bot messages arrive with 1–2s random gaps.
     const HERO_HOLD_MS = 3000;
-    const GAP = 800;
+    const rand = () => 1000 + Math.random() * 1000; // 1000–2000ms
 
+    let cursor = HERO_HOLD_MS;
     function addMsg(msg: Omit<ChatMessage, 'id'>, delay: number) {
       timers.push(
         window.setTimeout(() => {
@@ -86,14 +87,15 @@ export default function CroXAiOverlay({ open, onClose, defaultModel = 'mini' }: 
     }
 
     if (!isAuthenticated) {
-      addMsg({ kind: 'bot', text: 'Analiz almadan önce giriş yapman gerektiğini unutma.', inlineLoginLink: true }, HERO_HOLD_MS);
-      addMsg({ kind: 'bot', text: 'Herhangi bir dijital adresini gir. Ne kadar adres yazarsan o kadar iyi.' }, HERO_HOLD_MS + GAP);
-      addMsg({ kind: 'bot', text: 'Adreslerini doğru girdiğinden emin ol. Her analiz 1 kredi kullanır.' }, HERO_HOLD_MS + GAP * 2);
-      addMsg({ kind: 'bot', text: 'CRO-X AI Ultra analizleri server yoğunluğuna bağlı olarak 0-2 saat içerisinde teslim edilir.' }, HERO_HOLD_MS + GAP * 3);
+      addMsg({ kind: 'bot', text: 'Hoşgeldin, ücretsiz analiz almadan önce giriş yapman gerektiğini unutma. Her hesapta 1 CRO-X Mini kredisi tanımlıdır.', inlineLoginLink: true }, cursor);
+      cursor += rand();
+      addMsg({ kind: 'bot', text: 'Herhangi bir dijital adresi seçebilirsin. Ne kadar adres yazarsan o kadar iyi. Doğru girdiğinden emin ol. Her analiz 1 kredi kullanır.' }, cursor);
+      cursor += rand();
+      addMsg({ kind: 'bot', text: 'CRO-X AI Ultra analizleri server yoğunluğuna bağlı olarak 0-2 saat içerisinde teslim edilir.' }, cursor);
     } else {
-      addMsg({ kind: 'bot', text: 'Herhangi bir dijital adresini gir. Ne kadar adres yazarsan o kadar iyi.' }, HERO_HOLD_MS);
-      addMsg({ kind: 'bot', text: 'Adreslerini doğru girdiğinden emin ol. Her analiz 1 kredi kullanır.' }, HERO_HOLD_MS + GAP);
-      addMsg({ kind: 'bot', text: 'CRO-X AI Ultra analizleri server yoğunluğuna bağlı olarak 0-2 saat içerisinde teslim edilir.' }, HERO_HOLD_MS + GAP * 2);
+      addMsg({ kind: 'bot', text: 'Hoşgeldin, herhangi bir dijital adresi seçebilirsin. Ne kadar adres yazarsan o kadar iyi. Doğru girdiğinden emin ol. Her analiz 1 kredi kullanır.' }, cursor);
+      cursor += rand();
+      addMsg({ kind: 'bot', text: 'CRO-X AI Ultra analizleri server yoğunluğuna bağlı olarak 0-2 saat içerisinde teslim edilir.' }, cursor);
     }
 
     return () => {
@@ -338,7 +340,7 @@ export default function CroXAiOverlay({ open, onClose, defaultModel = 'mini' }: 
           aria-modal="true"
           role="dialog"
         >
-          {/* Top bar — back button always; CRO-X AI title appears once messages start */}
+          {/* Top bar — back button (left) · title (center) · clear button (right, when filled) */}
           <div className="absolute top-3 left-3 right-3 sm:top-4 sm:left-4 sm:right-4 flex items-center justify-between pointer-events-none z-10">
             <button
               type="button"
@@ -355,7 +357,27 @@ export default function CroXAiOverlay({ open, onClose, defaultModel = 'mini' }: 
             >
               CRO-X AI
             </motion.div>
-            <div className="w-9 sm:w-10" />
+            <AnimatePresence mode="wait">
+              {filledCount > 0 ? (
+                <motion.button
+                  key="clear"
+                  type="button"
+                  onClick={handleClear}
+                  disabled={submitting}
+                  aria-label="Temizle"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                  transition={{ duration: 0.15 }}
+                  className="pointer-events-auto h-9 sm:h-10 px-3 sm:px-4 rounded-full bg-white text-black flex items-center gap-1.5 hover:bg-zinc-200 transition shadow-lg disabled:opacity-50"
+                >
+                  <Trash2 className="w-3.5 h-3.5 shrink-0" />
+                  <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider">Temizle</span>
+                </motion.button>
+              ) : (
+                <motion.div key="placeholder" className="w-9 sm:w-10" />
+              )}
+            </AnimatePresence>
           </div>
 
           {/* Main vertical layout: chat (top, growing) + bottom dock */}
@@ -399,35 +421,23 @@ export default function CroXAiOverlay({ open, onClose, defaultModel = 'mini' }: 
 
             {/* Bottom dock: action buttons + pills + input */}
             <div className="max-w-2xl w-full mx-auto pt-3 border-t border-white/10 space-y-3 sm:space-y-4">
-              {/* Action buttons (TEMİZLE / ANALİZE GÖNDER) appear once user added an address */}
+              {/* ANALİZE GÖNDER — full width, appears once user added an address */}
               <AnimatePresence>
                 {filledCount > 0 && (
-                  <motion.div
+                  <motion.button
+                    type="button"
+                    onClick={handleAnalyzeClick}
+                    disabled={submitting}
                     initial={{ opacity: 0, y: 8, height: 0 }}
                     animate={{ opacity: 1, y: 0, height: 'auto' }}
                     exit={{ opacity: 0, y: 8, height: 0 }}
-                    className="flex flex-wrap items-center justify-end gap-2 sm:gap-3"
+                    className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-full text-[11px] sm:text-[12px] font-bold uppercase tracking-wider bg-white text-black hover:bg-zinc-100 transition shadow-lg disabled:opacity-50"
                   >
-                    <button
-                      type="button"
-                      onClick={handleClear}
-                      disabled={submitting}
-                      className="px-4 py-1.5 sm:px-5 sm:py-2 rounded-full text-[11px] sm:text-[12px] font-bold uppercase tracking-wider bg-white text-rose-600 border border-white hover:bg-zinc-100 transition disabled:opacity-50"
-                    >
-                      TEMİZLE
-                    </button>
-                    <button
-                      type="button"
-                      onClick={handleAnalyzeClick}
-                      disabled={submitting}
-                      className="px-4 py-1.5 sm:px-5 sm:py-2 rounded-full text-[11px] sm:text-[12px] font-bold uppercase tracking-wider bg-white text-rose-700 border border-rose-700 hover:bg-rose-50 transition inline-flex items-center gap-2 disabled:opacity-50"
-                    >
-                      ANALİZE GÖNDER
-                      <span className="inline-flex items-center justify-center h-6 w-6 sm:h-7 sm:w-7 rounded-full bg-rose-900 text-white">
-                        <ArrowRight className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
-                      </span>
-                    </button>
-                  </motion.div>
+                    ANALİZE GÖNDER
+                    <span className="inline-flex items-center justify-center h-6 w-6 rounded-full bg-black text-white">
+                      <ArrowRight className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+                    </span>
+                  </motion.button>
                 )}
               </AnimatePresence>
 
@@ -556,32 +566,39 @@ export default function CroXAiOverlay({ open, onClose, defaultModel = 'mini' }: 
                   </button>
                 </div>
               </div>
-              {/* Status bar — real maintenance state, 3s "bekleniyor" then live fetch */}
-              <div className="mt-[25px] flex items-center justify-center gap-2 pb-1">
-                <span className="relative flex h-2 w-2">
-                  {serviceStatus === 'bekleniyor' ? (
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-yellow-400 opacity-70 animate-pulse" />
-                  ) : serviceStatus === 'bakımda' ? (
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500" />
-                  ) : (
-                    <>
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                      <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
-                    </>
-                  )}
+              {/* Status bar: credits (left) · AI status (right) */}
+              <div className="mt-[25px] flex items-center justify-between pb-1 px-1">
+                <span className="text-[11px] sm:text-[12px] text-white/25 font-medium tracking-wide">
+                  {isAuthenticated && session
+                    ? `Mini: ${session.creditsMini ?? 0}  ·  Ultra: ${session.creditsUltra ?? 0}`
+                    : 'Kredi bilgisi yok'}
                 </span>
-                <span
-                  className={cn(
-                    'text-[10px] sm:text-[11px] font-medium tracking-wide',
-                    serviceStatus === 'bekleniyor'
-                      ? 'text-yellow-400/70'
-                      : serviceStatus === 'bakımda'
-                        ? 'text-red-400'
-                        : 'text-white/50',
-                  )}
-                >
-                  {serviceStatus === 'bekleniyor' ? 'Bekleniyor' : serviceStatus === 'bakımda' ? 'Bakımda' : 'Canlı'}
-                </span>
+                <div className="flex items-center gap-1.5">
+                  <span className="relative flex h-1.5 w-1.5">
+                    {serviceStatus === 'bekleniyor' ? (
+                      <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-yellow-400 opacity-60 animate-pulse" />
+                    ) : serviceStatus === 'bakımda' ? (
+                      <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-red-500 opacity-80" />
+                    ) : (
+                      <>
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-60" />
+                        <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500" />
+                      </>
+                    )}
+                  </span>
+                  <span
+                    className={cn(
+                      'text-[9px] sm:text-[9.5px] font-medium tracking-wide',
+                      serviceStatus === 'bekleniyor'
+                        ? 'text-yellow-400/50'
+                        : serviceStatus === 'bakımda'
+                          ? 'text-red-400/70'
+                          : 'text-white/25',
+                    )}
+                  >
+                    {serviceStatus === 'bekleniyor' ? 'Bekleniyor' : serviceStatus === 'bakımda' ? 'Bakımda' : 'Canlı'}
+                  </span>
+                </div>
               </div>
             </div>
           </div>
