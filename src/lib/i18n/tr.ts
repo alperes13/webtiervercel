@@ -645,7 +645,7 @@ const tr: Translations = {
   },
   croxUltra: {
     badge: 'CRO-X ULTRA',
-    title: 'CRO-X Ultra Listenin Hepsi!',
+    title: 'CRO-X Ultra İle Listenin Hepsi!',
     subtitle: 'İşletmenizin dijital varlığını 360° analiz eden, stratejik yol haritası çıkartan premium analiz motoru.',
     moreTitle: 'Daha Fazlası',
     items: [

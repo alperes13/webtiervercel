@@ -46,6 +46,7 @@ export default function CroXAiOverlay({ open, onClose, defaultModel = 'mini' }: 
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [serviceStatus, setServiceStatus] = useState<'bekleniyor' | 'canlı' | 'bakımda'>('bekleniyor');
 
   const inputRef = useRef<HTMLInputElement>(null);
   const chatScrollRef = useRef<HTMLDivElement>(null);
@@ -74,52 +75,46 @@ export default function CroXAiOverlay({ open, onClose, defaultModel = 'mini' }: 
 
     // Hero stays centered for 3s, then slides up — bot messages start arriving after.
     const HERO_HOLD_MS = 3000;
+    const GAP = 800;
+
+    function addMsg(msg: Omit<ChatMessage, 'id'>, delay: number) {
+      timers.push(
+        window.setTimeout(() => {
+          setChatLog((prev) => [...prev, { ...msg, id: `${msg.kind}-${Date.now()}` }]);
+        }, delay),
+      );
+    }
 
     if (!isAuthenticated) {
-      timers.push(
-        window.setTimeout(() => {
-          setChatLog((prev) => [
-            ...prev,
-            {
-              id: `bot-login-${Date.now()}`,
-              kind: 'bot',
-              text: 'Analiz almadan önce giriş yapman gerektiğini unutma.',
-              inlineLoginLink: true,
-            },
-          ]);
-        }, HERO_HOLD_MS),
-      );
-      timers.push(
-        window.setTimeout(() => {
-          setChatLog((prev) => [
-            ...prev,
-            {
-              id: `bot-intro-${Date.now()}`,
-              kind: 'bot',
-              text: 'Herhangi bir dijital adresini gir. Ne kadar adres yazarsan o kadar iyi.',
-            },
-          ]);
-        }, HERO_HOLD_MS + 800),
-      );
+      addMsg({ kind: 'bot', text: 'Analiz almadan önce giriş yapman gerektiğini unutma.', inlineLoginLink: true }, HERO_HOLD_MS);
+      addMsg({ kind: 'bot', text: 'Herhangi bir dijital adresini gir. Ne kadar adres yazarsan o kadar iyi.' }, HERO_HOLD_MS + GAP);
+      addMsg({ kind: 'bot', text: 'Adreslerini doğru girdiğinden emin ol. Her analiz 1 kredi kullanır.' }, HERO_HOLD_MS + GAP * 2);
+      addMsg({ kind: 'bot', text: 'CRO-X AI Ultra analizleri server yoğunluğuna bağlı olarak 0-2 saat içerisinde teslim edilir.' }, HERO_HOLD_MS + GAP * 3);
     } else {
-      timers.push(
-        window.setTimeout(() => {
-          setChatLog((prev) => [
-            ...prev,
-            {
-              id: `bot-intro-${Date.now()}`,
-              kind: 'bot',
-              text: 'Herhangi bir dijital adresini gir. Ne kadar adres yazarsan o kadar iyi.',
-            },
-          ]);
-        }, HERO_HOLD_MS),
-      );
+      addMsg({ kind: 'bot', text: 'Herhangi bir dijital adresini gir. Ne kadar adres yazarsan o kadar iyi.' }, HERO_HOLD_MS);
+      addMsg({ kind: 'bot', text: 'Adreslerini doğru girdiğinden emin ol. Her analiz 1 kredi kullanır.' }, HERO_HOLD_MS + GAP);
+      addMsg({ kind: 'bot', text: 'CRO-X AI Ultra analizleri server yoğunluğuna bağlı olarak 0-2 saat içerisinde teslim edilir.' }, HERO_HOLD_MS + GAP * 2);
     }
 
     return () => {
       timers.forEach((t) => window.clearTimeout(t));
     };
   }, [open, isAuthenticated, defaultModel]);
+
+  // Fetch real maintenance status after 3s delay; shows "bekleniyor" until resolved
+  useEffect(() => {
+    if (!open) return;
+    setServiceStatus('bekleniyor');
+    const t = window.setTimeout(() => {
+      fetch('/api/public/maintenance')
+        .then((r) => r.json())
+        .then((d: { maintenance_mode?: boolean }) => {
+          setServiceStatus(d.maintenance_mode ? 'bakımda' : 'canlı');
+        })
+        .catch(() => setServiceStatus('canlı'));
+    }, 3000);
+    return () => window.clearTimeout(t);
+  }, [open]);
 
   // Body scroll lock (iOS-safe: lock both <html> and <body>) + navbar hide via body class
   useEffect(() => {
@@ -466,10 +461,10 @@ export default function CroXAiOverlay({ open, onClose, defaultModel = 'mini' }: 
                 }}
               >
                 <div className="px-3 sm:px-5 pt-3 sm:pt-4 pb-1.5 sm:pb-2" data-input-row>
-                  <div className="flex items-center gap-2 sm:gap-3">
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3">
                     <span
                       className={cn(
-                        'text-[13px] sm:text-[13px] font-semibold whitespace-nowrap',
+                        'text-[11px] sm:text-[13px] font-semibold leading-tight',
                         placeholderColor,
                       )}
                     >
@@ -560,6 +555,33 @@ export default function CroXAiOverlay({ open, onClose, defaultModel = 'mini' }: 
                     </span>
                   </button>
                 </div>
+              </div>
+              {/* Status bar — real maintenance state, 3s "bekleniyor" then live fetch */}
+              <div className="mt-[25px] flex items-center justify-center gap-2 pb-1">
+                <span className="relative flex h-2 w-2">
+                  {serviceStatus === 'bekleniyor' ? (
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-yellow-400 opacity-70 animate-pulse" />
+                  ) : serviceStatus === 'bakımda' ? (
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500" />
+                  ) : (
+                    <>
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                      <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+                    </>
+                  )}
+                </span>
+                <span
+                  className={cn(
+                    'text-[10px] sm:text-[11px] font-medium tracking-wide',
+                    serviceStatus === 'bekleniyor'
+                      ? 'text-yellow-400/70'
+                      : serviceStatus === 'bakımda'
+                        ? 'text-red-400'
+                        : 'text-white/50',
+                  )}
+                >
+                  {serviceStatus === 'bekleniyor' ? 'Bekleniyor' : serviceStatus === 'bakımda' ? 'Bakımda' : 'Canlı'}
+                </span>
               </div>
             </div>
           </div>
